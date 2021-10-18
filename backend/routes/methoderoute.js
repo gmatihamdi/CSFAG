@@ -7,7 +7,7 @@ const Modu = require('../models/module')
 const Sect = require('../models/section')
 const Competence = require('../models/competence')
 const note = require('../models/note')
-
+const groupe=require('../models/groupe')
 
 
 
@@ -206,26 +206,10 @@ router.post('/getrelevnote', (req, res) => {
         console.log(e);
     }
 })
-
-
-
 router.post('/getgroup', (req, res) => {
-
-
-    Note.find({
-        stagiaireNote: req.body.x
+    groupe.find({
+        codeSection: req.body.x
     })
-
-        .populate([
-
-            {
-                path: 'stagiaireNote',
-                model: 'Stagiaire'
-            },
-            {
-                path: 'moduleNote',
-                model: 'Matiere'
-            }])
         .exec(function (err, data) {
             if (err) {
                 console.log(err);
@@ -238,10 +222,10 @@ router.post('/getgroup', (req, res) => {
             //res.send(200, data);
             console.log(data);
             res.json(data)
-            console.log('success generate List');
+            console.log(req.body.x);
+            console.log('success generate List des groupes');
         });
+        
 })
-
-
 
 module.exports = router

@@ -27,6 +27,7 @@ class EditStagiaire extends Component {
                 listeSpecialites:[],
                 listeSection:[],
                 listePromotions:[],
+                listgroupsection:[],
                
             
                 users:[]
@@ -86,6 +87,21 @@ class EditStagiaire extends Component {
             this.fetchPromotion();
             this.fetchSection();
         }
+
+        findgroupClick(){
+          const a={ x:this.state.codeSection}
+          axios.post(`http://localhost/methode/getgroup`,a) 
+          .then((res)=>{
+            this.setState({
+            listgroupsection:res.data,
+          })
+          console.log("resultat de recherche");
+          console.log(res.data)
+          })
+      // Catch any errors we hit and update the app
+      .catch(error => this.setState({ error, isLoading: false })); 
+    }
+
             fetchSection() {
                 fetch(`http://localhost/sect`)
                   // We get the API response and receive data in JSON format...
@@ -280,7 +296,7 @@ class EditStagiaire extends Component {
 
 
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Section </label>
+ <label for="inputEmail4" class="form-label"> Specialite</label>
    
    <select 
    className="form-control"  value={this.state.specialiteStagiaire}
@@ -299,20 +315,26 @@ class EditStagiaire extends Component {
 <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Affectation par groupe </label>
    
-   <select class="form-control"  name="niveauMatiere" value={this.state.groupeStagiaire}
-   onChange={this.onChangeGroupeStagiaire}>
-       <option >select Groupe</option>
+ <select class="form-control"  name="grouprselect" value={this.state.groupeStagiaire}
+   onChange={this.onChangeGroupeStagiaire}  >
+  
+  
+  
+<option >select groupe</option>
 
-       <option >G1</option>
-       <option >G2</option>
-   </select>
+{
+                               this.state.listgroupsection.map(function(groupe) {
+                                   return <option value={groupe._id}  >{groupe.codeGroupe}</option>;
+                               })
+                           }
+</select> 
  
 </div>
 <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Section </label>
    <select 
    className="form-control"  value={this.state.codeSection}
-   onChange={this.onChangeCodeSection}> 
+   onChange={this.onChangeCodeSection} onClick={() => this.findgroupClick()}> 
 <option >select section</option>
  
 {

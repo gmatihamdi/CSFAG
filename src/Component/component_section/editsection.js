@@ -29,13 +29,42 @@ class Editsection extends React.Component{
     // Setting up state
    
   }
+
+  componentDidMount() { 
+    axios.get(`http://localhost/sect/edit/`+this.props.match.params.id)
+      .then(res => {
+        this.setState({
+          codeSection: res.data.codeSection,
+          codePromotion: res.data.codePromotion,
+          libSection:res.data.libSection,
+          codeSpecialite:res.data.codeSpecialite,
+          codeDiplome:res.data.codeDiplome,
+          groupeSection:res.data.groupeSection,
+    
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+      this.fetchSpecialite();
+      this.fetchPromotion();
+
+  }
+  
+
+
+
+
+
+
 onSubmit(e) {
   e.preventDefault()
   const studentObject = {
     codeSection:this.state.codeSection,
     codePromotion:this.state.codePromotion,
     libSection:this.state.libSection,
-    codeSpecialite:this.state.codeSpecialite,
+    libSection:this.state.libSection,
     codeDiplome:this.state.codeDiplome,
     groupeSection:this.state.groupeSection,
   };
@@ -99,11 +128,7 @@ onChangeLibSection(e){
                       }
 
 
-           componentDidMount() {
-                     this.fetchSpecialite();
-                     this.fetchPromotion();
-
-                  }
+          
 
 
 

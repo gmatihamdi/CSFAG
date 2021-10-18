@@ -31,11 +31,28 @@ class Stagiaire extends React.Component{
         groupeStagiaire: '',
         listeSection:[],
         Groupe:[],
-        liststag:[]
+        liststag:[],
+        listgroupsection:[],
+
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);}
   
+    findgroupClick(){
+      const a={ x:this.state.codeSection}
+      axios.post(`http://localhost/methode/getgroup`,a) 
+      .then((res)=>{
+        this.setState({
+        listgroupsection:res.data,
+      })
+      console.log("resultat de recherche");
+      console.log(res.data)
+      })
+  // Catch any errors we hit and update the app
+  .catch(error => this.setState({ error, isLoading: false })); 
+}
+
+
     handleClick(){
       const a={
         x:this.state.codeSection,
@@ -124,7 +141,17 @@ var img = new Image()
    iframe.src = pdf.output('datauristring');
  }
 
+/*
+<select class="form-control"  name="niveauMatiere" value={this.state.groupeStagiaire}
+   onChange={this.onChangeGroupeStagiaire}>
+       <option >select Groupe</option>
 
+       <option >G1</option>
+       <option >G2</option>
+   </select>
+
+
+*/
 
 
 
@@ -152,7 +179,7 @@ var img = new Image()
  value={this.state.codeSection}
   onChange={this.onChangeCodeSection}
   
-  
+  onClick={() => this.findgroupClick()}
   > 
 <option >select section</option>
 
@@ -164,18 +191,24 @@ var img = new Image()
 </select>
 </div>
 <div class="col-auto">   
-<select class="form-control"  name="niveauMatiere" value={this.state.groupeStagiaire}
-   onChange={this.onChangeGroupeStagiaire}>
-       <option >select Groupe</option>
 
-       <option >G1</option>
-       <option >G2</option>
-   </select>
-             
+<select class="form-control"  name="grouprselect" value={this.state.groupeStagiaire}
+   onChange={this.onChangeGroupeStagiaire}  >
+  
+  
+  
+<option >select groupe</option>
+
+{
+                               this.state.listgroupsection.map(function(groupe) {
+                                   return <option value={groupe._id}  >{groupe.codeGroupe}</option>;
+                               })
+                           }
+</select>           
              </div>
              <Link className='btn btn-danger' onClick={() => this.handleClick()}>Charger la liste</Link>
              
-
+         
            
      </form>
 
@@ -187,8 +220,8 @@ var img = new Image()
     <th scope="col">CIN</th>
     <th scope="col">Nom&Prénom</th>
     <th scope="col">specialite</th>
-    <th scope="col">Groupe</th>
-    <th scope="col">parametres</th>
+ 
+    <th scope="col">Action</th>
   </tr>
 </thead>
 <tbody>
@@ -198,7 +231,7 @@ var img = new Image()
             <td>{stagiare.cinStagiaire}</td>
             <td>{stagiare.nomStagiaireFr}</td>
             <td>{stagiare.specialiteStagiaire}</td>
-            <td>{stagiare.groupeStagiaire}</td>   
+          
     <td>
     <Link className='btn btn-primary mr-2'>View</Link>
     <Link className='btn btn-outline-primary mr-2' to={"/admin/editStagiaire/"+stagiare._id}>Edit</Link>
