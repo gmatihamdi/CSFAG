@@ -10,19 +10,22 @@ class CreatNote extends React.Component {
       noteexam: '',
       stagiaireNote: '',
       moduleNote: '',
-      specialiteStagiaire: '',
+      codeSection: '',
       groupeStagiaire: '',
       codeMatiere: '',
       users: [],
       matieres: [],
       stgsss: [],
-      stgs: []
+      listeSection:[],
+      stgs: [],
+      listcompetence:[],
+      listgroupsection:[]
     }
     // Setting up functions
     this.onChangeStagiaireNote = this.onChangeStagiaireNote.bind(this);
     this.onChangeNoteexam = this.onChangeNoteexam.bind(this);
     this.onChangeModuleNote = this.onChangeModuleNote.bind(this);
-    this.onChangeSpecialiteStagiaire = this.onChangeSpecialiteStagiaire.bind(this);
+    this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
     this.onChangeCodeMatiere = this.onChangeCodeMatiere.bind(this);
 
@@ -70,8 +73,8 @@ class CreatNote extends React.Component {
   onChangeModuleNote(e) {
     this.setState({ moduleNote: e.target.value })
   }
-  onChangeSpecialiteStagiaire(e) {
-    this.setState({ specialiteStagiaire: e.target.value })
+  onChangeCodeSection(e) {
+    this.setState({ codeSection: e.target.value })
   }
   onChangeGroupeStagiaire(e) {
     this.setState({ groupeStagiaire: e.target.value })
@@ -94,11 +97,24 @@ class CreatNote extends React.Component {
       // Catch any errors we hit and update the app
       .catch(error => this.setState({ error, isLoading: false }));
   }
-
+  fetchSection() {
+    fetch(`http://localhost/sect`)
+      // We get the API response and receive data in JSON format...
+      .then(response => response.json())
+      // ...then we update the users state
+      .then(data =>
+        this.setState({
+          listeSection: data,
+          isLoading: false,
+        })
+      )
+      // Catch any errors we hit and update the app
+      .catch(error => this.setState({ error, isLoading: false }));
+  }
   handleClick() {
 
     const a = {
-      x: this.state.specialiteStagiaire,
+      x: this.state.codeSection,
       y: this.state.groupeStagiaire,
 
     }
@@ -124,6 +140,34 @@ class CreatNote extends React.Component {
       .catch(error => this.setState({ error, isLoading: false }));
 
   }
+  findgroupClick(){
+    const a={ x:this.state.codeSection}
+    axios.post(`http://localhost/methode/getgroup`,a) 
+    .then((res)=>{
+      this.setState({
+      listgroupsection:res.data,
+    })
+    console.log("resultat de recherche");
+    console.log(res.data)
+    })
+// Catch any errors we hit and update the app
+.catch(error => this.setState({ error, isLoading: false })); 
+
+axios.post(`http://localhost/methode/getcompetence`,a) 
+.then((res)=>{
+  this.setState({
+  listcompetence:res.data,
+})
+console.log("resultat de recherche");
+console.log(res.data)
+})
+// Catch any errors we hit and update the app
+.catch(error => this.setState({ error, isLoading: false })); 
+
+
+
+}
+
 
   fetchStag() {
     fetch(`http://localhost/stag`,)
@@ -160,6 +204,7 @@ class CreatNote extends React.Component {
     this.fetchStag();
     this.fetchMatiere();
     this.handleClick();
+    this.fetchSection();
   }
   render() {
 
@@ -171,26 +216,37 @@ class CreatNote extends React.Component {
 
           <form onSubmit={this.onSubmit}>
             <div className="form-group">
-              <select
+            <select 
+  class="form-control"
+ value={this.state.codeSection}
+  onChange={this.onChangeCodeSection}
+  
+  onClick={() => this.findgroupClick()}
+  > 
+<option >select section</option>
 
-                className="form-control" value={this.state.specialiteStagiaire}
-                onChange={this.onChangeSpecialiteStagiaire}>
-                <option >select specialite</option>
-                {
-                  this.state.users.map(function (specialite) {
-                    return <option  >{specialite.libSpecialite}</option>;
-                  })
-                }
-              </select>
+{
+                               this.state.listeSection.map(function(section) {
+                                   return <option value={section._id}  >{section.libSection}</option>;
+                               })
+                           }
+</select>
 
             </div>
 
-            <select class="form-control" name="niveauMatiere" value={this.state.groupeStagiaire}
-              onChange={this.onChangeGroupeStagiaire}>
-              <option >select Groupe</option>
-              <option >G1</option>
-              <option >G2</option>
-            </select>
+            <select class="form-control"  name="grouprselect" value={this.state.groupeStagiaire}
+   onChange={this.onChangeGroupeStagiaire}  >
+  
+  
+  
+<option >select groupe</option>
+
+{
+                               this.state.listgroupsection.map(function(groupe) {
+                                   return <option value={groupe._id}  >{groupe.codeGroupe}</option>;
+                               })
+                           }
+</select> 
             <div className="form-group">
               <select
                 className="form-control" value={this.state.moduleNote}
@@ -204,7 +260,7 @@ class CreatNote extends React.Component {
               </select>
             </div>
 
-            <Link className='btn btn-danger' onClick={() => this.handleClick()}>loading</Link>
+            <Link className='btn btn-danger' onClick={() => this.handleClick()}>Charger la liste</Link>
 
             <th></th>
             <div>
@@ -224,7 +280,7 @@ class CreatNote extends React.Component {
                 </table>
               ))}
             </div>
-            <button className="btn btn-primary" type="submit" name="action">Submit
+            <button className="btn btn-primary" type="submit" name="action">Enregistrer
 </button>
           </form>
         </div>

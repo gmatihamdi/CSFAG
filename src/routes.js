@@ -113,7 +113,16 @@ var routes = [
     layout: "/admin",
   },
 
-
+  {
+    path: "/stagiaires",
+    name: "les diplomés",
+    icon: "nc-icon nc-single-02",
+    component: Stagiaires,
+    layout: "/admin",
+  },
+ 
+ 
+ /*   les diplomés
   {
     path: "/icons",
     name: "Icons",
@@ -155,7 +164,7 @@ var routes = [
     icon: "nc-icon nc-caps-small",
     component: Typography,
     layout: "/admin",
-  },
+  },*/
 
 ];
 

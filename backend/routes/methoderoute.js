@@ -8,13 +8,14 @@ const Sect = require('../models/section')
 const Competence = require('../models/competence')
 const note = require('../models/note')
 const groupe=require('../models/groupe')
+const competence = require('../models/competence')
 
 
 
 const router = express.Router()
 router.post('/', (req, res) => {
     Stag.find({
-        specialiteStagiaire: req.body.x, groupeStagiaire: req.body.y
+        codeSection: req.body.x, groupeStagiaire: req.body.y
     })
         .exec(function (err, data) {
             if (err) {
@@ -208,6 +209,28 @@ router.post('/getrelevnote', (req, res) => {
 })
 router.post('/getgroup', (req, res) => {
     groupe.find({
+        codeSection: req.body.x
+    })
+        .exec(function (err, data) {
+            if (err) {
+                console.log(err);
+                console.log('error returned');
+                res.send(500, { error: 'Failed ' });
+            }
+            if (!data) {
+                res.send(403, { error: 'chargement Failed' });
+            }
+            //res.send(200, data);
+            console.log(data);
+            res.json(data)
+            console.log(req.body.x);
+            console.log('success generate List des groupes');
+        });
+        
+})
+
+router.post('/getcompetence', (req, res) => {
+    competence.find({
         codeSection: req.body.x
     })
         .exec(function (err, data) {
