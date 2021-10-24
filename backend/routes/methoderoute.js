@@ -90,7 +90,10 @@ router.post('/getrelevnote', (req, res) => {
             {
                 path: 'codeSection',
                 model: 'Section'
-            }])
+            }
+          
+        
+        ])
             .then(dataStag => {
                 [dataStag].map(function (stagiare) {
                     sectionstag = stagiare.codeSection._id
@@ -184,13 +187,17 @@ router.post('/getrelevnote', (req, res) => {
                                             }
                                         }
 
+
+
+                                        
+
                                            /****** */
                                         var lengthcmp = listecompetence.length;
                                         moyenne = parseFloat(somme) / parseFloat(lengthcmp);
-                                        console.log("listFinalNotes")
+                                     /*   console.log("listFinalNotes")
                                         console.log(moyenne)
                                         console.log(somme)
-                                        console.log(resultat)
+                                        console.log(resultat)*/
 
                                         res.status(200).json({
                                             message: 'ok',
@@ -201,12 +208,71 @@ router.post('/getrelevnote', (req, res) => {
                                         })
                                     });
                         })
+                        
             })
     }
     catch (e) {
         console.log(e);
     }
 })
+
+
+
+
+
+
+router.post('/getdetails', (req, res) => {
+
+    let sectionstag = " ";
+    Stag.findById({ _id:req.body.x }).populate([
+        {
+            path: 'codePromotion',
+            model: 'Promotion'
+        },
+        {
+            path: 'codeSection',
+            model: 'Section'
+        }
+    ])
+        .then(dataStag => {
+            [dataStag].map(function (stagiare) {
+                sectionstag = stagiare.codeSection._id
+                return sectionstag;
+            });
+
+            
+Sect.findById({_id: sectionstag}).populate([
+    {
+        path: 'codeSpecialite',
+        model: 'Specialite'
+    }
+    ])
+    .exec(function (err, data) {
+        res.json(data)
+        console.log("code section details")
+        console.log(sectionstag)
+        console.log("details")
+        console.log(data)
+      })
+
+
+
+    })
+   
+
+    
+
+
+})
+
+
+
+
+
+
+
+
+
 router.post('/getgroup', (req, res) => {
     groupe.find({
         codeSection: req.body.x
@@ -232,7 +298,10 @@ router.post('/getgroup', (req, res) => {
 router.post('/getcompetence', (req, res) => {
     competence.find({
         codeSection: req.body.x
-    })
+    }).populate([{
+        path: 'codeMatiere',
+        model: 'Matiere'
+    }])
         .exec(function (err, data) {
             if (err) {
                 console.log(err);

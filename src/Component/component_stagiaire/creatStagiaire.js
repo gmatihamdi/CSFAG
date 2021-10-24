@@ -175,7 +175,7 @@ onChangeNomStagiaireFr(e){
     return(
       <div className="content">
       
-        <div className="w-75 mx-auto shadow p-5">
+        <div >
         <h2>Nouveau stagiaire</h2>
 
         <ul class="nav nav-tabs">

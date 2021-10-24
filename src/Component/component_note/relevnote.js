@@ -4,7 +4,10 @@ import Pdf from 'react-to-pdf'
 import 'jspdf-autotable'
 import ReactToPdf  from 'react-to-pdf'
 import logo from './entete.jpeg' // relative path to image 
+import fontarab from './Amiri-Regular.ttf' // relative path to image 
+import { base64Str } from 'base-64';
 import jsPDF from 'jspdf';
+import { Preview, print } from 'react-html2pdf';
 //import { Page, Text, View, Document } from '@react-pdf/renderer'
 import { Link} from "react-router-dom"
 //import Canvas from 'react-canvas-component'
@@ -36,6 +39,7 @@ class PdfRnote extends React.Component{
           listnote:[],
           stgs:[],
           matieres:[],
+          retourdetails:[]
         } 
         this.onChangeCinStagiaire = this.onChangeCinStagiaire.bind(this);
     
@@ -58,7 +62,7 @@ class PdfRnote extends React.Component{
              stgs:res.data.data1,
              Moyn:res.data.data2,
              Result:res.data.data3,
-
+          
             })
             console.log('Moyn')
             console.log(this.state.Moyn)
@@ -67,6 +71,27 @@ class PdfRnote extends React.Component{
             })
         // Catch any errors we hit and update the app
         .catch(error => this.setState({ error, isLoading: false }));
+
+
+
+        axios.post(`http://localhost/methode/getdetails`,a) 
+        .then((res)=>{
+               this.setState({ 
+              retourdetails:res.data,
+             })
+             console.log('retourdetails')
+             console.log(this.state.retourdetails) 
+             })
+         // Catch any errors we hit and update the app
+         .catch(error => this.setState({ error, isLoading: false }));
+
+
+
+
+
+
+
+
        
     }
 
@@ -83,17 +108,41 @@ class PdfRnote extends React.Component{
      pdf.setFontSize(9);
      pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
      pdf.setFontSize(22);
-       pdf.text(210, 50, 'بطاقة كشف الكفايات')
+
+    // const AmiriRegular = fontarab;
+
+     pdf.addFileToVFS(fontarab, base64Str);
+     pdf.addFont(fontarab, 'Amiri', 'normal');
+
+
+    pdf.setFont('Amiri'); 
+       pdf.text(210, 50, 'بطاقة كشف الكفايات', {
+        lang: 'ar'})
+ 
        pdf.setFontSize(10);
-       pdf.text(35, 100, 'Nom et prénom :')
-       pdf.text(120, 100,this.state.stgs.nomStagiaireFr)
-       pdf.text(200, 100, 'CIN :')
-       pdf.text(240, 100,this.state.stgs.cinStagiaire)
-       pdf.text(300, 100, 'Date de naissance :')
-       pdf.text(380, 100,this.state.stgs.datenaissanceStag)
-       pdf.line(35, 110, 300, 110);
-       pdf.text(35, 130,'specialite')
-       pdf.text(120, 130,this.state.stgs.specialiteStagiaire)
+       pdf.text(480, 100, 'الاسم و اللقب ')
+       pdf.text(400, 100,this.state.stgs.nomStagiaireAr)
+       pdf.text(200, 100, 'عدد بطاقة التعريف الوطنية ')
+       pdf.text(110, 100,this.state.stgs.cinStagiaire)
+      
+       //pdf.line(35, 110, 300, 110);
+       pdf.text(480, 120,'الاختصاص')
+       pdf.text(400, 120,this.state.retourdetails?.codeSpecialite.libSpecialite)
+       pdf.text(200, 120,'الرمز')
+       pdf.text(110, 120,'12502')
+
+       pdf.text(480, 140,'مدة التكوين  من ')
+       pdf.text(400, 140,'01/02/2019')
+       pdf.text(200, 140,'إلى')
+       pdf.text(110, 140,'30/06/2021')
+
+       pdf.text(480, 160,' نمط التكوين ')
+       pdf.text(400, 160,'بالتداول')
+       pdf.text(300, 160,'شهادة')
+       pdf.text(35, 160,'مؤهل التقني المهني  منظرة في المستوى ت')
+
+
+
        pdf.text(35, 650,'MOYENNE GÉNÉRALE');
        pdf.text(170,650,this.state.Moyn+'/100')
      pdf.line(35,670, 300, 670);
@@ -126,16 +175,23 @@ return(
             <button onClick={toPdf}>Generate pdf</button>
         )}
     </ReactToPdf>
+
+    <br/>
+
+
+
+
+<br/>
   
     <button onClick={this.pdfGenerate}>pdf FR</button>
     
     <div id="print"   ref={ref}>
-     
      <b align="center" valign="middle"><font size={14} color="#000000">          
   <center>
   Relevé de notes
 </center> 
 </font></b><br />
+ 
     
      <table  className="table">
 
@@ -241,11 +297,12 @@ return(
       </tr>
       </tbody>
     </table>
-
+    <Preview id={'jsx-template'} >
     <font face="Times New Roman" color="#000000">(*) Il ne peut être délivré qu'une seule copie du présent relevé de notes </font>
         
 
-
+</Preview>
+<button onClick={()=>print('a', 'jsx-template')}> print</button>
 
 
 

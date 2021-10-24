@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from "react-router-dom"
+
 class CreatNote extends React.Component {
 
 
@@ -158,8 +159,9 @@ axios.post(`http://localhost/methode/getcompetence`,a)
   this.setState({
   listcompetence:res.data,
 })
-console.log("resultat de recherche");
+console.log("resultat de recherche matiere");
 console.log(res.data)
+console.log(this.state.listcompetence.codeMatiere.libMatiere)
 })
 // Catch any errors we hit and update the app
 .catch(error => this.setState({ error, isLoading: false })); 
@@ -211,7 +213,11 @@ console.log(res.data)
     return (
       <div className="content">
 
-        <div className="w-75 mx-auto shadow p-5">
+
+
+
+
+        <div >
           <h2>Notation des Compétences par groupe</h2>
 
           <form onSubmit={this.onSubmit}>
@@ -253,8 +259,8 @@ console.log(res.data)
                 onChange={this.onChangeModuleNote}>
                 <option >select matiere</option>
                 {
-                  this.state.matieres.map(function (matiere) {
-                    return <option value={matiere._id} >{matiere.libMatiere}</option>;
+                  this.state.listcompetence.map(function (competence) {
+                    return <option value={competence.codeMatiere._id} >{competence.codeMatiere.libMatiere}</option>;
                   })
                 }
               </select>
@@ -264,9 +270,24 @@ console.log(res.data)
 
             <th></th>
             <div>
+
+            <table className="table">
+                <thead class="thead-dark">
+  <tr>
+   
+    <th scope="col">CIN</th>
+    <th scope="col">Nom&Prénom</th>
+    <th scope="col">Note</th>
+ 
+  </tr>
+</thead>
+<tbody>
+
               {this.state.stgsss.map((stagiare, index) => (
 
-                <table className="table">
+            
+
+
                   <tr>
                     <td><label>{stagiare.cinStagiaire} </label></td>
                     <td><label>{stagiare.nomStagiaireFr} </label></td>
@@ -277,13 +298,17 @@ console.log(res.data)
                       />
                     </td>
                   </tr>
-                </table>
+                  
               ))}
+              </tbody>
+                </table>
             </div>
             <button className="btn btn-primary" type="submit" name="action">Enregistrer
 </button>
           </form>
         </div>
+
+
       </div>
     )
   }

@@ -3,8 +3,11 @@ import axios from 'axios'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import logo from './entete.jpeg' // relative path to image 
-import { Link} from "react-router-dom"
+import { Link,useLocation} from "react-router-dom"
 import { BsPersonPlusFill } from "react-icons/bs";
+import routes from "routes.js";
+import { Dropdown } from 'react-bootstrap';
+
 //import BsPersonPlusFill  from "@meronex/icons/bs/BsPersonPlusFill";
 //import FcPrint  from "@meronex/icons/bs/FcPrint";
 //import { FcPrint } from "react-icons/fc";
@@ -16,7 +19,18 @@ const defaultOption = options[0];
 
 
 class Stagiaire extends React.Component{
-  constructor(props) {
+
+
+
+
+
+
+
+
+  
+ constructor(props) {
+ 
+
     super()
     this.state = {
         cinStagiaire:'',
@@ -34,9 +48,23 @@ class Stagiaire extends React.Component{
         liststag:[],
         listgroupsection:[],
 
+
+
+        
+
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
-    this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);}
+    this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
+  
+
+
+
+
+
+
+
+    
+  }
   
     findgroupClick(){
       const a={ x:this.state.codeSection}
@@ -158,6 +186,8 @@ var img = new Image()
 
 //<BsPersonPlusFill/>
   render(){
+
+
   return( 
 
     
@@ -233,10 +263,23 @@ var img = new Image()
             <td>{stagiare.specialiteStagiaire}</td>
           
     <td>
-    <Link className='btn btn-primary mr-2'>View</Link>
-    <Link className='btn btn-outline-primary mr-2' to={"/admin/editStagiaire/"+stagiare._id}>Edit</Link>
-    <Link className='btn btn-danger' onClick={(e)=>this.deleteSpc(stagiare._id)}>Delete</Link>
-    <Link className="btn btn-warning" to={"/admin/pdfRelevnote/"+stagiare._id}>Relevé de notes</Link>
+
+    <Dropdown>
+  <Dropdown.Toggle variant="success" id="dropdown-basic">
+  Action
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu>
+    <Dropdown.Item ><Link to={"/admin/editStagiaire/"+stagiare._id}>Modifier</Link></Dropdown.Item>
+    <Dropdown.Item > <Link  onClick={(e)=>this.deleteSpc(stagiare._id)}>supprimer</Link></Dropdown.Item>
+    <Dropdown.Item href="#/action-3"><Link  to={"/admin/pdfRelevnote/"+stagiare._id}>Relevé de notes</Link></Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown>
+
+
+   
+
+
     </td>
   </tr>
   ))}
@@ -244,6 +287,8 @@ var img = new Image()
 
 </table>
 
+
+           
 
 
 

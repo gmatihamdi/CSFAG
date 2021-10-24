@@ -2,6 +2,16 @@ import React from 'react'
 import axios from 'axios'
 import { Link} from "react-router-dom"
 import { FcPrint } from "react-icons/fc";
+import {
+  PDFDocument,
+  PDFText,
+  PDFTable,
+  PDFTableRow,
+  PDFTableColumn,
+  PDFColumn,
+  PDFColumns,
+  pdf,
+} from 'react-pdfmake';
 class ListeSection extends React.Component{
   constructor(props) {
     super()
@@ -79,6 +89,6 @@ class ListeSection extends React.Component{
 
 
 </div>
-  )
-}}
+  )  }}  
+
 export default ListeSection;
