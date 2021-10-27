@@ -197,23 +197,17 @@ onChangeNomStagiaireFr(e){
 
 
 
-
-
-
-        <ToastContainer />
-        <form onSubmit={this.onSubmit} class="row g-3">
+  <ToastContainer/>
+  <form onSubmit={this.onSubmit} class="row g-3">
   <div className="col-md-6">
   <label for="inputEmail4" class="form-label">CIN Stagiaire</label>
   <input type="text" className="form-control " placeholder=" CIN" 
   name="cinStagiaire"
   value={this.state.cinStagiaire}
   onChange={this.onChangeCinStagiaire}
-
   />
   <p class="text-danger">{this.state.ErreurcinStagiaire}</p>
-
-
-     </div>
+  </div>
     <div className="col-md-6">
     <label for="inputEmail4" class="form-label">Nom Stagiaire</label>
   <input type="text" className="form-control " placeholder=" NOM FR "

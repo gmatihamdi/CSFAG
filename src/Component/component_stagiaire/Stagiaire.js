@@ -191,7 +191,7 @@ var img = new Image()
   return( 
 
     
-    <div className="content">
+    <div className="content" >
 
 <button onClick={this.pdfGenerate}>pdf FR</button>
      
@@ -267,9 +267,9 @@ var img = new Image()
     <Dropdown>
   <Dropdown.Toggle variant="success" id="dropdown-basic">
   Action
-  </Dropdown.Toggle>
+</Dropdown.Toggle>
 
-  <Dropdown.Menu>
+<Dropdown.Menu>
     <Dropdown.Item ><Link to={"/admin/editStagiaire/"+stagiare._id}>Modifier</Link></Dropdown.Item>
     <Dropdown.Item > <Link  onClick={(e)=>this.deleteSpc(stagiare._id)}>supprimer</Link></Dropdown.Item>
     <Dropdown.Item href="#/action-3"><Link  to={"/admin/pdfRelevnote/"+stagiare._id}>Relevé de notes</Link></Dropdown.Item>

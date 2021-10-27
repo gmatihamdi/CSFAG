@@ -127,9 +127,9 @@ class PdfRnote extends React.Component{
       
        //pdf.line(35, 110, 300, 110);
        pdf.text(480, 120,'الاختصاص')
-       pdf.text(400, 120,this.state.retourdetails?.codeSpecialite.libSpecialite)
+       pdf.text(340, 120,this.state.retourdetails?.codeSpecialite.libSpecialiteAr)
        pdf.text(200, 120,'الرمز')
-       pdf.text(110, 120,'12502')
+       pdf.text(110, 120,this.state.retourdetails?.codeSpecialite.codeSpecialite)
 
        pdf.text(480, 140,'مدة التكوين  من ')
        pdf.text(400, 140,'01/02/2019')
@@ -137,9 +137,9 @@ class PdfRnote extends React.Component{
        pdf.text(110, 140,'30/06/2021')
 
        pdf.text(480, 160,' نمط التكوين ')
-       pdf.text(400, 160,'بالتداول')
-       pdf.text(300, 160,'شهادة')
-       pdf.text(35, 160,'مؤهل التقني المهني  منظرة في المستوى ت')
+       pdf.text(400, 160,this.state.retourdetails?.codeSpecialite.typeSpecialite)
+       pdf.text(200, 160,'شهادة')
+       pdf.text(35, 160,this.state.retourdetails?.codeSpecialite.diplomeSpecialite)
 
 
 
