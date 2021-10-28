@@ -63,7 +63,7 @@ class ListeCompetence extends React.Component{
         
     <td>
     <Link className='btn btn-primary mr-2'>View</Link>
-    <Link className='btn btn-outline-primary mr-2' to={"/admin/editSection/"+competence._id}>Edit</Link>
+    <Link className='btn btn-outline-primary mr-2' to={"/admin/editcompetence/"+competence._id}>Edit</Link>
     
     <Link className='btn btn-danger' onClick={(e)=>this.deleteNote(competence._id)}>Delete</Link>
 

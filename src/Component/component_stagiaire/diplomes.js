@@ -18,7 +18,7 @@ const options = [
 const defaultOption = options[0];
 
 
-class Stagiaire extends React.Component{
+class Diplomes extends React.Component{
 
 
 
@@ -87,7 +87,7 @@ class Stagiaire extends React.Component{
         y:this.state.groupeStagiaire,
   
       }
-      axios.post(`http://localhost/filtre/filtrestagiare`,a) 
+      axios.post(`http://localhost/filtre/filtrestagiaredip`,a) 
       .then((res)=>{
              this.setState({
              liststag:res.data,
@@ -147,7 +147,7 @@ var img = new Image()
  pdf.setFontSize(9);
  pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
  pdf.setFontSize(22);
-   pdf.text(210, 80, 'Feuille de présence')
+   pdf.text(210, 80, 'Liste de Stagiaires Diplômés')
    pdf.setFontSize(10);
   
    pdf.line(150, 110, 300, 110);
@@ -195,11 +195,9 @@ var img = new Image()
 
 <button onClick={this.pdfGenerate}>pdf FR</button>
      
-      <h1> Liste de Stagiaires </h1>
+      <h1> Liste de Stagiaires Diplômés </h1>
 
-  <Link className="btn btn-danger" to='/admin/addstagiaire'>Ajouter un Stagiaire</Link>
-
-
+  
 
     <form  className="row g-3">
      
@@ -270,11 +268,10 @@ var img = new Image()
 </Dropdown.Toggle>
 
 <Dropdown.Menu>
-    <Dropdown.Item ><Link to={"/admin/editStagiaire/"+stagiare._id}>Modifier</Link></Dropdown.Item>
-    <Dropdown.Item > <Link  onClick={(e)=>this.deleteSpc(stagiare._id)}>supprimer</Link></Dropdown.Item>
+    
     <Dropdown.Item href="#/action-3"><Link  to={"/admin/pdfRelevnote/"+stagiare._id}>Relevé de notes</Link></Dropdown.Item>
-    <Dropdown.Item href="#/action-3"><Link  to={"/admin/pdfRelevnote/"+stagiare._id}>Attestation de présence</Link></Dropdown.Item>
-    <Dropdown.Item href="#/action-3"><Link  to={"/admin/pdfRelevnote/"+stagiare._id}>Attestation d'inscription</Link></Dropdown.Item>
+    <Dropdown.Item href="#/action-3"><Link  to={"/admin/pdfRelevnote/"+stagiare._id}>Attestation de réussite </Link></Dropdown.Item>
+    <Dropdown.Item href="#/action-3"><Link  to={"/admin/pdfRelevnote/"+stagiare._id}>Diplôme</Link></Dropdown.Item>
 
   </Dropdown.Menu>
 </Dropdown>
@@ -298,4 +295,4 @@ var img = new Image()
 </div>
   )
 }}
-export default Stagiaire;
+export default Diplomes;

@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import DatePicker from "react-date-picker";
+import { ToastContainer, toast } from 'react-toastify';
 import { Link,useParams} from "react-router-dom"
 
 class Editpromotion extends React.Component{
@@ -26,6 +27,9 @@ class Editpromotion extends React.Component{
         debutPromotion: new Date(),
         finPromotion:  new Date(),
         capacitePromotion:  '',   
+        Errcodespc:'',
+        Errlibspcfr:'',
+        ErrlibspcAr:'',
     }
   }
   componentDidMount() { 
@@ -51,7 +55,19 @@ class Editpromotion extends React.Component{
 
 
 onSubmit(e) {
+
   e.preventDefault()
+  if(this.state.codePromotion===''){
+    this.state.ErrcodePromotion='Champs Obligatoire '
+   }
+   if(this.state.libPromotionFr===''){
+    this.state.ErrlibPromotionFr='Champs Obligatoire '
+   }
+   if(this.state.libPromotionAr===''){
+    this.state.ErrlibPromotionAr='Champs Obligatoire '
+   }
+   else{
+
   
   const studentObject = {
     codePromotion:this.state.codePromotion,
@@ -65,15 +81,16 @@ onSubmit(e) {
   .then((res) => {
     console.log(res.data)
     console.log(' successfully updated')
+    toast.success('Modifier avec success')
   }).catch((error) => {
     console.log(error)
+    toast.error("Erreur de Modification ")
   })
 
 // Redirect to Student List 
-this.props.history.push('/admin/specialite')
-}
-    
 
+}}
+    
 onChangeCodePromotion(e){
     this.setState({ codePromotion:e.target.value })
    
@@ -98,66 +115,77 @@ onChangeCodePromotion(e){
     render(){
     return(
       <div className="content">
-        <h1>Edit Promotion</h1>
-          <div className="w-75 mx-auto shadow p-5">
+        
+          <div className>
           <h2>Edit Promotion</h2>
   
-          <form onSubmit={this.onSubmit}>
-    <div className="form-group">
-    <input type="text" className="form-control form-control-lg" placeholder="enter code promotion " 
-    name="codeSpecialite"
-    value={this.state.codePromotion}
-    onChange={this.onChangeCodePromotion}
-    />
-      </div>
-      <div className="form-group">
-    <input type="text" className="form-control form-control-lg" placeholder="enter lib promotion "
-    name="libSpecialite"
-    value={this.state.libPromotionFr}
-    onChange={this.onChangeLibPromotionFr}
-    />
-      </div>
-      <div className="form-group">
-    <input type="text" className="form-control form-control-lg" placeholder="enter lib promotion Ar "
-    name="libSpecialiteAr"
-    value={this.state.libPromotionAr}
-    onChange={this.onChangeLibPromotionAr}
-    />
-      </div>
-      <div className="form-group">
-                          <label>Date debut de formation: </label>
-                          <div>
-                              <DatePicker className="form-control "
-                                  value={this.state.debutPromotion}
-                                  onChange={this.onChangeDebutPromotion}
-                              />
-                          </div>
-                      </div>
-                      <div className="form-group">
-                          <label>Date fin de formation: </label>
-                          <div>
-                              <DatePicker className="form-control "
-                                  value={this.state.finPromotion}
-                                  onChange={this.onChangeFinPromotion}
-                              />
-                          </div>
-                      </div>
-      <div className="form-group">
-    <input type="text" className="form-control form-control-lg" placeholder="capacité "
-    name="dureeSpecialite"
-    value={this.state.capacitePromotion}
-    onChange={this.onChangeCapacitePromotion}
-    />
-      </div>
+          <form onSubmit={this.onSubmit} class="row g-3">
+  <div className="col-md-6">
+  <label for="inputEmail4" class="form-label">Code Promotion</label>
+  <input type="text" className="form-control " placeholder="enter code promotion " 
+  name="codeSpecialite"
+  value={this.state.codePromotion}
+  onChange={this.onChangeCodePromotion}
+  />
+    <p class="text-danger">{this.state.ErrcodePromotion}</p>
+    </div>
+    <div className="col-md-6">
+    <label for="inputEmail4" class="form-label"> Promotion Fr</label>
+  <input type="text" className="form-control " placeholder="enter lib promotion "
+  name="libSpecialite"
+  value={this.state.libPromotionFr}
+  onChange={this.onChangeLibPromotionFr}
+  />
+    <p class="text-danger">{this.state.ErrlibPromotionFr}</p>
+    </div>
+    <div className="col-md-6">
+    <label for="inputEmail4" class="form-label">Promotion Ar</label>
+  <input type="text" className="form-control" placeholder="enter lib promotion Ar "
+  name="libSpecialiteAr"
+  value={this.state.libPromotionAr}
+  onChange={this.onChangeLibPromotionAr}
+  />
+    <p class="text-danger">{this.state.ErrlibPromotionAr}</p>
+    </div>
+    <div className="col-md-6">
   
-     
-  
+
+                        <label>Date debut de formation: </label>
+                        <div>
+                            <DatePicker className="form-control "
+                                value={this.state.debutPromotion}
+                                onChange={this.onChangeDebutPromotion}
+                            />
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                   
+                        <label>Date fin de formation </label>
+                        <div>
+                            <DatePicker className="form-control "
+                                value={this.state.finPromotion}
+                                onChange={this.onChangeFinPromotion}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="col-md-6">
+                    <label> Capacité de formation </label>
+  <input type="text" className="form-control" placeholder="capacité "
+  name="dureeSpecialite"
+  value={this.state.capacitePromotion}
+  onChange={this.onChangeCapacitePromotion}
+  />
+    </div>
+
    
-    <button className="btn btn-primary"  type="submit" name="action">Submit
-     
-    </button>
-  
-  </form>
+
+ 
+  <button className="btn btn-primary"  type="submit" name="action">Modifier
+   
+  </button>
+
+</form>
   </div>
   </div>
     )

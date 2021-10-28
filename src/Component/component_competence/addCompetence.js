@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
 class Addcompetence extends React.Component{
 
   
@@ -14,8 +15,11 @@ class Addcompetence extends React.Component{
         listeSpecialites:[],
         listeModules:[],
         listeSection:[],
-
-        listePromotions:[]
+        listePromotions:[],
+        ErrcodeCompetence:  '' ,
+        ErrcodePromotion: '',
+        ErrcodeSection: '',
+        ErrcodeMatiere:'' ,
     }
     // Setting up functions
     this.onChangeCodeCompetence = this.onChangeCodeCompetence.bind(this);
@@ -30,6 +34,20 @@ class Addcompetence extends React.Component{
   }
 onSubmit(e) {
   e.preventDefault()
+
+  if(this.state.codeCompetence===''){
+    this.state.ErrcodeCompetence='Champs Obligatoire '
+   }
+   if(this.state.codePromotion===''){
+    this.state.ErrcodePromotion='Champs Obligatoire '
+   }
+   if(this.state.codeSection===''){
+    this.state.ErrcodeSection='Champs Obligatoire '
+   }
+   if(this.state.codeMatiere===''){
+    this.state.ErrcodeMatiere='Champs Obligatoire '
+   }
+   else{
   const studentObject = {
     codeSection:this.state.codeSection,
     codePromotion:this.state.codePromotion,
@@ -38,11 +56,10 @@ onSubmit(e) {
     codeMatiere:this.state.codeMatiere,
    
   };
-        axios.post('http://localhost/compet',studentObject).then(res => console.log(res.data));
-        //this.setState({ codeMatiere: '', libMatiere: '',coifMatiere:'',seuilMatiere:'',niveauMatiere:'',libSpecialite:''})    
-        //this.componentDidMount();
-      console.log( studentObject)  
-      }
+        axios.post('http://localhost/compet',studentObject).then(res => 
+        toast.success('insertion avec success')
+      ).catch(err => {toast.error("Erreur d'insertion ")})  
+      }}
  onChangeCodeSection(e){
       this.setState({ codeSection:e.target.value })
 }
@@ -128,21 +145,26 @@ onChangeCodeMatiere(e){
     render(){
     return(
       <div className="content">
-      <h1>Ajoute une Nouvelle section</h1>
+     
         <div className="w-75 mx-auto shadow p-5">
         <h2>Affecter une  Competence</h2>
+        <ToastContainer/>
+        <form onSubmit={this.onSubmit} class="row g-3">
 
-        <form onSubmit={this.onSubmit}>
-  <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter code competence" 
+<div className="col-md-6">
+<label> Code Competence </label>
+
+  <input type="text" className="form-control " placeholder="enter code competence" 
   name="codeMatiere"
   value={this.state.codeCompetence}
   onChange={this.onChangeCodeCompetence}
 
   />
+    <p class="text-danger">{this.state.ErrcodeCompetence}</p>
     </div>
   
-    <div className="form-group">
+    <div className="col-md-6">
+<label>  Specialité </label>
    
    <select 
    className="form-control"  value={this.state.codeSpecialite}
@@ -158,7 +180,8 @@ onChangeCodeMatiere(e){
  
 </div>
 
-<div className="form-group">
+<div className="col-md-6">
+<label> Section </label>
    
    <select 
    className="form-control"  value={this.state.codeSection}
@@ -171,12 +194,12 @@ onChangeCodeMatiere(e){
                                 })
                             }
    </select>
- 
+   <p class="text-danger">{this.state.ErrcodeSection}</p>
 </div>
 
 
-<div className="form-group">
-   
+<div className="col-md-6">
+<label> Promotion </label>
    <select 
    className="form-control"  value={this.state.codePromotion}
    onChange={this.onChangeCodePromotion}> 
@@ -188,10 +211,11 @@ onChangeCodeMatiere(e){
                                 })
                             }
    </select>
- 
+   <p class="text-danger">{this.state.ErrcodePromotion}</p>
 </div>
 
-<div className="form-group">
+<div className="col-md-6">
+<label> module </label>
    
    <select 
    className="form-control"  value={this.state.codeMatiere}
@@ -204,11 +228,11 @@ onChangeCodeMatiere(e){
                                 })
                             }
    </select>
- 
+   <p class="text-danger">{this.state.ErrcodeMatiere}</p>
 </div>
 
  
-  <button className="btn btn-primary"  type="submit" name="action">Submit
+  <button className="btn btn-primary"  type="submit" name="action"> Enregistrer
    
   </button>
 

@@ -80,12 +80,13 @@ router.post('/filtrenote', (req, res) => {
 
 router.post('/filtrestagiare', (req, res) => {
     const codeSect = req.body.x;
+    const etat='Accepter';
     const groupe = req.body.y;
     console.log(codeSect);
     console.log(groupe);
     try {
         Stag.find({codeSection: req.body.x , 
-            groupeStagiaire: req.body.y })
+            groupeStagiaire: req.body.y  , etatdossier: etat })
             .populate([
              ]) .exec(function (err, data) {
                 if (err) {
@@ -106,6 +107,42 @@ router.post('/filtrestagiare', (req, res) => {
         console.log(e);
     }
 })
+
+router.post('/filtrestagiaredip', (req, res) => {
+    const codeSect = req.body.x;
+    const etat='Diplômé';
+    const groupe = req.body.y;
+    console.log(codeSect);
+    console.log(groupe);
+    try {
+        Stag.find({codeSection: req.body.x , 
+            groupeStagiaire: req.body.y  , etatdossier: etat })
+            .populate([
+             ]) .exec(function (err, data) {
+                if (err) {
+                    console.log(err);
+                    console.log('error returned');
+                    res.send(500, { error: 'Failed ' });
+                }
+                if (!data) {
+                    res.send(403, { error: 'chargement Failed' });
+                }
+                //res.send(200, data);
+                console.log(data);
+                res.json(data)
+                console.log('success generate List');
+            });
+    }
+    catch (e) {
+        console.log(e);
+    }
+})
+
+
+
+
+
+
 
 router.post('/filtrestagiaretat', (req, res) => {
     const codeSect = req.body.x;

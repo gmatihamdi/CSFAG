@@ -33,6 +33,8 @@ import Section from './Component/component_section/listesection'
 import Modules from './Component/component_module/module'
 import Competences from './Component/component_competence/listeCompetence'
 import Note from './Component/component_note/note'
+import diplomes from './Component/component_stagiaire/diplomes'
+
 
 
 
@@ -114,10 +116,10 @@ var routes = [
   },
 
   {
-    path: "/stagiaires",
+    path: "/listediplom",
     name: "les diplomés",
     icon: "nc-icon nc-single-02",
-    component: Stagiaires,
+    component: diplomes,
     layout: "/admin",
   },
  

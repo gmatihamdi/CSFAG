@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
 class Editsection extends React.Component{
 
   
@@ -15,7 +16,10 @@ class Editsection extends React.Component{
         codeDiplome:  '',
         groupeSection:  '',  
         listeSpecialites:[],
-        listePromotions:[]
+        listePromotions:[],
+        ErrcodeSection: '' ,
+        ErrlibSection:  '',
+        ErrcodeSpecialite: '', 
     }
     // Setting up functions
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
@@ -60,6 +64,18 @@ class Editsection extends React.Component{
 
 onSubmit(e) {
   e.preventDefault()
+
+
+  if(this.state.codeSection===''){
+    this.state.ErrcodeSection='Champs Obligatoire '
+   }
+   if(this.state.libSection===''){
+    this.state.ErrlibSection='Champs Obligatoire '
+   }
+   if(this.state.codeSpecialite===''){
+    this.state.ErrcodeSpecialite='Champs Obligatoire '
+   }
+   else{
   const studentObject = {
     codeSection:this.state.codeSection,
     codePromotion:this.state.codePromotion,
@@ -71,17 +87,19 @@ onSubmit(e) {
 
   axios.put(`http://localhost/sect/`+this.props.match.params.id, studentObject )
   .then((res) => {
-      console.log(res.data)
-      console.log(' successfully updated')
-    }).catch((error) => {
-      console.log(error)
-    })
+    console.log(res.data)
+    console.log(' successfully updated')
+    toast.success('Modifier avec success')
+  }).catch((error) => {
+    console.log(error)
+    toast.error("Erreur de Modification ")
+  })
   
   // Redirect to Student List 
-  this.props.history.push('/module')
+ // this.props.history.push('/module')
 
  // window.location = "/";
-  }
+  }}
  onChangeCodeSection(e){
       this.setState({ codeSection:e.target.value })
 }
@@ -135,28 +153,35 @@ onChangeLibSection(e){
     render(){
     return(
       <div className="content">
-      <h1>Ajoute une Nouvelle section</h1>
+    
         <div className="w-75 mx-auto shadow p-5">
-        <h2>Ajoute une Nouvelle Section</h2>
+        <h2>Modifier une  Section</h2>
 
-        <form onSubmit={this.onSubmit}>
-  <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter code Section" 
+        <ToastContainer/>
+        <form onSubmit={this.onSubmit} class="row g-3">
+
+  <div className="col-md-6">
+  <label> Code Section </label>
+  <input type="text" className="form-control " placeholder="enter code Section" 
   name="codeMatiere"
   value={this.state.codeSection}
   onChange={this.onChangeCodeSection}
 
   />
+  <p class="text-danger">{this.state.ErrcodeSection}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter lib Section "
+    <div className="col-md-6">
+    <label>  Section </label>
+  <input type="text" className="form-control " placeholder="enter lib Section "
   name="libMatiere"
   value={this.state.libSection}
   onChange={this.onChangeLibSection}
   />
+  <p class="text-danger">{this.state.ErrlibSection}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter groupe Section "
+    <div className="col-md-6">
+    <label>  Section gr </label>
+  <input type="text" className="form-control " placeholder="enter groupe Section "
   name="coifMatiere"
   value={this.state.groupeSection}
   onChange={this.onChangeGroupeSection}
@@ -165,7 +190,8 @@ onChangeLibSection(e){
     
    
 
-    <div className="form-group">
+    <div className="col-md-6">
+    <label>  Diplome </label>
    
    <select class="form-control"  name="codeDiplome" value={this.state.codeDiplome}
    onChange={this.onChangeCodeDiplome}>
@@ -183,12 +209,12 @@ onChangeLibSection(e){
 
 
 
-    <div className="form-group">
-   
+<div className="col-md-6">
+<label>  Specialité </label>
    <select 
    className="form-control"  value={this.state.codeSpecialite}
    onChange={this.onChangecodeSpecialite}> 
-<option >select specialite</option>
+<option >Choisir une spécialités</option>
  
 {
                                 this.state.listeSpecialites.map(function(specialite) {
@@ -196,15 +222,16 @@ onChangeLibSection(e){
                                 })
                             }
    </select>
- 
+   <p class="text-danger">{this.state.ErrcodeSpecialite}</p>
 </div>
 
-<div className="form-group">
-   
+<div className="col-md-6">
+<label>  Promotion </label>
    <select 
    className="form-control"  value={this.state.codePromotion}
    onChange={this.onChangeCodePromotion}> 
-<option >select Promotion</option>
+   
+<option >choisir une Promotion</option>
  
 {
                                 this.state.listePromotions.map(function(promotion) {
@@ -218,7 +245,7 @@ onChangeLibSection(e){
 
 
  
-  <button className="btn btn-primary"  type="submit" name="action">Submit
+  <button className="btn btn-primary"  type="submit" name="action">Modifier
    
   </button>
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
 class Ajoutmatiere extends React.Component{
 
   
@@ -12,7 +13,10 @@ class Ajoutmatiere extends React.Component{
         seuilMatiere:'',
         niveauMatiere: '' ,
         specialiteMatiere: " " ,
-        users:[]
+        users:[],
+        ErrcodeMatiere:  '' ,
+        ErrlibMatiere:  '',
+        ErrseuilMatiere:'',
     }
     // Setting up functions
     this.onChangeCodeMatiere = this.onChangeCodeMatiere.bind(this);
@@ -28,6 +32,17 @@ class Ajoutmatiere extends React.Component{
   }
 onSubmit(e) {
   e.preventDefault()
+
+  if(this.state.codeMatiere===''){
+    this.state.ErrcodeMatiere='Champs Obligatoire '
+   }
+   if(this.state.libMatiere===''){
+    this.state.ErrlibMatiere='Champs Obligatoire '
+   }
+   if(this.state.seuilMatiere===''){
+    this.state.ErrseuilMatiere='Champs Obligatoire '
+   }
+   else{
   const studentObject = {
     codeMatiere:this.state.codeMatiere,
     libMatiere:this.state.libMatiere,
@@ -37,13 +52,11 @@ onSubmit(e) {
     specialiteMatiere:this.state.specialiteMatiere,
 
   };
-        axios.post('http://localhost/mat',studentObject).then(res => console.log(res.data));
-
-        //this.setState({ codeMatiere: '', libMatiere: '',coifMatiere:'',seuilMatiere:'',niveauMatiere:'',libSpecialite:''})    
-        //this.componentDidMount();
-      console.log( studentObject)
+        axios.post('http://localhost/mat',studentObject).then(res => 
+        toast.success('insertion avec success')
+      ).catch(err => {toast.error("Erreur d'insertion ")}) 
        
-      }
+      }}
  onChangeCodeMatiere(e){
       this.setState({ codeMatiere:e.target.value })
 }
@@ -75,43 +88,52 @@ onChangeLibMatiere(e){
     render(){
     return(
       <div className="content">
-      <h1>Ajoute une Nouvelle module</h1>
-        <div className="w-75 mx-auto shadow p-5">
-        <h2>Ajoute une Nouvelle matiere</h2>
+    
+        <div >
+        <h2>Ajoute une Nouvelle Module</h2>
+        <ToastContainer/>
+        <form onSubmit={this.onSubmit} class="row g-3">
 
-        <form onSubmit={this.onSubmit}>
-  <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter matiere code" 
+<div className="col-md-6">
+<label> Code Module </label>
+  <input type="text" className="form-control " placeholder="enter matiere code" 
   name="codeMatiere"
   value={this.state.codeMatiere}
   onChange={this.onChangeCodeMatiere}
 
   />
+  <p class="text-danger">{this.state.ErrcodeMatiere}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter lib matiere "
+    <div className="col-md-6">
+    <label> Titre du module </label>
+  <input type="text" className="form-control " placeholder="enter lib matiere "
   name="libMatiere"
   value={this.state.libMatiere}
   onChange={this.onChangeLibMatiere}
   />
+  <p class="text-danger">{this.state.ErrlibMatiere}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter coif matiere "
+    <div className="col-md-6">
+    <label> coief du module </label>
+  <input type="text" className="form-control" placeholder="enter coif matiere "
   name="coifMatiere"
   value={this.state.coifMatiere}
   onChange={this.onChangeCoifMatiere}
   />
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter seuil matiere "
+    <div className="col-md-6">
+    <label> Seuil de réussite en %</label>
+  <input type="text" className="form-control " placeholder="enter seuil matiere "
   name="seuilMatiere"
   value={this.state.seuilMatiere}
   onChange={this.onChangeSeuilMatiere}
   />
+  <p class="text-danger">{this.state.ErrseuilMatiere}</p>
     </div>
    
 
-    <div className="form-group">
+    <div className="col-md-6">
+    <label> Niveau du module</label>
    
    <select class="form-control"  name="niveauMatiere" value={this.state.niveauMatiere}
    onChange={this.onChangeNiveauMatiere}>
@@ -126,7 +148,8 @@ onChangeLibMatiere(e){
 
 
 
-    <div className="form-group">
+<div className="col-md-6">
+    <label> Specialité du module</label>
    
    <select 
    className="form-control"  value={this.state.specialiteMatiere}
@@ -145,7 +168,7 @@ onChangeLibMatiere(e){
 
 
  
-  <button className="btn btn-primary"  type="submit" name="action">Submit
+  <button className="btn btn-primary"  type="submit" name="action">Enregistrer
    
   </button>
 

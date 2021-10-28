@@ -52,6 +52,7 @@ class ListeSection extends React.Component{
   return( 
     <div className="content">
         <Link className="btn btn-warning" to='/admin/addSection'>Ajoute Section</Link>
+        <Link className="btn btn-warning" to='/admin/listegroup'>Groupe </Link>
 <table className="table">
 <thead class="thead-dark">
   <tr>

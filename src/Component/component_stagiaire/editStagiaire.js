@@ -179,7 +179,7 @@ class EditStagiaire extends Component {
             groupeStagiaire: this.state.groupeStagiaire,
             codeSection:this.state.codeSection,
             codePromotion:this.state.codePromotion,
-        
+            etatdossier:this.state.etatdossier,
         }
 
         console.log(stagiaire);
@@ -364,9 +364,12 @@ class EditStagiaire extends Component {
    
    <select class="form-control"  name="niveauMatiere" value={this.state.etatdossier}
    onChange={this.onChangeEtatdossier}>
+    <option >Etat</option>
        <option >Accepter</option>
        <option >Refuser</option>
        <option >En attente</option>
+       <option >Diplômé</option>
+
        </select>
  
  </div>

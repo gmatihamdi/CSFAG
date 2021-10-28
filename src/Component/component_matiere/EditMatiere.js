@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
-
+import { ToastContainer, toast } from 'react-toastify';
 
 class EditMatiere extends Component {
 
@@ -13,7 +13,10 @@ class EditMatiere extends Component {
             seuilMatiere:'',
             niveauMatiere: '' ,
             specialiteMatiere: " " ,
-            users:[]
+            users:[],
+            ErrcodeMatiere:  '' ,
+            ErrlibMatiere:  '',
+            ErrseuilMatiere:'',
         }
         this.onChangeCodeMatiere = this.onChangeCodeMatiere.bind(this);
     this.onChangeLibMatiere = this.onChangeLibMatiere.bind(this);
@@ -68,7 +71,18 @@ class EditMatiere extends Component {
    
    
                       onSubmit(e) {
-        e.preventDefault();
+       
+        if(this.state.codeMatiere===''){
+            this.state.ErrcodeMatiere='Champs Obligatoire '
+           }
+           if(this.state.libMatiere===''){
+            this.state.ErrlibMatiere='Champs Obligatoire '
+           }
+           if(this.state.seuilMatiere===''){
+            this.state.ErrseuilMatiere='Champs Obligatoire '
+           }
+           else{
+            e.preventDefault();
         const matiere = {
             codeMatiere:this.state.codeMatiere,
             libMatiere:this.state.libMatiere,
@@ -85,54 +99,65 @@ class EditMatiere extends Component {
         .then((res) => {
             console.log(res.data)
             console.log(' successfully updated')
+            toast.success('Modifier avec success')
           }).catch((error) => {
             console.log(error)
+            toast.error("Erreur de Modification ")
           })
         
         // Redirect to Student List 
-        this.props.history.push('/module')
+      ///  this.props.history.push('/module')
 
        // window.location = "/";
-    }
+    }}
     
     render() { 
         return ( 
             <div className="content">
-                <h3>Edit Exercise Log</h3>
-                <form onSubmit={this.onSubmit}>
+                <h3>Modifier Module</h3>
+                <ToastContainer/>
+        <form onSubmit={this.onSubmit} class="row g-3">
 
-                <div className="form-group">
-  <input type="text" className="form-control form-control-lg" 
+<div className="col-md-6">
+<label> Code Module </label>
+  <input type="text" className="form-control " placeholder="enter matiere code" 
   name="codeMatiere"
   value={this.state.codeMatiere}
   onChange={this.onChangeCodeMatiere}
 
   />
+  <p class="text-danger">{this.state.ErrcodeMatiere}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg"
+    <div className="col-md-6">
+    <label> Titre du module </label>
+  <input type="text" className="form-control " placeholder="enter lib matiere "
   name="libMatiere"
   value={this.state.libMatiere}
   onChange={this.onChangeLibMatiere}
   />
+  <p class="text-danger">{this.state.ErrlibMatiere}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" 
+    <div className="col-md-6">
+    <label> coief du module </label>
+  <input type="text" className="form-control" placeholder="enter coif matiere "
   name="coifMatiere"
   value={this.state.coifMatiere}
   onChange={this.onChangeCoifMatiere}
   />
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" 
+    <div className="col-md-6">
+    <label> Seuil de réussite en %</label>
+  <input type="text" className="form-control " placeholder="enter seuil matiere "
   name="seuilMatiere"
   value={this.state.seuilMatiere}
   onChange={this.onChangeSeuilMatiere}
   />
+  <p class="text-danger">{this.state.ErrseuilMatiere}</p>
     </div>
    
 
-    <div className="form-group">
+    <div className="col-md-6">
+    <label> Niveau du module</label>
    
    <select class="form-control"  name="niveauMatiere" value={this.state.niveauMatiere}
    onChange={this.onChangeNiveauMatiere}>
@@ -147,7 +172,8 @@ class EditMatiere extends Component {
 
 
 
-    <div className="form-group">
+<div className="col-md-6">
+    <label> Specialité du module</label>
    
    <select 
    className="form-control"  value={this.state.specialiteMatiere}
@@ -156,16 +182,21 @@ class EditMatiere extends Component {
  
 {
                                 this.state.users.map(function(specialite) {
-                                    return <option key={specialite} value={specialite}  >{specialite}</option>;
+                                    return <option key={specialite}  >{specialite}</option>;
                                 })
                             }
    </select>
  
 </div>
-       <div className="form-group">
-                        <input type="submit" value="Edit Exercise Log" className="btn btn-primary" />
-                    </div>
-                </form>
+
+
+
+ 
+  <button className="btn btn-primary"  type="submit" name="action">Modifier
+   
+  </button>
+
+</form>
             </div>
          );
     }

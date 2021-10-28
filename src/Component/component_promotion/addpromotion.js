@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import DatePicker from "react-date-picker";
+import { ToastContainer, toast } from 'react-toastify';
+
 class Addpromotion extends React.Component{
 
   
@@ -26,10 +28,29 @@ class Addpromotion extends React.Component{
          debutPromotion: new Date(),
          finPromotion:  new Date(),
          capacitePromotion:  '',  
+         ErrcodePromotion:  '',
+         ErrlibPromotionFr:  '',
+         ErrlibPromotionAr:  '',
     }
   } 
 onSubmit(e) {
+
+
   e.preventDefault()
+
+  if(this.state.codePromotion===''){
+    this.state.ErrcodePromotion='Champs Obligatoire '
+   }
+   if(this.state.libPromotionFr===''){
+    this.state.ErrlibPromotionFr='Champs Obligatoire '
+   }
+   if(this.state.libPromotionAr===''){
+    this.state.ErrlibPromotionAr='Champs Obligatoire '
+   }
+   else{
+
+
+
   const studentObject = {
     codePromotion:this.state.codePromotion,
     libPromotionFr:this.state.libPromotionFr,
@@ -39,14 +60,14 @@ onSubmit(e) {
     capacitePromotion:this.state.capacitePromotion,
 
   };
-        axios.post('http://localhost/prom',studentObject).then(res => console.log(res.data));
-
-        this.setState({ codeSpecialite: '', libSpecialite: ''})
+        axios.post('http://localhost/prom',studentObject).then(res => 
+        toast.success('insertion avec success')
+      ).catch(err => {toast.error("Erreur d'insertion ")}) 
       
         //this.componentDidMount();
       //  console.log(" successfully insert")
       
-         
+}  
       }
       onChangeCodePromotion(e){
       this.setState({ codePromotion:e.target.value })
@@ -68,42 +89,48 @@ onSubmit(e) {
     }
     onChangeCapacitePromotion(e){
       this.setState({capacitePromotion:e.target.value})
-     
+    
     }
 
     render(){
     return(
 
-
-
-      <div className="content">
-      <h1>Promotion</h1>
-        <div className="w-75 mx-auto shadow p-5">
+       <div className="content">     
+       <ToastContainer/>
+        <div >
         <h2>Ajoute une Nouvelle Promotion</h2>
-
-        <form onSubmit={this.onSubmit}>
-  <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter code promotion " 
+      
+        <form onSubmit={this.onSubmit} class="row g-3">
+  <div className="col-md-6">
+  <label for="inputEmail4" class="form-label">Code Promotion</label>
+  <input type="text" className="form-control " placeholder="enter code promotion " 
   name="codeSpecialite"
   value={this.state.codePromotion}
   onChange={this.onChangeCodePromotion}
   />
+    <p class="text-danger">{this.state.ErrcodePromotion}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter lib promotion "
+    <div className="col-md-6">
+    <label for="inputEmail4" class="form-label"> Promotion Fr</label>
+  <input type="text" className="form-control " placeholder="enter lib promotion "
   name="libSpecialite"
   value={this.state.libPromotionFr}
   onChange={this.onChangeLibPromotionFr}
   />
+    <p class="text-danger">{this.state.ErrlibPromotionFr}</p>
     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="enter lib promotion Ar "
+    <div className="col-md-6">
+    <label for="inputEmail4" class="form-label">Promotion Ar</label>
+  <input type="text" className="form-control" placeholder="enter lib promotion Ar "
   name="libSpecialiteAr"
   value={this.state.libPromotionAr}
   onChange={this.onChangeLibPromotionAr}
   />
+    <p class="text-danger">{this.state.ErrlibPromotionAr}</p>
     </div>
-    <div className="form-group">
+    <div className="col-md-6">
+  
+
                         <label>Date debut de formation: </label>
                         <div>
                             <DatePicker className="form-control "
@@ -112,8 +139,9 @@ onSubmit(e) {
                             />
                         </div>
                     </div>
-                    <div className="form-group">
-                        <label>Date fin de formation: </label>
+                    <div className="col-md-6">
+                   
+                        <label>Date fin de formation </label>
                         <div>
                             <DatePicker className="form-control "
                                 value={this.state.finPromotion}
@@ -121,8 +149,10 @@ onSubmit(e) {
                             />
                         </div>
                     </div>
-    <div className="form-group">
-  <input type="text" className="form-control form-control-lg" placeholder="capacité "
+
+                    <div className="col-md-6">
+                    <label> Capacité de formation </label>
+  <input type="text" className="form-control" placeholder="capacité "
   name="dureeSpecialite"
   value={this.state.capacitePromotion}
   onChange={this.onChangeCapacitePromotion}
@@ -132,7 +162,7 @@ onSubmit(e) {
    
 
  
-  <button className="btn btn-primary"  type="submit" name="action">Submit
+  <button className="btn btn-primary"  type="submit" name="action">Enregistrer
    
   </button>
 

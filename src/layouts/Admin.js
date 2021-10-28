@@ -44,8 +44,11 @@ import EditSection from '../Component/component_section/editsection'
 import AddCompetence from '../Component/component_competence/addCompetence'
 import AddGroupe from '../Component/component_groupe/addGroupe'
 import EditNote from '../Component/component_note/editNote'
+import Editcompetence from "Component/component_competence/editCompetence";
 import Addgroupe from '../Component/component_groupe/addGroupe';
 import ListeGroupe from '../Component/component_groupe/listegroup';
+import Listediplomes from '../Component/component_stagiaire/diplomes';
+
 
 
 
@@ -131,6 +134,10 @@ function Dashboard(props) {
   <Route  path="/admin/editNote/:id" component={EditNote}/>
   <Route  path="/admin/addgroupe" component={Addgroupe}/>
   <Route  path="/admin/listegroup" component={ListeGroupe}/>
+  <Route  path="/admin/listediplom" component={Listediplomes}/>
+
+  <Route  path="/admin/editcompetence/:id" component={Editcompetence}/>
+
 
         </Switch>
      

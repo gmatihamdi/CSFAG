@@ -3,10 +3,9 @@ import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 class Ajoutspecialite extends React.Component{
 
-  
+ 
   constructor(props) {
     super(props)
-
     // Setting up functions
     this.onChangeCodeSpecialite = this.onChangeCodeSpecialite.bind(this);
     this.onChangeLibSpecialite = this.onChangeLibSpecialite.bind(this);
@@ -27,17 +26,11 @@ class Ajoutspecialite extends React.Component{
       diplomeSpecialite:'',
       Errcodespc:'',
       Errlibspcfr:'',
-      ErrlibspcAr:'',
-
-      
+      ErrlibspcAr:'', 
     }
   }
   
   
-  
-  
-
-
 onSubmit(e) {
   e.preventDefault()
 
@@ -147,7 +140,7 @@ onSubmit(e) {
     <div className="col-md-6">
     <label for="inputEmail4" class="form-label"> Duree de Formation </label>
   <input type="text" className="form-control " placeholder="duree "
-  name="dureeSpecialite"
+  name="dureeSpecialite" 
   value={this.state.dureeSpecialite}
   onChange={this.onChangeDureeSpecialite}
   />
