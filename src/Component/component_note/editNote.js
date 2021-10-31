@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-
+import { ToastContainer, toast } from 'react-toastify';
 
 class EditNote extends React.Component{
 
@@ -75,8 +75,10 @@ class EditNote extends React.Component{
     .then((res) => {
       console.log(res.data)
       console.log(' successfully updated')
+      toast.success('Modifier avec success')
     }).catch((error) => {
       console.log(error)
+      toast.error("Erreur de Modification ")
     })
   
   // Redirect to Student List 
@@ -95,9 +97,9 @@ class EditNote extends React.Component{
       return(
   
   
-  
+        
         <div className="content">
-        <h1>Modifier Note competence</h1>
+       <ToastContainer/>
           <div className="w-75 mx-auto shadow p-5">
           <h2>Modifier note Module :  {this.state.libmatiere}</h2>
   
