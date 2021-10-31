@@ -193,7 +193,7 @@ var img = new Image()
     
     <div className="content" >
 
-<button onClick={this.pdfGenerate}>pdf FR</button>
+<button onClick={this.pdfGenerate}> pdf FR</button>
      
       <h1> Liste de Stagiaires </h1>
 
@@ -236,7 +236,7 @@ var img = new Image()
                            }
 </select>           
              </div>
-             <Link className='btn btn-danger' onClick={() => this.handleClick()}>Charger la liste</Link>
+             <Link className='btn btn-danger' onClick={() => this.handleClick()}> <i className="nc-icon nc-zoom-split" /> </Link>
              
          
            

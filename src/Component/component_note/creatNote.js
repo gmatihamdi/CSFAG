@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from "react-router-dom"
-
+import { ToastContainer, toast } from 'react-toastify';
 class CreatNote extends React.Component {
 
 
@@ -20,7 +20,9 @@ class CreatNote extends React.Component {
       listeSection:[],
       stgs: [],
       listcompetence:[],
-      listgroupsection:[]
+      listgroupsection:[],
+      Errnoteexam: '',
+
     }
     // Setting up functions
     this.onChangeStagiaireNote = this.onChangeStagiaireNote.bind(this);
@@ -35,6 +37,8 @@ class CreatNote extends React.Component {
     // Setting up state
   }
   onSubmit(e) {
+
+  
     e.preventDefault()
     let odj = {
       moduleNote: this.state.moduleNote,
@@ -46,9 +50,9 @@ class CreatNote extends React.Component {
       })
     }
     console.log(odj);
-   axios.post('http://localhost/note', odj).then(res => console.log(res.data)).catch(e => {
-      console.log(e)
-    }); 
+   axios.post('http://localhost/note', odj).then(res => 
+   toast.success('insertion avec success')
+ ).catch(err => {toast.error("Erreur d'insertion ")}) 
 
   }
 
@@ -213,7 +217,7 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
     return (
       <div className="content">
 
-
+<ToastContainer/>
 
 
 
@@ -296,12 +300,14 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
                       <input type="text" className="form-control " placeholder="enter note"
                         value={stagiare.note} onChange={this.onChangeNoteexam.bind(this, stagiare._id)}
                       />
+                      
                     </td>
                   </tr>
                   
               ))}
               </tbody>
                 </table>
+               
             </div>
             <button className="btn btn-primary" type="submit" name="action">Enregistrer
 </button>

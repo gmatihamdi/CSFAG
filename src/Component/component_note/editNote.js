@@ -21,6 +21,7 @@ class EditNote extends React.Component{
         nomStagiaire:'',
         libmatiere:'',
         cin:'',
+        Errnoteexam: '',
 
         listnote:[],
         
@@ -58,6 +59,12 @@ class EditNote extends React.Component{
   
   
   onSubmit(e) {
+
+    if(this.state.noteexam===''){
+      this.state.Errnoteexam='Champs Obligatoire '
+     }
+    
+     else{
     e.preventDefault()
     
     const studentObject = {
@@ -73,8 +80,8 @@ class EditNote extends React.Component{
     })
   
   // Redirect to Student List 
-  this.props.history.push('/note')
-  }
+ // this.props.history.push('/note')
+  }}
       
   
   onChangeNoteexam(e){
@@ -119,6 +126,7 @@ class EditNote extends React.Component{
     value={this.state.noteexam}
     onChange={this.onChangeNoteexam}
     />
+    <p class="text-danger">{this.state.Errnoteexam}</p>
       </div>
       
   

@@ -34,6 +34,8 @@ import Modules from './Component/component_module/module'
 import Competences from './Component/component_competence/listeCompetence'
 import Note from './Component/component_note/note'
 import diplomes from './Component/component_stagiaire/diplomes'
+import users from './Component/component_login/User'
+
 
 
 
@@ -122,16 +124,24 @@ var routes = [
     component: diplomes,
     layout: "/admin",
   },
+
+  {
+    path: "/users",
+    name: "User Profile",
+    icon: "nc-icon nc-key-25",
+    component: users,
+    layout: "/admin",
+  },
  
- 
- /*   les diplomés
+ /*
+  
   {
     path: "/icons",
     name: "Icons",
     icon: "nc-icon nc-diamond",
     component: Icons,
     layout: "/admin",
-  },
+  },  
   {
     path: "/maps",
     name: "Maps",
