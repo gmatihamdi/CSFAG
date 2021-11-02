@@ -1,10 +1,13 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
-const mongoose=require('mongoose')
-const cors=require('cors')
+const mongoose=require('mongoose');
+const cors=require('cors');
+const path = require('path');
+
 //app.use('/', express.static(__dirname + '/CSFAPP'))
-mongoose.connect('mongodb://localhost:27017/CSF',{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+const DB_URL = process.env.DB_URL || 'mongodb+srv://admin:admin@cluster0.j3aqm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+mongoose.connect(DB_URL ,{useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 mongoose.connection
 .once("open",()=>console.log("connected"))
 .on("error",error=>{
@@ -15,6 +18,8 @@ app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({extended:true}))
 app.use(bodyParser.json());
+
+app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/api',require('./routes/clientrout'))
 app.use('/spc',require('./routes/specialiterout'))
 app.use('/md',require('./routes/moduleroute'))
