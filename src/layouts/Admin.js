@@ -48,6 +48,9 @@ import Editcompetence from "Component/component_competence/editCompetence";
 import Addgroupe from '../Component/component_groupe/addGroupe';
 import ListeGroupe from '../Component/component_groupe/listegroup';
 import Listediplomes from '../Component/component_stagiaire/diplomes';
+import Login from '../Component/component_login/auth';
+import Authent from '../layouts/Auth';
+
 
 
 
@@ -91,6 +94,13 @@ function Dashboard(props) {
   const handleBgClick = (color) => {
     setBackgroundColor(color);
   };
+
+  /*   <FixedPlugin
+        bgColor={backgroundColor}
+        activeColor={activeColor}
+        handleActiveClick={handleActiveClick}
+        handleBgClick={handleBgClick}
+      /> */
   return (
     <div className="wrapper">
       <Sidebar
@@ -135,6 +145,10 @@ function Dashboard(props) {
   <Route  path="/admin/addgroupe" component={Addgroupe}/>
   <Route  path="/admin/listegroup" component={ListeGroupe}/>
   <Route  path="/admin/listediplom" component={Listediplomes}/>
+  <Route  path="/admin/login" component={Login}/>
+  <Route  path="/admin/auth" component={Authent}/>
+
+
 
   <Route  path="/admin/editcompetence/:id" component={Editcompetence}/>
 
@@ -143,12 +157,7 @@ function Dashboard(props) {
      
         <Footer fluid />
       </div>
-      <FixedPlugin
-        bgColor={backgroundColor}
-        activeColor={activeColor}
-        handleActiveClick={handleActiveClick}
-        handleBgClick={handleBgClick}
-      />
+   
     </div>
   );
 }

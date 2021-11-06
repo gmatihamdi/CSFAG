@@ -320,4 +320,30 @@ router.post('/getcompetence', (req, res) => {
         
 })
 
+router.post('/printstag/:id', (req, res) => {
+
+    let sectionstag = " ";
+    Stag.findById({_id:req.params.id}).populate([
+        {
+            path: 'codePromotion',
+            model: 'Promotion'
+        },
+        {
+            path: 'codeSection',
+            model: 'Section'
+        }
+    ])
+    .exec(function (err, data) {
+        res.json(data)
+
+   
+
+    })
+   
+
+    
+
+
+})
+
 module.exports = router

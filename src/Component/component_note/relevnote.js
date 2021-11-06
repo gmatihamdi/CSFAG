@@ -12,7 +12,7 @@ import { Preview, print } from 'react-html2pdf';
 import { Link} from "react-router-dom"
 //import Canvas from 'react-canvas-component'
 //by importing 
-
+import {Col,Button} from "reactstrap";
 const ref = React.createRef();
 const If = (props) => {
   const condition = props.condition || false;
@@ -84,17 +84,8 @@ class PdfRnote extends React.Component{
              })
          // Catch any errors we hit and update the app
          .catch(error => this.setState({ error, isLoading: false }));
-
-
-
-
-
-
-
-
-       
+  
     }
-
 
     pdfGenerate=()=>{
       console.log('Moyn')
@@ -113,12 +104,8 @@ class PdfRnote extends React.Component{
 
      pdf.addFileToVFS(fontarab, base64Str);
      pdf.addFont(fontarab, 'Amiri', 'normal');
-
-
     pdf.setFont('Amiri'); 
-       pdf.text(210, 50, 'بطاقة كشف الكفايات', {
-        lang: 'ar'})
- 
+       pdf.text(210, 50, 'بطاقة كشف الكفايات', {lang: 'ar'})
        pdf.setFontSize(10);
        pdf.text(480, 100, 'الاسم و اللقب ')
        pdf.text(400, 100,this.state.stgs.nomStagiaireAr)
@@ -164,26 +151,31 @@ class PdfRnote extends React.Component{
      }
 //style={{fontSize:"6px"}} style={{width:600, height: 150, }}     
           //style={{fontSize:'9px', width: 700, height: 900}} 
+          /* <ReactToPdf targetRef={ref} filename="div-blue.pdf">
+        {({toPdf}) => (
+          <button onClick={toPdf}>Generate pdf</button>
+      )}
+  </ReactToPdf>*/
     render(){
       const { stgs } = this.state
 return(
 <>
 <div className="content" >
 <img src={logo} alt={"logo"}/> 
-    <ReactToPdf targetRef={ref} filename="div-blue.pdf">
-        {({toPdf}) => (
-            <button onClick={toPdf}>Generate pdf</button>
-        )}
-    </ReactToPdf>
+   
 
-    <br/>
-
-
-
-
-<br/>
   
-    <button onClick={this.pdfGenerate}>pdf FR</button>
+    <Col className="text-right" md="3" xs="3">
+                        <Button
+                          className="btn-round btn-icon"
+                          color="success"
+                          onClick={this.pdfGenerate}
+                          size="sm"
+                        >
+                          <i className="fa fa-print" />
+                        </Button>
+                      </Col> 
+
     
     <div id="print"   ref={ref}>
      <b align="center" valign="middle"><font size={14} color="#000000">          

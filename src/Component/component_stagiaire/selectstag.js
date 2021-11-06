@@ -87,10 +87,6 @@ onChangeCodeSection(e) {
 
     
     <div className="content">
-     
-      <h1> Liste de Stagiaires non selectionné</h1>
-
-
 
 
       <form  className="row g-3">
@@ -100,7 +96,7 @@ onChangeCodeSection(e) {
   class="form-control"
  value={this.state.codeSection}
   onChange={this.onChangeCodeSection}> 
-<option >select section</option>
+<option >Choisir une section</option>
 
 {
                                this.state.listeSection.map(function(section) {
@@ -112,7 +108,7 @@ onChangeCodeSection(e) {
 <div class="col-auto">   
 <select class="form-control"  name="niveauMatiere" value={this.state.etatdossier}
    onChange={this.onChangeEtatdossier}>
-       <option >select Etat</option>
+       <option >Etat</option>
 
        <option >Accepter</option>
        <option >Refuser</option>
@@ -121,7 +117,7 @@ onChangeCodeSection(e) {
    </select>
              
              </div>
-             <Link className='btn btn-danger' onClick={() => this.handleClick()}>Charger la liste</Link>
+             <Link className='btn btn-danger' onClick={() => this.handleClick()}><i className="nc-icon nc-zoom-split" /></Link>
              
 
            

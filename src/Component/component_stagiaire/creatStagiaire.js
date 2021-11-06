@@ -238,7 +238,7 @@ onChangeNomStagiaireFr(e){
 
                     <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Adresse </label>           
-  <input type="text" className="form-control " placeholder=" adresse "
+  <input type="textera" className="form-control " placeholder=" adresse "
   name="seuilMatiere"
   value={this.state.adressStagiaire}
   onChange={this.onChangeAdressStagiaire}
@@ -283,32 +283,24 @@ onChangeNomStagiaireFr(e){
 
 
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Section </label>
+ <label for="inputEmail4" class="form-label"> Télephone portable </label>
    
-   <select 
-   className="form-control"  value={this.state.specialiteStagiaire}
-   onChange={this.onChangeSpecialiteStagiaire}> 
-<option >select specialite</option>
- 
-{
-                                this.state.listeSpecialites.map(function(specialite) {
-                                    return <option >{specialite.libSpecialite}</option>;
-                                })
-                            }
-   </select>
+ <input type="text" className="form-control " placeholder=" Nom Arabe "
+  name="coifMatiere"
+  value={this.state.telStagiaire}
+  onChange={this.onChangeTelStagiaire}
+  />
  
 </div>
 
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Affectation par groupe </label>
+ <label for="inputEmail4" class="form-label"> E-mail </label>
    
-   <select class="form-control"  name="niveauMatiere" value={this.state.groupeStagiaire}
-   onChange={this.onChangeGroupeStagiaire}>
-       <option >select Groupe</option>
-
-       <option >G1</option>
-       <option >G2</option>
-   </select>
+ <input type="text" className="form-control " placeholder=" Nom Arabe "
+  name="coifMatiere"
+  value={this.state.emailstagiaire}
+  onChange={this.onChangeEmailstagiaire}
+  />
  
 </div>
 <div className="col-md-6"> 

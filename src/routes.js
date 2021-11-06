@@ -35,18 +35,7 @@ import Competences from './Component/component_competence/listeCompetence'
 import Note from './Component/component_note/note'
 import diplomes from './Component/component_stagiaire/diplomes'
 import users from './Component/component_login/User'
-
-
-
-
-
-
-
-
-
-
-
-
+import login from './Component/component_login/auth'
 
 var routes = [
   {
@@ -133,7 +122,22 @@ var routes = [
     layout: "/admin",
   },
  
+  {
+    path: "/login",
+    name: "User login",
+    icon: "nc-icon nc-single-02",
+    component: login,
+    layout: "/admin",
+  },
+ 
  /*
+  {
+    path: "/user-page",
+    name: "User Profile",
+    icon: "nc-icon nc-single-02",
+    component: UserPage,
+    layout: "/admin",
+  },
   
   {
     path: "/icons",

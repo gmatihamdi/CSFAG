@@ -49,7 +49,7 @@ class Module extends React.Component{
   return( 
     <div className="content">
      
-  <Link className="btn btn-outline-primary" to='/admin/addMatiere'>Ajouter un Module</Link>
+  <Link className="btn btn-primary" to='/admin/addMatiere'><i class="fa fa-plus" aria-hidden="true"/> Ajouter un Module</Link>
 
 
 
@@ -57,11 +57,11 @@ class Module extends React.Component{
 <thead class="thead-dark">
   <tr>
     <th scope="col">#</th>
-    <th scope="col">code specialité</th>
-    <th scope="col">specialité</th>
-    <th scope="col">specialiteMatiere</th>
+    <th scope="col">Code Module</th>
+    <th scope="col">Module</th>
+    <th scope="col">Specialité</th>
 
-    <th scope="col">parametres</th>
+    <th scope="col">Action</th>
   </tr>
 </thead>
 <tbody>
@@ -75,10 +75,10 @@ class Module extends React.Component{
 
         
     <td>
-    <Link className='btn btn-primary mr-2'>View</Link>
-    <Link className='btn btn-outline-primary mr-2' to={"/admin/editMatiere/"+matiere._id}>Edit</Link>
+  
+    <Link className='btn btn-outline-primary mr-2' to={"/admin/editMatiere/"+matiere._id}><i className="fa fa-random" aria-hidden="true"/></Link>
     
-    <Link className='btn btn-danger' onClick={(e)=>this.deleteSpc(matiere._id)}>Delete</Link>
+    <Link className='btn btn-danger' onClick={(e)=>this.deleteSpc(matiere._id)}><i className="fa fa-times" aria-hidden="true"/></Link>
 
     </td>
   </tr>

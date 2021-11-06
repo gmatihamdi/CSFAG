@@ -174,8 +174,69 @@ router.post('/filtrestagiaretat', (req, res) => {
 })
 
 
+router.post('/filtresection', (req, res) => {
+    const codeSect = req.body.x;
+
+    try {
+        Sect.find({codePromotion: req.body.x })
+            .populate([
+                {
+                    path: 'codePromotion',
+                    model: 'Promotion'
+                }
+             ]) .exec(function (err, data) {
+                if (err) {
+                    console.log(err);
+                    console.log('error returned');
+                    res.send(500, { error: 'Failed ' });
+                }
+                if (!data) {
+                    res.send(403, { error: 'chargement Failed' });
+                }
+                //res.send(200, data);
+                console.log(data);
+                res.json(data)
+                console.log('success generate List');
+            });
+    }
+    catch (e) {
+        console.log(e);
+    }
+})
 
 
+router.post('/filtrecompetence', (req, res) => {
+    const codeSect = req.body.x;
 
+    try {
+        Competence.find({codeSection: req.body.x })
+            .populate([
+                {
+                    path: 'codeSection',
+                    model: 'Section'
+                },
+                {
+                    path: 'codeMatiere',
+                    model: 'Matiere'
+                }
+             ]) .exec(function (err, data) {
+                if (err) {
+                    console.log(err);
+                    console.log('error returned');
+                    res.send(500, { error: 'Failed ' });
+                }
+                if (!data) {
+                    res.send(403, { error: 'chargement Failed' });
+                }
+                //res.send(200, data);
+                console.log(data);
+                res.json(data)
+                console.log('success generate List');
+            });
+    }
+    catch (e) {
+        console.log(e);
+    }
+})
 
 module.exports = router

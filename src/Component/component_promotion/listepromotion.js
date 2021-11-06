@@ -42,21 +42,17 @@ class Listepromotion extends React.Component{
   render(){
   return( 
     <div className="content">
-     <table><tr>
-     <td></td> <td>    </td><td>     </td><td><Link className="btn btn-danger" to='/admin/addpromotion'>Ajouter une Promotion</Link>
-</td>
+     <Link className="btn btn-danger" to='/admin/addpromotion'><i class="fa fa-plus" aria-hidden="true"/> creer une Promotion</Link>
 
-   </tr>
-</table>
+
 <table className="table">
 <thead class="thead-dark">
   <tr>
-    <th scope="col">#</th>
-    <th scope="col">code specialité</th>
-    <th scope="col">specialité</th>
-    <th scope="col">نمط التكوين</th>
-    <th scope="col">مدة التكوين</th>
-    <th scope="col">parametres</th>
+    <th scope="col">N°</th>
+    <th scope="col">code Promotion</th>
+    <th scope="col">Promotion</th>
+    
+    <th scope="col">Action</th>
   </tr>
 </thead>
 <tbody>
@@ -66,15 +62,14 @@ class Listepromotion extends React.Component{
           <th scope="row">{index + 1}</th>
             <td>{promotion.codePromotion}</td>
             <td>{promotion.libPromotionFr}</td>
-            <td>{promotion.debutPromotion}</td>
-            <td>{promotion.finPromotion}</td>
+        
 
         
     <td>
-    <Link className='btn btn-primary mr-2'>View</Link>
-    <Link className='btn btn-outline-primary mr-2' to={"/admin/editpromotion/"+promotion._id}>Edit</Link>
+
+    <Link className='btn btn-outline-primary mr-2' to={"/admin/editpromotion/"+promotion._id}><i className="fa fa-random" aria-hidden="true"/></Link>
     
-    <Link className='btn btn-danger' onClick={(e)=>this.deleteProm(promotion._id)}>Delete</Link>
+    <Link className='btn btn-danger' onClick={(e)=>this.deleteProm(promotion._id)}><i className="fa fa-times" aria-hidden="true"/></Link>
 
     </td>
   </tr>

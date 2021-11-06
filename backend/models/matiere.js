@@ -9,7 +9,8 @@ matiereSchema =new Schema({
     coifMatiere: String,
     seuilMatiere:String,
     niveauMatiere: String,
-    specialiteMatiere:String
+    specialiteMatiere:String,
+    Nbreheures:String,
     
 
 })

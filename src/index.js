@@ -24,18 +24,16 @@ import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/paper-dashboard.scss?v=1.3.0";
 import "assets/demo/demo.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import AddStagiaire from './Component/component_stagiaire/creatStagiaire'
 import AdminLayout from "layouts/Admin.js";
-
+import AuthLayout from "layouts/Auth.js";
+  //  <Redirect to="/admin/dashboard" />   <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> <Redirect from="/" to="/admin/index" />
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Redirect to="/admin/dashboard" />
+    <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+    <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+      <Redirect from="/" to="/admin/dashboard" />
     </Switch>
-    
-    
-
   </BrowserRouter>,
   document.getElementById("root")
 );
