@@ -187,11 +187,7 @@ router.post('/getrelevnote', (req, res) => {
                                             }
                                         }
 
-
-
-                                        
-
-                                           /****** */
+                                       /****** */
                                         var lengthcmp = listecompetence.length;
                                         moyenne = parseFloat(somme) / parseFloat(lengthcmp);
                                      /*   console.log("listFinalNotes")
