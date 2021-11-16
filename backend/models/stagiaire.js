@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
     cinStagiaire:String,
     nomStagiaireFr: String,
     nomStagiaireAr: String,
+    sexe: String,
+    Lieunaissance: String,
     etatdossier: String,
     datenaissanceStag:Date,
     adressStagiaire: String,

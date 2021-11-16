@@ -113,6 +113,9 @@ onChangeCodeSection(e) {
        <option >Accepter</option>
        <option >Refuser</option>
        <option >En attente</option>
+       <option >Diplômé</option>
+       <option ></option>
+
      
    </select>
              

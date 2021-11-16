@@ -31,8 +31,9 @@ router.post('/',(req,res)=>{
     stagiaire=new Stagiaire({
       cinStagiaire:req.body.cinStagiaire,
       nomStagiaireFr: req.body.nomStagiaireFr,
-      nomStagiaireAr: req.body.nomStagiaireAr,
-      etatdossier: req.body.etatdossier,
+      nomStagiaireAr: req.body.nomStagiaireAr, 
+      sexe: req.body.sexe,
+    etatdossier: req.body.etatdossier,
       datenaissanceStag:req.body.datenaissanceStag,
       adressStagiaire: req.body.adressStagiaire,
       telStagiaire: req.body.telStagiaire,
@@ -42,7 +43,7 @@ router.post('/',(req,res)=>{
       groupeStagiaire: req.body.groupeStagiaire,
       codePromotion: req.body.codePromotion,
       codeSection: req.body.codeSection,
-
+      Lieunaissance: req.body.Lieunaissance
 
     })
     stagiaire.save().then(data => {

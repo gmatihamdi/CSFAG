@@ -38,38 +38,38 @@ router.post('/filtrenote', (req, res) => {
                         listnote.push(note);
                     })
                     for (i = 0; i < listnote.length; i++) {
-                        if ((listnote[i].moduleNote._id.equals(codeMat))&&((listnote[i].stagiaireNote.codeSection)===(codeSect)) ){
+                        if ((listnote[i].moduleNote._id.equals(codeMat)) && ((listnote[i].stagiaireNote.codeSection) === (codeSect))) {
                             listnotefiltre.push(
-                                
-                                    listnote[i].toObject()
-                                )
+
+                                listnote[i].toObject()
+                            )
 
                         }
-                        
-                    /*    else {
-                            listnotefiltre.push(
-                                {
 
-                                    
-                                }
-                            );
-                        }*/
-                    
+                        /*    else {
+                                listnotefiltre.push(
+                                    {
+    
+                                        
+                                    }
+                                );
+                            }*/
+
                     }
-                        console.log('--------');
-                        for (i = 0; i < listnote.length; i++) {
-                            console.log(listnote[i].stagiaireNote.codeSection)
-                        
-                        }
-                       // console.log(listnotefiltre);
+                    console.log('--------');
+                    for (i = 0; i < listnote.length; i++) {
+                        console.log(listnote[i].stagiaireNote.codeSection)
+
+                    }
+                    // console.log(listnotefiltre);
 
 
-                        res.status(200).json({
-                            message: 'ok',
-                            data: listnotefiltre,
+                    res.status(200).json({
+                        message: 'ok',
+                        data: listnotefiltre,
 
-                        });
-                    
+                    });
+
                 });
     }
     catch (e) {
@@ -80,15 +80,17 @@ router.post('/filtrenote', (req, res) => {
 
 router.post('/filtrestagiare', (req, res) => {
     const codeSect = req.body.x;
-    const etat='Accepter';
+    const etat = 'Accepter';
     const groupe = req.body.y;
     console.log(codeSect);
     console.log(groupe);
     try {
-        Stag.find({codeSection: req.body.x , 
-            groupeStagiaire: req.body.y  , etatdossier: etat })
+        Stag.find({
+            codeSection: req.body.x,
+            groupeStagiaire: req.body.y, etatdossier: etat
+        })
             .populate([
-             ]) .exec(function (err, data) {
+            ]).exec(function (err, data) {
                 if (err) {
                     console.log(err);
                     console.log('error returned');
@@ -110,15 +112,17 @@ router.post('/filtrestagiare', (req, res) => {
 
 router.post('/filtrestagiaredip', (req, res) => {
     const codeSect = req.body.x;
-    const etat='Diplômé';
+    const etat = 'Diplômé';
     const groupe = req.body.y;
     console.log(codeSect);
     console.log(groupe);
     try {
-        Stag.find({codeSection: req.body.x , 
-            groupeStagiaire: req.body.y  , etatdossier: etat })
+        Stag.find({
+            codeSection: req.body.x,
+            groupeStagiaire: req.body.y, etatdossier: etat
+        })
             .populate([
-             ]) .exec(function (err, data) {
+            ]).exec(function (err, data) {
                 if (err) {
                     console.log(err);
                     console.log('error returned');
@@ -150,10 +154,12 @@ router.post('/filtrestagiaretat', (req, res) => {
     console.log(codeSect);
     console.log(groupe);
     try {
-        Stag.find({codeSection: req.body.x , 
-            etatdossier: req.body.y })
+        Stag.find({
+            codeSection: req.body.x,
+            etatdossier: req.body.y
+        })
             .populate([
-             ]) .exec(function (err, data) {
+            ]).exec(function (err, data) {
                 if (err) {
                     console.log(err);
                     console.log('error returned');
@@ -178,13 +184,13 @@ router.post('/filtresection', (req, res) => {
     const codeSect = req.body.x;
 
     try {
-        Sect.find({codePromotion: req.body.x })
+        Sect.find({ codePromotion: req.body.x })
             .populate([
                 {
                     path: 'codePromotion',
                     model: 'Promotion'
                 }
-             ]) .exec(function (err, data) {
+            ]).exec(function (err, data) {
                 if (err) {
                     console.log(err);
                     console.log('error returned');
@@ -209,7 +215,7 @@ router.post('/filtrecompetence', (req, res) => {
     const codeSect = req.body.x;
 
     try {
-        Competence.find({codeSection: req.body.x })
+        Competence.find({ codeSection: req.body.x })
             .populate([
                 {
                     path: 'codeSection',
@@ -219,7 +225,7 @@ router.post('/filtrecompetence', (req, res) => {
                     path: 'codeMatiere',
                     model: 'Matiere'
                 }
-             ]) .exec(function (err, data) {
+            ]).exec(function (err, data) {
                 if (err) {
                     console.log(err);
                     console.log('error returned');
@@ -238,5 +244,80 @@ router.post('/filtrecompetence', (req, res) => {
         console.log(e);
     }
 })
+
+router.post('/filtrestatistique', (req, res) => {
+    const codeSect = req.body.x;
+    const  liststag=[];
+    var encours = 0;
+    var diplomé = 0;
+    var h = 0;
+    var f = 0;
+    var hp = 0;
+    var fp = 0;
+    var leng=0;
+    console.log(codeSect);
+
+    try {
+        Stag.find({ codeSection: req.body.x })
+            .populate([
+            ]).then(data => {
+                data.map((stagiare) => {
+                    liststag.push(stagiare);
+                })
+                console.log(liststag)
+                for (i = 0; i < liststag.length; i++) {
+                    if (liststag[i].etatdossier =='Accepter') {
+                        encours = i+1 ;
+                      
+                    }}
+                    for (i = 0; i < liststag.length; i++) {
+                    if (liststag[i].etatdossier=='Diplômé') {
+                        diplomé = i+1;
+                        
+                    }}
+                    for (i = 0; i < liststag.length; i++) {
+                        if (liststag[i].sexe=='Homme') {
+                            h = i+1;
+                            
+                        }}
+                        for (i = 0; i < liststag.length; i++) {
+                            if (liststag[i].sexe=='Femme') {
+                                f = i+1;
+                                
+                            }}
+                            leng=liststag.length;
+                    console.log(encours)
+                    console.log(diplomé)
+                    console.log(liststag.length)
+                    hp=(parseFloat(h)/parseFloat(leng))*100
+                    //fp=(parseFloat(f)/parseFloat(leng))*100
+                    fp=(f/leng)*100
+                    console.log(hp)
+                    console.log(fp)
+
+                    //res.send(200, data);
+
+                    res.status(200).json({
+                        message: 'ok',
+                        data: encours,
+                        data1: diplomé,
+                        data2: h,
+                        data3: f,
+
+
+                    });
+
+                  //  console.log(data);
+                   // console.log(data1);
+            })
+    }
+    catch (e) {
+        console.log(e);
+    }
+})
+
+
+
+
 
 module.exports = router

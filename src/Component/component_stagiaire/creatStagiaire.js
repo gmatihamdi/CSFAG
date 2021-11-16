@@ -18,6 +18,8 @@ class CreatStagiaire extends React.Component{
         ErrnomStagiaireFr: '',
         nomStagiaireAr: '',
         etatdossier: '',
+        sexe: '',
+        Lieunaissance: '',
         ErrnomStagiaireAr: '',
         datenaissanceStag: new Date(),
         adressStagiaire: '',
@@ -47,9 +49,8 @@ class CreatStagiaire extends React.Component{
     this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
     this.onChangeCodePromotion = this.onChangeCodePromotion.bind(this);
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
-
-
-
+    this.onChangeSexe = this.onChangeSexe.bind(this);
+    this.onChangeLieunaissance = this.onChangeLieunaissance.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     // Setting up state
 
@@ -82,6 +83,9 @@ else{
     groupeStagiaire:this.state.groupeStagiaire,
     codeSection:this.state.codeSection,
     codePromotion:this.state.codePromotion,
+    sexe:this.state.sexe,
+    Lieunaissance:this.state.Lieunaissance,
+
   };
         axios.post('http://localhost/stag',studentObject).then(res => 
           toast.success('insertion avec success')
@@ -116,6 +120,10 @@ onChangeNomStagiaireFr(e){
                                   this.setState({groupeStagiaire:e.target.value}) }
                                   onChangeEtatdossier(e){
                                     this.setState({etatdossier:e.target.value}) }
+                                    onChangeSexe(e){
+                                      this.setState({sexe:e.target.value}) }
+                                      onChangeLieunaissance(e){
+                                        this.setState({Lieunaissance:e.target.value}) }
                                   fetchSpecialite() {
                                     fetch(`http://localhost/spc`)
                                       // We get the API response and receive data in JSON format...
@@ -235,6 +243,15 @@ onChangeNomStagiaireFr(e){
                             />
                         </div>
                     </div>
+                    <div className="col-md-6">
+    <label for="inputEmail4" class="form-label">Lieu de naissance </label>
+  <input type="text" className="form-control " placeholder=" Lieu de naissance "
+  name="coifMatiere"
+  value={this.state.Lieunaissance}
+  onChange={this.onChangeLieunaissance}
+  />
+
+ </div>                   
 
                     <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Adresse </label>           
@@ -244,6 +261,20 @@ onChangeNomStagiaireFr(e){
   onChange={this.onChangeAdressStagiaire}
   />
      </div>
+
+     <div className="col-md-6"> 
+ <label for="inputEmail4" class="form-label">Sexe </label>
+   
+   <select class="form-control"  name="niveauMatiere" value={this.state.sexe}
+   onChange={this.onChangeSexe}>
+       <option >selectionner sexe</option>
+       <option >Homme</option>
+       <option >Femme</option>
+       </select>
+ 
+ </div>
+
+
 
 
 

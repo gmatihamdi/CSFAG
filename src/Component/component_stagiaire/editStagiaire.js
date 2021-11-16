@@ -28,7 +28,8 @@ class EditStagiaire extends Component {
                 listeSection:[],
                 listePromotions:[],
                 listgroupsection:[],
-               
+                sexe: '',
+        Lieunaissance: '',
             
                 users:[]
             }
@@ -46,7 +47,8 @@ class EditStagiaire extends Component {
             this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
             this.onChangeCodePromotion = this.onChangeCodePromotion.bind(this);
             this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
-        
+            this.onChangeSexe = this.onChangeSexe.bind(this);
+            this.onChangeLieunaissance = this.onChangeLieunaissance.bind(this);
         
             this.onSubmit = this.onSubmit.bind(this);
     }
@@ -67,6 +69,11 @@ class EditStagiaire extends Component {
                     groupeStagiaire: res.data.groupeStagiaire,
                     codeSection: res.data.codeSection,
                     codePromotion: res.data.codePromotion,
+                    sexe: res.data.sexe,
+                    Lieunaissance: res.data.Lieunaissance,
+                    etatdossier: res.data.etatdossier,
+
+
               
                 })
               
@@ -161,7 +168,10 @@ class EditStagiaire extends Component {
                                         this.setState({codePromotion:e.target.value}) }   
                                         onChangeCodeSection(e){
                                             this.setState({ codeSection:e.target.value })  }
-   
+                                            onChangeSexe(e){
+                                              this.setState({sexe:e.target.value}) }
+                                              onChangeLieunaissance(e){
+                                                this.setState({Lieunaissance:e.target.value}) }
    
                       onSubmit(e) {
         e.preventDefault();
@@ -180,6 +190,9 @@ class EditStagiaire extends Component {
             codeSection:this.state.codeSection,
             codePromotion:this.state.codePromotion,
             etatdossier:this.state.etatdossier,
+            sexe:this.state.sexe,
+            Lieunaissance:this.state.Lieunaissance,
+
         }
 
         console.log(stagiaire);
@@ -249,15 +262,36 @@ class EditStagiaire extends Component {
                         </div>
                     </div>
 
+                    <div className="col-md-6">
+    <label for="inputEmail4" class="form-label">Lieu de naissance </label>
+  <input type="text" className="form-control " placeholder=" Lieu de naissance "
+  name="coifMatiere"
+  value={this.state.Lieunaissance}
+  onChange={this.onChangeLieunaissance}
+  />
+
+ </div>                   
+
                     <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Adresse </label>           
-  <input type="text" className="form-control " placeholder=" adresse "
+  <input type="textera" className="form-control " placeholder=" adresse "
   name="seuilMatiere"
   value={this.state.adressStagiaire}
   onChange={this.onChangeAdressStagiaire}
   />
      </div>
 
+     <div className="col-md-6"> 
+ <label for="inputEmail4" class="form-label">Sexe </label>
+   
+   <select class="form-control"  name="niveauMatiere" value={this.state.sexe}
+   onChange={this.onChangeSexe}>
+       <option >selectionner sexe</option>
+       <option >Homme</option>
+       <option >Femme</option>
+       </select>
+ 
+ </div>
 
 
 <div className="col-md-6"> 

@@ -36,13 +36,16 @@ import Note from './Component/component_note/note'
 import diplomes from './Component/component_stagiaire/diplomes'
 import users from './Component/component_login/User'
 import login from './Component/component_login/auth'
+import statistique from './Component/component_statistique/statistique'
+
 
 var routes = [
+
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Statistique",
     icon: "nc-icon nc-bank",
-    component: Dashboard,
+    component: statistique,
     layout: "/admin",
   },
 
@@ -131,6 +134,14 @@ var routes = [
   },
  
  /*
+
+   {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: "nc-icon nc-bank",
+    component: Dashboard,
+    layout: "/admin",
+  },
   {
     path: "/user-page",
     name: "User Profile",
