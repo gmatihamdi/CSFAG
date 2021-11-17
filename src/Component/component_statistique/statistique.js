@@ -152,7 +152,7 @@ class Statistique extends React.Component {
                 <Row>
                   <Col md="4" xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-globe text-warning" />
+                      <i className="fas fa-book-reader" />
                     </div>
                   </Col>
                   <Col md="8" xs="7">
@@ -167,7 +167,7 @@ class Statistique extends React.Component {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="fas fa-sync-alt" /> Update Now
+                  <i className="fas fa-sync-alt" /> 
                 </div>
               </CardFooter>
             </Card>
@@ -178,7 +178,7 @@ class Statistique extends React.Component {
                 <Row>
                   <Col md="4" xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-money-coins text-success" />
+                      <i className="nc-icon nc-hat-3 text-success" />
                     </div>
                   </Col>
                   <Col md="8" xs="7">
@@ -193,7 +193,7 @@ class Statistique extends React.Component {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="far fa-calendar" /> Last day
+                  <i className="far fa-calendar" /> 
                 </div>
               </CardFooter>
             </Card>
@@ -204,7 +204,7 @@ class Statistique extends React.Component {
                 <Row>
                   <Col md="4" xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-vector text-danger" />
+                      <i className="fas fa-female" />
                     </div>
                   </Col>
                   <Col md="8" xs="7">
@@ -219,7 +219,7 @@ class Statistique extends React.Component {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="far fa-clock" /> In the last hour
+                  <i className="far fa-clock" /> 
                 </div>
               </CardFooter>
             </Card>
@@ -230,7 +230,7 @@ class Statistique extends React.Component {
                 <Row>
                   <Col md="4" xs="5">
                     <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-favourite-28 text-primary" />
+                      <i className="fas fa-male" />
                     </div>
                   </Col>
                   <Col md="8" xs="7">
@@ -245,7 +245,7 @@ class Statistique extends React.Component {
               <CardFooter>
                 <hr />
                 <div className="stats">
-                  <i className="fas fa-sync-alt" /> Update now
+                  <i className="fas fa-sync-alt" /> 
                 </div>
               </CardFooter>
             </Card>
