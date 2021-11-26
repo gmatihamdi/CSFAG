@@ -101,10 +101,24 @@ class Statistique extends React.Component {
     this.setState({ codeSection: e.target.value })
   } 
 
+/*
+  PieChart = (diplomé,encours) => {
+    let depl = diplomé  ;
+    let enco = encours ;
+    let data = [depl,enco]
+    let Pie = {
+            labels: ['diplomé', 'encours'],   
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#1ca5b6',
+                    '#89ba2b',
+                ],
 
+            }]
 
-
-
+        }}
+*/
 
 
   render() {
@@ -256,14 +270,17 @@ class Statistique extends React.Component {
           <Col md="4">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Email Statistics</CardTitle>
-                <p className="card-category">Last Campaign Performance</p>
+                <CardTitle tag="h5">Stagiaires</CardTitle>
+                <p className="card-category">nombres</p>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <Pie
-                  data={dashboardEmailStatisticsChart.data}
-                  options={dashboardEmailStatisticsChart.options}
+                //  data={dashboardEmailStatisticsChart.data}
+                 // options={dashboardEmailStatisticsChart.options}
+               //  data={this.PieCharte}
                 />
+
+
               </CardBody>
               <CardFooter>
                 <div className="legend">
@@ -282,8 +299,8 @@ class Statistique extends React.Component {
           <Col md="8">
             <Card className="card-chart">
               <CardHeader>
-                <CardTitle tag="h5">NASDAQ: AAPL</CardTitle>
-                <p className="card-category">Line Chart with Points</p>
+                <CardTitle tag="h5">les competences</CardTitle>
+                <p className="card-category">Line </p>
               </CardHeader>
               <CardBody>
                 <Line

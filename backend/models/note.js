@@ -6,8 +6,9 @@ const Schema = mongoose.Schema;
     stagiaireNote: {type:String,
     ref:"Stagiaire"},
     moduleNote: {type:String,
-    ref:"Matiere"}
-  
+    ref:"Matiere"},
+    FormateurNote: {type:String,
+        ref:"Formateur"},
 
 })
 module.exports = mongoose.model('Note', noteSchema);

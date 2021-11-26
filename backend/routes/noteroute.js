@@ -61,7 +61,8 @@ router.post('/', (req, res) => {
     notte = new Note({
       noteexam:x.note,
       stagiaireNote: x.cin,
-      moduleNote: req.body.moduleNote
+      moduleNote: req.body.moduleNote,
+      FormateurNote: req.body.FormateurNote,
     })
 
     notte.save(() => {

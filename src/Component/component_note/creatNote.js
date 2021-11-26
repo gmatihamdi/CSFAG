@@ -11,6 +11,7 @@ class CreatNote extends React.Component {
       noteexam: '',
       stagiaireNote: '',
       moduleNote: '',
+      FormateurNote:'',
       codeSection: '',
       groupeStagiaire: '',
       codeMatiere: '',
@@ -22,6 +23,7 @@ class CreatNote extends React.Component {
       listcompetence:[],
       listgroupsection:[],
       Errnoteexam: '',
+      listeFormateurs:[]
 
     }
     // Setting up functions
@@ -31,7 +33,7 @@ class CreatNote extends React.Component {
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
     this.onChangeCodeMatiere = this.onChangeCodeMatiere.bind(this);
-
+    this.onChangeFormateurNote = this.onChangeFormateurNote.bind(this);
 
     this.onSubmit = this.onSubmit.bind(this);
     // Setting up state
@@ -42,6 +44,8 @@ class CreatNote extends React.Component {
     e.preventDefault()
     let odj = {
       moduleNote: this.state.moduleNote,
+      FormateurNote: this.state.FormateurNote,
+
       listenotestag: this.state.stgsss.map(x => {
         return {
           cin: x._id,
@@ -77,6 +81,9 @@ class CreatNote extends React.Component {
 
   onChangeModuleNote(e) {
     this.setState({ moduleNote: e.target.value })
+  }
+  onChangeFormateurNote(e) {
+    this.setState({ FormateurNote: e.target.value })
   }
   onChangeCodeSection(e) {
     this.setState({ codeSection: e.target.value })
@@ -116,6 +123,25 @@ class CreatNote extends React.Component {
       // Catch any errors we hit and update the app
       .catch(error => this.setState({ error, isLoading: false }));
   }
+
+  fetchFormateur() {
+    fetch(`http://localhost/formateur`)
+      // We get the API response and receive data in JSON format...
+      .then(response => response.json())
+      // ...then we update the users state
+      .then(data =>
+        this.setState({
+          listeFormateurs: data,
+          isLoading: false,
+        })
+      )
+      // Catch any errors we hit and update the app
+      .catch(error => this.setState({ error, isLoading: false }));
+  }
+
+
+
+
   handleClick() {
 
     const a = {
@@ -211,6 +237,7 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
     this.fetchMatiere();
     this.handleClick();
     this.fetchSection();
+    this.fetchFormateur();
   }
   render() {
 
@@ -269,6 +296,31 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
                 }
               </select>
             </div>
+
+            <div className="form-group">
+            <select 
+  class="form-control"
+ value={this.state.FormateurNote}
+  onChange={this.onChangeFormateurNote}
+  
+  
+  > 
+<option >Formateur</option>
+
+{
+                               this.state.listeFormateurs.map(function(formateur) {
+                                   return <option value={formateur._id}  >{formateur.nomFormateurFr}</option>;
+                               })
+                           }
+</select>
+
+            </div>
+
+
+
+
+
+
 
             <Link className='btn btn-danger' onClick={() => this.handleClick()}>Charger la liste</Link>
 

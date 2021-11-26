@@ -21,13 +21,18 @@ class EditNote extends React.Component{
         nomStagiaire:'',
         libmatiere:'',
         cin:'',
+        FormateurNote:'',
         Errnoteexam: '',
-
+        listeFormateurs:[],
         listnote:[],
         
       }
+    this.onChangeFormateurNote = this.onChangeFormateurNote.bind(this);
+
     }
   
+
+
     componentDidMount() {
       const  nomStagiaireFr='';
       const msg =this.props.match.params.id;
@@ -39,7 +44,7 @@ class EditNote extends React.Component{
               nomStagiaire:res.data.stagiaireNote.nomStagiaireFr,
               libmatiere:res.data.moduleNote.libMatiere,
               cin:res.data.stagiaireNote.cinStagiaire,
-
+              FormateurNote:res.data.FormateurNote,
       
           });console.log(this.state.nomStagiaire);
           console.log(this.state.listnote.moduleNote.libMatiere);
@@ -52,6 +57,23 @@ class EditNote extends React.Component{
           console.log(error);
           console.log(msg);
         })
+
+
+        
+          fetch(`http://localhost/formateur`)
+            // We get the API response and receive data in JSON format...
+            .then(response => response.json())
+            // ...then we update the users state
+            .then(data =>
+              this.setState({
+                listeFormateurs: data,
+                isLoading: false,
+              })
+            )
+            // Catch any errors we hit and update the app
+            .catch(error => this.setState({ error, isLoading: false }));
+      
+
     }
     
     
@@ -69,7 +91,7 @@ class EditNote extends React.Component{
     
     const studentObject = {
         noteexam:this.state.noteexam,
-    
+        FormateurNote:this.state.FormateurNote,
     };
     axios.put(`http://localhost/note/`+this.props.match.params.id, studentObject)
     .then((res) => {
@@ -89,6 +111,8 @@ class EditNote extends React.Component{
   onChangeNoteexam(e){
         this.setState({ noteexam:e.target.value })
        
+      } onChangeFormateurNote(e) {
+        this.setState({ FormateurNote: e.target.value })
       }
    
     
@@ -130,7 +154,25 @@ class EditNote extends React.Component{
     />
     <p class="text-danger">{this.state.Errnoteexam}</p>
       </div>
-      
+      <div class="col-auto">
+      <label for="inputPassword2" class="visually-hidden">Formateur</label>
+            <select 
+  class="form-control"
+ value={this.state.FormateurNote}
+  onChange={this.onChangeFormateurNote}
+  
+  
+  > 
+<option >Formateur</option>
+
+{
+                               this.state.listeFormateurs.map(function(formateur) {
+                                   return <option value={formateur._id}  >{formateur.nomFormateurFr}</option>;
+                               })
+                           }
+</select>
+
+            </div>
   
   
     <button className="btn btn-primary"  type="submit" name="action">Modifier

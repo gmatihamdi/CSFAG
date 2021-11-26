@@ -27,6 +27,8 @@ app.use('/sect',require('./routes/sectionroute'))
 app.use('/compet',require('./routes/competenceroute'))
 app.use('/filtre',require('./routes/filtreroute'))
 app.use('/groupe',require('./routes/grouperoute'))
+app.use('/formateur',require('./routes/Formateurroute'))
+
 
 app.listen(port)
 

@@ -35,6 +35,8 @@ import Competences from './Component/component_competence/listeCompetence'
 import Note from './Component/component_note/note'
 import diplomes from './Component/component_stagiaire/diplomes'
 import users from './Component/component_login/User'
+import formateurs from './Component/component_formateur/listeFormateur'
+
 import login from './Component/component_login/auth'
 import statistique from './Component/component_statistique/statistique'
 
@@ -58,7 +60,7 @@ var routes = [
   },
   {
     path: "/SelectStagiaire",
-    name: "Présélection",
+    name: "Candidature",
     icon: "nc-icon nc-tap-01",
     component: SelectStagiaire,
     layout: "/admin",
@@ -102,8 +104,19 @@ var routes = [
     layout: "/admin",
   },
   {
+    path: "/formateurs",
+    name: "Formateurs",
+    icon: "nc-icon nc-key-25",
+    component: formateurs,
+    layout: "/admin",
+  },
+
+
+
+
+  {
     path: "/Note",
-    name: "Notes",
+    name: "Evaluation",
     icon: "nc-icon nc-check-2",
     component: Note,
     layout: "/admin",
@@ -111,11 +124,14 @@ var routes = [
 
   {
     path: "/listediplom",
-    name: "les diplomés",
+    name: "Diplomés",
     icon: "nc-icon nc-single-02",
     component: diplomes,
     layout: "/admin",
   },
+
+
+
 
   {
     path: "/users",

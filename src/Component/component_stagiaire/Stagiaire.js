@@ -42,12 +42,13 @@ class Stagiaire extends React.Component {
       Groupe: [],
       liststag: [],
       listgroupsection: [],
-      atpsence: []
+      atpsence: [],  
+      idpromotion: '',
+      Listepromo:[]
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
-
-  }
+    this.onChangeIdpromotion = this.onChangeIdpromotion.bind(this);}
 
   findgroupClick() {
     const a = { x: this.state.codeSection }
@@ -55,6 +56,19 @@ class Stagiaire extends React.Component {
       .then((res) => {
         this.setState({
           listgroupsection: res.data,
+        })
+        console.log("resultat de recherche");
+        console.log(res.data)
+      })
+      // Catch any errors we hit and update the app
+      .catch(error => this.setState({ error, isLoading: false }));
+  }
+  findsectionClick() {
+    const a = { x: this.state.idpromotion }
+    axios.post(`http://localhost/methode/getsection`, a)
+      .then((res) => {
+        this.setState({
+          listeSection: res.data,
         })
         console.log("resultat de recherche");
         console.log(res.data)
@@ -82,24 +96,12 @@ class Stagiaire extends React.Component {
       .catch(error => this.setState({ error, isLoading: false }));
     console.log(this.state.liststag)
   }
-  fetchSection() {
-    fetch(`http://localhost/sect`)
-      // We get the API response and receive data in JSON format...
-      .then(response => response.json())
-      // ...then we update the users state
-      .then(data =>
-        this.setState({
-          listeSection: data,
-          isLoading: false,
-        })
-      )
-      // Catch any errors we hit and update the app
-      .catch(error => this.setState({ error, isLoading: false }));
-  }
+ 
 
   componentDidMount() {
     this.handleClick();
-    this.fetchSection();
+    this.findsectionClick();
+    this.listepromo();
   }
 
   deleteSpc(id) {
@@ -112,6 +114,19 @@ class Stagiaire extends React.Component {
     this.props.history.push('/stagiare')
   }
 
+  listepromo(){
+    axios.get('http://localhost/prom')
+    .then((res)=>{
+      this.setState({
+      Listepromo:res.data,
+     
+    })
+  
+    })
+  }
+  onChangeIdpromotion(e) {
+    this.setState({ idpromotion: e.target.value })
+  }
 
   printattpres(id) {
     axios.post(`http://localhost/methode/printstag/${id}`)
@@ -258,14 +273,36 @@ class Stagiaire extends React.Component {
     iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
     document.body.appendChild(iframe);
     iframe.src = pdf.output('datauristring');
+
+  
+
+
+   
   }
 
   render() {
     return (
       <div className="content" >
-        <Link className="btn btn-danger" to='/admin/addstagiaire'>  <i class="fa fa-user-plus" aria-hidden="true">
-        </i></Link>
-        <form className="row g-3">
+       
+        <form className="row g-4">
+
+        <div class="col-auto">
+
+<select class="form-control" name="grouprselect" value={this.state.idpromotion}
+  onChange={this.onChangeIdpromotion} 
+  onClick={() => this.findsectionClick()} >
+
+  <option >Selectionner une Promotion</option>
+
+  {
+    this.state.Listepromo.map(function (promotion) {
+      return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
+    })
+  }
+</select>
+</div>
+
+
           <div class="col-auto">
             <select
               class="form-control"
@@ -299,7 +336,10 @@ class Stagiaire extends React.Component {
               }
             </select>
           </div>
+          <div class="col-auto">
           <Link className='btn btn-danger' onClick={() => this.handleClick()}> <i className="nc-icon nc-zoom-split" /> </Link>
+          </div>
+          <div class="col-auto">
           <Col className="text-right" md="3" xs="3">
             <Button
               className="btn-round btn-icon"
@@ -310,7 +350,7 @@ class Stagiaire extends React.Component {
               <i className="fa fa-print" />
             </Button>
           </Col>
-
+</div>
         </form>
         <Row>
           <Col md="12">

@@ -27,6 +27,7 @@ class EditStagiaire extends Component {
                 listeSpecialites:[],
                 listeSection:[],
                 listePromotions:[],
+                listeProm:[],
                 listgroupsection:[],
                 sexe: '',
         Lieunaissance: '',
@@ -107,6 +108,24 @@ class EditStagiaire extends Component {
           })
       // Catch any errors we hit and update the app
       .catch(error => this.setState({ error, isLoading: false })); 
+
+      axios.post(`http://localhost/filtre/filtrepromotion`,a) 
+      .then((res)=>{
+        this.setState({
+        listeProm:res.data,
+      })
+      console.log("promotion");
+      console.log(res.data.libPromotionFr)
+      })
+  // Catch any errors we hit and update the app
+  .catch(error => this.setState({ error, isLoading: false })); 
+
+
+
+
+
+
+
     }
 
             fetchSection() {

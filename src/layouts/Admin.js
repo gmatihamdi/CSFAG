@@ -49,6 +49,8 @@ import Addgroupe from '../Component/component_groupe/addGroupe';
 import ListeGroupe from '../Component/component_groupe/listegroup';
 import Listediplomes from '../Component/component_stagiaire/diplomes';
 import Login from '../Component/component_login/auth';
+import AddFormateur from '../Component/component_formateur/addFormateur';
+import EditFormateur from '../Component/component_formateur/editFormateur';
 import Authent from '../layouts/Auth';
 
 
@@ -147,6 +149,9 @@ function Dashboard(props) {
   <Route  path="/admin/listediplom" component={Listediplomes}/>
   <Route  path="/admin/login" component={Login}/>
   <Route  path="/admin/auth" component={Authent}/>
+  <Route  path="/admin/addFormateur" component={AddFormateur}/>
+  <Route  path="/admin/editFormateur/:id" component={EditFormateur}/>
+
 
 
 

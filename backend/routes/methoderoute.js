@@ -291,6 +291,34 @@ router.post('/getgroup', (req, res) => {
         
 })
 
+router.post('/getsection', (req, res) => {
+    Sect.find({
+        codePromotion: req.body.x
+    })
+        .exec(function (err, data) {
+            if (err) {
+                console.log(err);
+                console.log('error returned');
+                res.send(500, { error: 'Failed ' });
+            }
+            if (!data) {
+                res.send(403, { error: 'chargement Failed' });
+            }
+            //res.send(200, data);
+            console.log(data);
+            res.json(data)
+            console.log(req.body.x);
+            console.log('success generate List des section');
+        });
+        
+})
+
+
+
+
+
+
+
 router.post('/getcompetence', (req, res) => {
     competence.find({
         codeSection: req.body.x
