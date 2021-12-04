@@ -164,9 +164,9 @@ class Stagiaire extends React.Component {
 
   pdfAttestation = () => {
 
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-    document.body.appendChild(iframe);
+   // var iframe = document.createElement('iframe');
+  //  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+   // document.body.appendChild(iframe);
     var img = new Image()
     var pdf = new jsPDF('p', 'pt', 'a4');
     pdf.setFontSize(9);
@@ -190,10 +190,14 @@ class Stagiaire extends React.Component {
     pdf.text(220, 450, 'سلمت هذه الشهادة للمعني للإستظهار بها لدى من يهمه الأمر ')
     pdf.text(80, 500, 'مدير المركز ')
     pdf.setFontSize(9)
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-    document.body.appendChild(iframe);
-    iframe.src = pdf.output('datauristring');
+   // var iframe = document.createElement('iframe');
+   // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+   // document.body.appendChild(iframe);
+   // iframe.src = pdf.output('datauristring');
+
+   window.open(pdf.output('bloburl'))
+
+
   }
 
 
@@ -408,7 +412,7 @@ class Stagiaire extends React.Component {
           </Col>
         </Row>
 
-<h1>{this.state.atpsence.nomStagiaireAr}</h1>
+
       </div>
     )
   }

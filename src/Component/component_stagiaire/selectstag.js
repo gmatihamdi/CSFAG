@@ -30,11 +30,14 @@ class SelectStag extends React.Component {
       Listepromo: [],
       listgroupsection: [],
       groupeStagiaire: '',
+      idstagiaire:'',
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeEtatdossier = this.onChangeEtatdossier.bind(this);
     this.onChangeIdpromotion = this.onChangeIdpromotion.bind(this);
     this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
+   
+
   }
 
   openBox = () => {
@@ -109,6 +112,29 @@ class SelectStag extends React.Component {
     //  this.props.history.push('/stagiare')
   }
 
+  AcceptStag(id) {
+
+    const stagiaire = {
+
+
+      etatdossier: 'Accepter',
+      groupeStagiaire: this.state.groupeStagiaire,
+
+    }
+
+    axios.put(`http://localhost/stag/${id}`, stagiaire)
+      .then((res) => {
+        console.log(' successfully update!')
+        toast.success('update avec success')
+      }).catch((error) => {
+        console.log(error)
+        toast.error("Erreur  ")
+      })
+    //  this.props.history.push('/stagiare')
+  }
+
+
+
   findsectionClick() {
     const a = { x: this.state.idpromotion }
     axios.post(`http://localhost/methode/getsection`, a)
@@ -163,6 +189,24 @@ class SelectStag extends React.Component {
   onChangeGroupeStagiaire(e) {
     this.setState({ groupeStagiaire: e.target.value })
   }
+
+
+  showbox(id){
+this.state.idstagiaire=id;
+return this.state.idstagiaire
+//console.log(this.state.idstagiaire)
+  }
+
+  updateAccept(){
+
+//this.showbox()
+this.AcceptStag(this.state.idstagiaire);
+console.log(this.state.idstagiaire)
+  }
+
+
+
+
 
   render() {
     return (
@@ -256,49 +300,49 @@ class SelectStag extends React.Component {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item >  <Link to={"/admin/editStagiaire/" + stagiare._id}>Editer</Link></Dropdown.Item>
-                      <Dropdown.Item ><Link  onClick={this.openBox}> Accepter
-                      </Link>
+                      <Dropdown.Item > <Link  onClick={this.showbox(stagiare._id) ,this.openBox}> Accepter
+                      </Link></Dropdown.Item>
 
-                     
-
-
-
-
-                      </Dropdown.Item>
                       <Dropdown.Item > <Link onClick={(e) => { if (window.confirm(
-                      "Etes vous sur de refuser cet candidature?"
-
-
-                      
-                      )) this.EditetatStag(stagiare._id) }}>
+                      "Etes vous sur de refuser cet candidature?" )) this.EditetatStag(stagiare._id) }}>
                         Refuser
-                      </Link>
-
-
-
-
-
-
+                      </Link> </Dropdown.Item>
+                      <Dropdown.Item >
+                      <Link  onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteSpc(stagiare._id) }}>
+                   Supprimer
+                  </Link>
                       </Dropdown.Item>
+
+                   
+
+
                     </Dropdown.Menu>
                   </Dropdown>
-                  <Link className='btn btn-danger' onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteSpc(stagiare._id) }}>
-                    <i className="fa fa-times" aria-hidden="true" />
-                  </Link>
+                 
                 </td>
               </tr>
-            ))}
+           
+
+
+
+
+
+
+      
+       
+           
+       
+     
+
+
+
+
+
+
+      ))}
           </tbody>
 
         </table>
-
-
-
-
-
-
-        <div>
-       
 
         {this.state.isOpen && (
           <>
@@ -314,12 +358,10 @@ class SelectStag extends React.Component {
               bodyHeight='200px'
               headerText="Etes vous sur d'accepter cet candidature?"
             >
+            <form>
               <div>
               <select class="form-control" name="grouprselect" value={this.state.groupeStagiaire}
               onChange={this.onChangeGroupeStagiaire}  >
-
-
-
               <option >Selectionner un groupe</option>
 
               {
@@ -328,23 +370,14 @@ class SelectStag extends React.Component {
                 })
               }
             </select>
-
-
-            <Link className='btn btn-success' >Accepter</Link>
               </div>
+              <div>
+              <Link className='btn btn-success'onClick={this.updateAccept()} >Accepter</Link>
+              </div>
+              </form>
             </ReactDialogBox>
           </>
         )}
-      </div>
-
-
-
-
-
-
-
-
-
 
 
 

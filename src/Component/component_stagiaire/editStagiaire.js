@@ -93,7 +93,7 @@ class EditStagiaire extends Component {
                 }
             })
             this.fetchPromotion();
-            this.fetchSection();
+           
         }
 
         findgroupClick(){
@@ -128,20 +128,19 @@ class EditStagiaire extends Component {
 
     }
 
-            fetchSection() {
-                fetch(`http://localhost/sect`)
-                  // We get the API response and receive data in JSON format...
-                  .then(response => response.json())
-                  // ...then we update the users state
-                  .then(data =>
-                    this.setState({
-                      listeSection: data,
-                      isLoading: false,
-                    })
-                  )
-                  // Catch any errors we hit and update the app
-                  .catch(error => this.setState({ error, isLoading: false }));
-              }
+    findsectionClick() {
+      const a = { x: this.state.codePromotion }
+      axios.post(`http://localhost/methode/getsection`, a)
+        .then((res) => {
+          this.setState({
+            listeSection: res.data,
+          })
+          console.log("resultat de recherche");
+          console.log(res.data)
+        })
+        // Catch any errors we hit and update the app
+        .catch(error => this.setState({ error, isLoading: false }));
+    }
               fetchPromotion() {
                 fetch(`http://localhost/prom`)
                   // We get the API response and receive data in JSON format...
@@ -345,26 +344,35 @@ class EditStagiaire extends Component {
  
 </div>
 
-
-
-
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Specialite</label>
-   
-   <select 
-   className="form-control"  value={this.state.specialiteStagiaire}
-   onChange={this.onChangeSpecialiteStagiaire}> 
-<option >select specialite</option>
- 
+ <label for="inputEmail4" class="form-label"> Promotion </label>
+<select 
+   className="form-control"  value={this.state.codePromotion}
+   onChange={this.onChangeCodePromotion}
+   onClick={() => this.findsectionClick()} >
+<option >select Promotion</option> 
 {
-                                this.state.listeSpecialites.map(function(specialite) {
-                                    return <option >{specialite.libSpecialite}</option>;
+                                this.state.listePromotions.map(function(promotion) {
+                                return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
                                 })
                             }
-   </select>
- 
+</select>
 </div>
 
+<div className="col-md-6"> 
+ <label for="inputEmail4" class="form-label"> Section </label>
+   <select 
+   className="form-control"  value={this.state.codeSection}
+   onChange={this.onChangeCodeSection} onClick={() => this.findgroupClick()}> 
+<option >select section</option>
+ 
+{
+                                this.state.listeSection.map(function(section) {
+                                    return <option value={section._id}  >{section.libSection}</option>;
+                                })
+                            }
+</select>
+</div>
 <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Affectation par groupe </label>
    
@@ -383,35 +391,6 @@ class EditStagiaire extends Component {
 </select> 
  
 </div>
-<div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Section </label>
-   <select 
-   className="form-control"  value={this.state.codeSection}
-   onChange={this.onChangeCodeSection} onClick={() => this.findgroupClick()}> 
-<option >select section</option>
- 
-{
-                                this.state.listeSection.map(function(section) {
-                                    return <option value={section._id}  >{section.libSection}</option>;
-                                })
-                            }
-</select>
-</div>
-<div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Promotion </label>
-<select 
-   className="form-control"  value={this.state.codePromotion}
-   onChange={this.onChangeCodePromotion}> 
-<option >select Promotion</option> 
-{
-                                this.state.listePromotions.map(function(promotion) {
-                                return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
-                                })
-                            }
-</select>
-</div>
-
-
   <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Etat du dossier </label>
    
