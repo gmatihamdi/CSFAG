@@ -69,25 +69,6 @@ class AddFormateur extends React.Component{
     });
   }
 
-
-/*
-   onSubmit(values) {
-    // Do stuff here...
-
-
-    alert(JSON.stringify(values.cinFormateur, null, 2));
-
-   // alert(JSON.stringify(values, null, 2));
-  }
-
-*/
-
-
-
-
-
-
-
 onSubmit(values) {
   //e.preventDefault()
   //alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4));
@@ -101,13 +82,10 @@ onSubmit(values) {
     adressFormateur:values.adressFormateur,
     telFormateur:values.telFormateur,
     emailFormateur:values.emailFormateur,
-
-
   };
         axios.post('http://localhost/formateur',studentObject).then(res => 
         toast.success('insertion avec success')
-      ).catch(err => {toast.error("Erreur d'insertion ")}) 
-       
+      ).catch(err => {toast.error("Erreur d'insertion ")})      
 }
  /*onChangeCinFormateur(e){
       this.setState({ cinFormateur:e.target.value })
@@ -127,15 +105,8 @@ onChangeNomFormateurFr(e){
                         this.setState({telFormateur:e.target.value}) }
                         onChangeEmailFormateur(e){
                             this.setState({emailFormateur:e.target.value}) }
-         
-
-
                             handleCinFormateur = event => {this.setState({ cinFormateur: event.target.value })}
-
 */
-
-
-
     render(){
 
       const initialValues = {

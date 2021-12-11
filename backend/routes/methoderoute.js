@@ -176,14 +176,16 @@ router.post('/getrelevnote', (req, res) => {
                                            })*/
                                            for (j = 0; j < listnote.length; j++) {
                                             for (i = 0; i < listecompetence.length; i++) {
-                                                if ((listnote[j].moduleNote._id.equals(listecompetence[i]._id)) && (listnote[j].noteexam < dataComp[i].codeMatiere.seuilMatiere)) {
-                                                
-                                                    resultat = " Réussite";
+                                                if ((listnote[j].moduleNote._id.equals(listecompetence[i]._id)) &&(parseFloat(listnote[j].noteexam) > parseFloat(listecompetence[i].seuilMatiere))) 
+                                                {
+                                                    
+                                                    resultat = "Réussite";
                                                 } else {
                                                  
-                                                    resultat = " Refusé";
+                                                    resultat = "Refusé";
                                                 }
 
+                                                
                                             }
                                         }
 
@@ -369,5 +371,160 @@ router.post('/printstag/:id', (req, res) => {
 
 
 })
+
+
+router.post('/getresultat', (req, res) => {
+    const z = req.body.x;
+    let sectionstag = req.body.x;
+    var listecompetence = [];
+    var listnote = [];
+    let lib = " ";
+    var moyenne = 0;
+    var somme = 0;
+    let resultat = " ";
+    try {
+        Stag.find({codeSection: req.body.x}).populate([
+            {
+                path: 'codePromotion',
+                model: 'Promotion'
+            },
+            {
+                path: 'codeSection',
+                model: 'Section'
+            }        
+        ]).then(dataStag => {
+                [dataStag].map(function (stagiare) {
+                  /*  sectionstag = stagiare.codeSection._id
+                    return sectionstag;*/
+                });
+                console.log('code section')
+                Competence.find({ codeSection: req.body.x })
+                    .populate([
+                        {
+                            path: 'codePromotion',
+                            model: 'Promotion'
+                        },
+                        {
+                            path: 'codeSection',
+                            model: 'Section'
+                        },
+                        {
+                            path: 'codeMatiere',
+                            model: 'Matiere'
+                        }]).then(dataComp => {
+                            dataComp.map((competence) => {
+                                lib = competence.codeMatiere.libMatiere;
+                                listecompetence.push(competence.codeMatiere);
+                            })
+
+for(n=0;n<dataStag.length;n++){
+
+  
+
+         const idstag = dataStag[n]._id
+
+         console.log('id stagiaire')
+         console.log(idstag)
+
+                            Note.find({
+                                stagiaireNote:idstag
+                            })
+                                .populate([
+                                    {
+                                        path: 'stagiaireNote',
+                                        model: 'Stagiaire'
+                                    },
+                                    {
+                                        path: 'moduleNote',
+                                        model: 'Matiere'
+                                    }]).then(datanote => {
+                                        datanote.map((note) => {
+                                            listnote.push(note);
+
+
+                                        })
+                                        let listFinalNotes = [];
+                                       
+                                      
+                                           for (j = 0; j < listnote.length; j++) {
+                                            for (i = 0; i < listecompetence.length; i++) {
+                                                if ((listnote[j].moduleNote._id.equals(listecompetence[i]._id)) &&(parseFloat(listnote[j].noteexam) > parseFloat(listecompetence[i].seuilMatiere))) 
+                                                {
+                                                    
+                                                    resultat = "Réussite";
+                                                } else {
+                                                 
+                                                    resultat = "Refusé";
+                                                }
+
+                                                
+                                            }
+                                        }
+                                        var lengthcmp = listecompetence.length;
+                                        moyenne = parseFloat(somme) / parseFloat(lengthcmp);
+                                     /* console.log("listFinalNotes")
+                                        console.log(moyenne)
+                                        console.log(somme)
+                                        console.log(resultat)*/
+                                        res.status(200).json({
+                                            message: 'ok',
+                                            data: listFinalNotes,
+                                            data1: dataStag,
+                                            //.toObject(),
+                                            data2: moyenne,
+                                            data3:resultat
+                                        })
+                                        console.log(resultat)
+                                        console.log('datanote')
+                                        for (j = 0; j < listnote.length; j++) {
+                                        
+                                       // console.log(listnote[j]) 
+                                        console.log('id')
+                                        console.log(listnote[j].moduleNote._id) 
+                                        console.log('note')
+                                        console.log(listnote[j].noteexam) 
+                                        }
+                                        console.log('data liste comp')
+                                        for (i = 0; i < listecompetence.length; i++) {
+                                            console.log('id')
+                                            console.log(listecompetence[i]._id) 
+                                            console.log('seuil')
+                                            console.log(listecompetence[i].seuilMatiere) 
+                                        }
+                                    });
+                                    
+                               //datanote.moduleNote._id   61b3c1b09c34090f3045c351
+                               //datacomp.codeMatiere._id  61b3c1b09c34090f3045c351
+                                }
+
+for (i = 0; i < listecompetence.length; i++){
+    console.log('id competence')
+    console.log(listecompetence[i]._id)                     
+}
+                                
+console.log('liste note')
+console.log(listnote.length)                          
+
+                        })
+                        
+            })
+    }
+    catch (e) {
+        console.log(e);
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router

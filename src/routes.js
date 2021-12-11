@@ -36,7 +36,7 @@ import Note from './Component/component_note/note'
 import diplomes from './Component/component_stagiaire/diplomes'
 import users from './Component/component_login/User'
 import formateurs from './Component/component_formateur/listeFormateur'
-
+import resultat from './Component/component_note/resultat'
 import login from './Component/component_login/auth'
 import statistique from './Component/component_statistique/statistique'
 
@@ -121,6 +121,16 @@ var routes = [
     component: Note,
     layout: "/admin",
   },
+
+  {
+    path: "/resultat",
+    name: "Resultat",
+    icon: "nc-icon nc-single-02",
+    component: resultat,
+    layout: "/admin",
+  },
+
+
 
   {
     path: "/listediplom",
