@@ -1,24 +1,16 @@
-/*!
 
-=========================================================
-* Paper Dashboard React - v1.3.0
-=========================================================
+//"start": "react-scripts --expose-gc --max-old-space-size=8192 start",
+//"build": "react-scripts --expose-gc --max-old-space-size=8192 build",
+//"start": "react-scripts start",
+//"build": "react-scripts build && gulp licenses",
 
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
 
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
 
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-
+import axios from 'axios'
+import { withRouter, Redirect } from "react-router-dom"; 
+import Container from "react-bootstrap/Container";
 // reactstrap components
 import {
   Button,
@@ -34,142 +26,169 @@ import {
   Col,
 } from "reactstrap";
 
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 
-    class User extends React.Component{
+
+    class Authentification extends React.Component{
         constructor(props) {
           super(props)
           this.state = {
-            authent: '',
-            pwd: '',
-           Err:'',
-           users:[]
+            name: '',
+            password: '',
+           Err:'',         
+         
           }
-          this.onChangeAuthent = this.onChangeAuthent.bind(this);
-            this.onChangePwd = this.onChangePwd.bind(this);
+          this.onChangeName = this.onChangeName.bind(this);
+            this.onChangePassword = this.onChangePassword.bind(this);
+            this.onSubmit = this.onSubmit.bind(this);
         }
 
         onSubmit(e) {
-           // e.preventDefault();
-       //    if(this.state.authent=="admin"){
-       //         this.state.Err='tres bien'
-              //  this.props.history.push('/admin')
-                console.log('ok')
-         //     }
-          //     else{
-           //    this.state.Err=' login ou mot de passe incorrectes !  ' 
-           //    toast.error("Erreur de Modification ")
-           //    console.log('nok')
-              // this.props.history.push('/admin')
-              // }
- 
+           e.preventDefault();
+                const user = {
+                  name:this.state.name,
+                  password:this.state.password,
+                };
+
+             const config={   
+               headers: {
+                  'Content-Type': 'application/json'
+              },};
+               // console.log(user) 
+                axios.post(`http://localhost/api/login`,user,config)
+
+                .then(res => {
+                  if (res.status === 200) {
+                   localStorage.setItem("user", JSON.stringify(user));
+                   localStorage.setItem('token', res.data.token);
+                          this.props.history.push('/admin/dashboard');
+                          console.log('veriffff token')
+                          console.log(res.data.message)
+                          console.log(res.data.token)
+                     console.log(res.data)
+                  } else {
+                      alert(res.data.message);
+                  }
+              })
+              .catch(error => {
+                  // return;
+                  alert(error.data && error.data.message);
+              })
+      }
+
+
+
+
+
+
+                    /*  .then(res => 
+   // console.log(res.data.message) , 
+                  //      console.log('res') ,
+                           
+                    window.location.href='/admin/dashboard'
+                 /       
+                      ).catch(err =>
+                         toast.error("Erreur de connecter "),
+                         ) 
+              // this.props.history.push('/admin') 
                 }
-
-                onChangeAuthent(e){ this.setState({ authent:e.target.value }) }
-                onChangePwd(e){ this.setState({ pwd:e.target.value }) }
+*/
 
 
+                
+                onChangeName(e){ this.setState({ name:e.target.value }) }
+                onChangePassword(e){ this.setState({ password:e.target.value }) }
 
-        render(){
-            return(
-    <>
-      <div className="content">
-      <ToastContainer/>
-        <Row>
-          <Col md="8">
-            <Card className="card-user">
-              <div className="image">
-                <img
-                  alt="..."
-                  src={require("assets/img/damir-bosnjak.jpg").default}
-                />
-              </div>
-              <CardBody>
-                <div className="author">
-                  
-                    <img
-                      alt="..."
-                      className="avatar border-gray"
-                      src={require("assets/img/log.jpg").default}
-                    />
+                
 
-<Form >
-                  <Row>
-                    <Col className="pr-1" md="5">
-                      <FormGroup>
-                        <label>login</label>
-                        <Input
-                          defaultValue="Creative Code Inc."
+
+
+                  render(){
+                    return(
+            <>
+              <div className="content">
+              <ToastContainer/>
+                <Row>
+                  <Col md="8">
+                    <Card className="card-user">
+                      <div className="image">
+                        <img
+                          alt="..."
+                          src={require("assets/img/damir-bosnjak.jpg").default}
+                        />
+                      </div>
+                      <CardBody>
+                        <div className="author">
                           
-                          placeholder="Company"
-                          type="text"
-                          value={this.state.authent}
-  onChange={this.onChangeAuthent}
-                        />
-                      </FormGroup>
-                    </Col>
-</Row>
-                    <Row>
-                    <Col className="pr-1" md="5">
-                      <FormGroup>
-                        <label>mot de passe</label>
-                        <Input
-                          defaultValue="michael23"
-                          placeholder="Username"
-                          type="password"
-                          value={this.state.pwd}
-  onChange={this.onChangePwd}
-                        />
-                      </FormGroup>
-                    </Col>
-                 
-                    </Row>
-                   
-                  <Row>
-                    <div className="update ml-auto mr-auto">
-                      <Button
-                        className="btn-round"
-                        color="primary"
-                        
-                         >
-                       Se Connecter
-                      </Button>
-                    </div>
-                  </Row>
-
-                </Form>
-
-            
-                <p class="text-danger">{this.state.Err}</p>
-                  
-              
-                </div>
+                            <img
+                              alt="..."
+                              className="avatar border-gray"
+                              src={require("assets/img/log.jpg").default}
+                            />
         
-              </CardBody>
-              
-            </Card>
-          
-          </Col>
-          
+        <Form onSubmit={this.onSubmit} >
+        
+                          <Row>
+                            <Col className="pr-1" md="5">
+                              <FormGroup>
+                                <label>login</label>
+                                <Input
+                                  defaultValue="Creative Code Inc."
+                                  
+                                  placeholder="Company"
+                                  type="text"
+                                  value={this.state.name}
+          onChange={this.onChangeName}
+                                />
+                              </FormGroup>
+                            </Col>
         </Row>
+                            <Row>
+                            <Col className="pr-1" md="5">
+                              <FormGroup>
+                                <label>mot de passe</label>
+                                <Input
+                                  defaultValue="michael23"
+                                  placeholder="Username"
+                                  type="password"
+                                  value={this.state.password}
+          onChange={this.onChangePassword}
+                                />
+                              </FormGroup>
+                            </Col>
+                         
+                            </Row>
+                           
+                          <Row>
+                            <div className="update ml-auto mr-auto">
+                              <Button
+                                className="btn-round"
+                                color="primary"
+                                type="submit"
+                                 >
+                               Se Connecter
+                              </Button>
+                            </div>
+                          </Row>
+        
+                        </Form>
+                   
+                        </div>
+                
+                      </CardBody>
+                      
+                    </Card>
+                  
+                  </Col>
+                  
+                </Row>
+              </div>
+            </>
+           )
+        }}
+        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </div>
-    </>
-   )
-}}
-
-export default User;
+export default Authentification;

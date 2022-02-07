@@ -3,7 +3,8 @@ const Schema =mongoose.Schema
 newSchema=new Schema({
 name:String,
 email:String,
-password:String
+password:String,
+role:String
 
 })
 module.exports=mongoose.model('User',newSchema)

@@ -3,9 +3,10 @@ import axios from 'axios'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import logo from './entete.jpeg' // relative path to image 
-import { Link } from "react-router-dom"
+import { Link,withRouter } from "react-router-dom"
 import { Dropdown } from 'react-bootstrap';
 import { base64Str } from 'base-64';
+import UserContext from "../../contexts/UserContext";
 import {
   Button,
   Card,
@@ -15,6 +16,10 @@ import {
   Col,
 } from "reactstrap";
 import fontarab from './Amiri-Regular.ttf' 
+import ProtectedRoute from "../component_login/ProtectedRoute"
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 //import BsPersonPlusFill  from "@meronex/icons/bs/BsPersonPlusFill";
 //import FcPrint  from "@meronex/icons/bs/FcPrint";
 //import { FcPrint } from "react-icons/fc";
@@ -99,6 +104,8 @@ class Stagiaire extends React.Component {
  
 
   componentDidMount() {
+    console.log('tokennnnnn')
+   console.log( cookies.get('token'));
     this.handleClick();
     this.findsectionClick();
     this.listepromo();
@@ -286,6 +293,8 @@ class Stagiaire extends React.Component {
 
   render() {
     return (
+
+      <UserContext.Consumer>
       <div className="content" >
        
         <form className="row g-4">
@@ -414,7 +423,8 @@ class Stagiaire extends React.Component {
 
 
       </div>
+      </UserContext.Consumer>
     )
   }
 }
-export default Stagiaire;
+export default withRouter(ProtectedRoute(Stagiaire));

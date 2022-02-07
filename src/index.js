@@ -16,24 +16,45 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import React, { Component } from 'react';
+import { HashRouter as Router, Switch, Route ,BrowserRouter,Redirect} from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/paper-dashboard.scss?v=1.3.0";
 import "assets/demo/demo.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
-  //  <Redirect to="/admin/dashboard" />   <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> <Redirect from="/" to="/admin/index" />
-ReactDOM.render(
+import AuthLayout from "Component/component_login/auth";
+import * as serviceWorker from './serviceWorker';
+import App from "../src/layouts/Admin";
+  //  <Redirect to="/admin/dashboard" />  <Redirect from="/" to="/auth" /> <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> <Redirect from="/" to="/admin/index" />
+
+  //ReactDOM.render(<App />, document.getElementById('root'));
+
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: https://bit.ly/CRA-PWA
+  //serviceWorker.unregister();
+  import UserProvider from "./contexts/UserProvider";
+  import LoginPage from './pages/LoginPage';
+  import TodoPage from './pages/TodoPage';
+  import NotFoundPage from './pages/NotFoundPage';
+  import RegisterPage from './pages/RegisterPage';
+
+
+
+
+  ReactDOM.render(
   <BrowserRouter>
+
     <Switch>
     <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
     <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Redirect from="/" to="/admin/dashboard" />
+    
+    <Redirect to="/auth" />
     </Switch>
+
   </BrowserRouter>,
   document.getElementById("root")
 );

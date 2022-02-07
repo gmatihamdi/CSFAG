@@ -1,12 +1,13 @@
 /*!
 
 =========================================================
-* Argon Dashboard React - v1.2.1
+* Paper Dashboard React - v1.3.0
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
 * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
 
 * Coded by Creative Tim
 
@@ -15,67 +16,66 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    CardTitle,
-    FormGroup,
-    Form,
-    Input,
-    Row,
-    Col,
-  } from "reactstrap";
-// reactstrap components
+import React from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-
-// core components
-
-import routes from "routes.js";
-
-
-  class Auth extends React.Component{
-    constructor(props) {
-      super(props)
-      this.state = {
-        authent: '',
-        pwd: '',
-       Err:'',
-       users:[]
-      }
-      this.onChangeAuthent = this.onChangeAuthent.bind(this);
-        this.onChangePwd = this.onChangePwd.bind(this);
-    }
-
-    onSubmit(e) {
-       // e.preventDefault();
-   //    if(this.state.authent=="admin"){
-   //         this.state.Err='tres bien'
-          //  this.props.history.push('/admin')
-            console.log('ok')
-     //     }
-      //     else{
-       //    this.state.Err=' login ou mot de passe incorrectes !  ' 
-       //    toast.error("Erreur de Modification ")
-       //    console.log('nok')
-          // this.props.history.push('/admin')
-          // }
-
-            }
-
-            onChangeAuthent(e){ this.setState({ authent:e.target.value }) }
-            onChangePwd(e){ this.setState({ pwd:e.target.value }) }
+import axios from 'axios'
+// reactstrap components
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  CardTitle,
+  FormGroup,
+  Form,
+  Input,
+  Row,
+  Col,
+} from "reactstrap";
 
 
 
-    render(){
-        return(
+    class User extends React.Component{
+        constructor(props) {
+          super(props)
+          this.state = {
+            login: '',
+            pwd: '',
+           Err:'',
+           users:[]
+          }
+          this.onChangeLogin = this.onChangeLogin.bind(this);
+            this.onChangePwd = this.onChangePwd.bind(this);
+            this.onSubmit = this.onSubmit.bind(this);
+        }
+
+        onSubmit(e) {
+           e.preventDefault();
+     
+                console.log('ok')
+         
+                const user = {
+                  login:this.state.login,
+                  pwd:this.state.pwd,
+                };
+                axios.post('http://localhost/api/login',user)
+                      .then(res => console.log(res.data));
+                    console.log( user) 
+              // this.props.history.push('/admin')
+              
+ 
+                }
+
+                onChangeLogin(e){ this.setState({ login:e.target.value }) }
+                onChangePwd(e){ this.setState({ pwd:e.target.value }) }
+
+
+
+        render(){
+            return(
     <>
-     <div className="content">
+      <div >
       <ToastContainer/>
         <Row>
           <Col md="8">
@@ -95,17 +95,20 @@ import routes from "routes.js";
                       src={require("assets/img/log.jpg").default}
                     />
 
-<Form >
+<Form onSubmit={this.onSubmit} >
+
                   <Row>
                     <Col className="pr-1" md="5">
                       <FormGroup>
                         <label>login</label>
                         <Input
-                          defaultValue=" Username"
+                          defaultValue="Creative Code Inc."
                           
                           placeholder="Company"
                           type="text"
-           
+                          value={this.state.login}
+  onChange={this.onChangeLogin}
+  required
                         />
                       </FormGroup>
                     </Col>
@@ -115,9 +118,11 @@ import routes from "routes.js";
                       <FormGroup>
                         <label>mot de passe</label>
                         <Input
-                         
+                          defaultValue="michael23"
+                          placeholder="Username"
                           type="password"
-              
+                          value={this.state.pwd}
+  onChange={this.onChangePwd}
                         />
                       </FormGroup>
                     </Col>
@@ -129,6 +134,7 @@ import routes from "routes.js";
                       <Button
                         className="btn-round"
                         color="primary"
+                        type="submit"
                          >
                        Se Connecter
                       </Button>
@@ -157,18 +163,9 @@ import routes from "routes.js";
 
 
 
-
-
-
-
-
-
-
-
       </div>
-     
     </>
    )
-  }}
+}}
 
-export default Auth;
+export default User;

@@ -56,6 +56,10 @@ import Authent from '../layouts/Auth';
 
 
 
+import TodoPage from '../pages/TodoPage';
+import NotFoundPage from '../pages/NotFoundPage';
+import RegisterPage from '../pages/RegisterPage';
+
 
 
 
@@ -113,6 +117,9 @@ function Dashboard(props) {
       />
       <div className="main-panel" ref={mainPanel}>
         <DemoNavbar {...props} />
+
+
+      
         <Switch>
           {routes.map((prop, key) => {
             return (
@@ -151,15 +158,19 @@ function Dashboard(props) {
   <Route  path="/admin/auth" component={Authent}/>
   <Route  path="/admin/addFormateur" component={AddFormateur}/>
   <Route  path="/admin/editFormateur/:id" component={EditFormateur}/>
-
+  <Route  path="/register" component={RegisterPage}/>
 
 
 
   <Route  path="/admin/editcompetence/:id" component={Editcompetence}/>
 
 
+
+
+
+
         </Switch>
-     
+        
         <Footer fluid />
       </div>
    

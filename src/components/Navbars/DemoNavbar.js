@@ -89,6 +89,11 @@ function Header(props) {
       sidebarToggle.current.classList.toggle("toggled");
     }
   }, [location]);
+
+
+
+
+  
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
     <Navbar
@@ -158,9 +163,16 @@ function Header(props) {
                 </p>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag="a">Action</DropdownItem>
-                <DropdownItem tag="a">Another Action</DropdownItem>
-                <DropdownItem tag="a">Something else here</DropdownItem>
+                <DropdownItem tag="a"><Link onClick={(e) => 
+                {
+                  localStorage.removeItem('token');
+                  //this.props.history.push('/');
+                
+                }}
+                to='/'
+                >
+                Deconnecter</Link></DropdownItem>
+                
               </DropdownMenu>
             </Dropdown>
             <NavItem>

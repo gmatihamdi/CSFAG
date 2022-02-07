@@ -91,6 +91,24 @@ class Statistique extends React.Component {
   }
 
   componentDidMount() {
+
+    const token = localStorage.getItem("token");
+
+if (token){
+console.log('ok')
+
+}
+
+else{
+
+  this.props.history.push('/');
+}
+
+
+
+
+
+
     this.handleClick();
     this.fetchSection();
   }
