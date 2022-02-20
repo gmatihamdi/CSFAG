@@ -1,20 +1,14 @@
 import React from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
+import { Formik, Field, Form, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
 class Ajoutspecialite extends React.Component{
 
  
   constructor(props) {
     super(props)
     // Setting up functions
-    this.onChangeCodeSpecialite = this.onChangeCodeSpecialite.bind(this);
-    this.onChangeLibSpecialite = this.onChangeLibSpecialite.bind(this);
-    this.onChangeLibSpecialiteAr = this.onChangeLibSpecialiteAr.bind(this);
-    this.onChangeTypeSpecialite = this.onChangeTypeSpecialite.bind(this);
-    this.onChangeDureeSpecialite = this.onChangeDureeSpecialite.bind(this);
-    this.onChangeDiplomeSpecialite = this.onChangeDiplomeSpecialite.bind(this);
-
-    this.onSubmit = this.onSubmit.bind(this);
 
     // Setting up state
     this.state = {
@@ -24,146 +18,152 @@ class Ajoutspecialite extends React.Component{
       typeSpecialite:  '',
       dureeSpecialite: '',
       diplomeSpecialite:'',
-      Errcodespc:'',
-      Errlibspcfr:'',
-      ErrlibspcAr:'', 
     }
   }
-  
-  
-onSubmit(e) {
-  e.preventDefault()
 
-  if(this.state.codeSpecialite===''){
-    this.state.Errcodespc='Champs Obligatoire '
-   }
-   if(this.state.libSpecialite===''){
-    this.state.Errlibspcfr='Champs Obligatoire '
-   }
-   if(this.state.libSpecialiteAr===''){
-    this.state.ErrlibspcAr='Champs Obligatoire '
-   }
-   else{
+  validationSchema() {
+    return Yup.object().shape({
+      codeSpecialite: Yup.string() .required('cin is required')
+      .min(3, 'Code specialité obligatoire'),
+      libSpecialite:  Yup.string()
+      .required('First Name is required'),
+       
+      libSpecialiteAr: Yup.string()
+        .required('Champs obligatoire'),
+        typeSpecialite: Yup.string()
+        .required('Champs obligatoire'),
+        dureeSpecialite: Yup.string()
+        .required('Champs obligatoire'),
+        diplomeSpecialite: Yup.string()
+        .required('Champs obligatoire'),
+      });
+    }
+
+
+
+
+  
+  componentDidMount() {
+  const token = localStorage.getItem("token");
+  if (token){
+  console.log('ok')
+  }
+  else{
+    this.props.history.push('/');
+  }
+  }
+
+
+  onSubmit(values) {
 
   const studentObject = {
-    codeSpecialite:this.state.codeSpecialite,
-    libSpecialite:this.state.libSpecialite,
-    libSpecialiteAr:this.state.libSpecialiteAr,
-    typeSpecialite:this.state.typeSpecialite,
-    dureeSpecialite:this.state.dureeSpecialite,
-    diplomeSpecialite:this.state.diplomeSpecialite,
+    codeSpecialite:values.codeSpecialite,
+    libSpecialite:values.libSpecialite,
+    libSpecialiteAr:values.libSpecialiteAr,
+    typeSpecialite:values.typeSpecialite,
+    dureeSpecialite:values.dureeSpecialite,
+    diplomeSpecialite:values.diplomeSpecialite,
 
   };
         axios.post('http://localhost/spc',studentObject).then(res => 
         toast.success('insertion avec success')
       ).catch(err => {toast.error("Erreur d'insertion ")}) 
-
-      //  this.setState({ codeSpecialite: '', libSpecialite: ''})
-      
-        //this.componentDidMount();
-      //  console.log(" successfully insert")
       
 }
-      }
-    
+      
 
-      onChangeCodeSpecialite(e){
-      this.setState({ codeSpecialite:e.target.value })
+
      
-    }
-    onChangeLibSpecialite(e){
-      this.setState({libSpecialite:e.target.value})
-     
-    }
-    onChangeLibSpecialiteAr(e){
-      this.setState({libSpecialiteAr:e.target.value})
-     
-    } onChangeTypeSpecialite(e){
-      this.setState({typeSpecialite:e.target.value})
-     
-    } onChangeDureeSpecialite(e){
-      this.setState({dureeSpecialite:e.target.value})
-     
-    }
-    onChangeDiplomeSpecialite(e){
-      this.setState({diplomeSpecialite:e.target.value})
-     
-    }
 
     render(){
+
+      const initialValues = {
+        codeSpecialite: '',
+        libSpecialite: '',
+        libSpecialiteAr:  '',
+        typeSpecialite:  '',
+        dureeSpecialite: '',
+        diplomeSpecialite:'',
+      };
+
     return(
       <div className="content" >
         <div>
         <h2>Ajoute une Nouvelle specialités</h2>
         <ToastContainer/>
-  <form onSubmit={this.onSubmit} class="row g-3">
+
+        <Formik
+          initialValues={initialValues}
+          validationSchema={this.validationSchema} onSubmit={this.onSubmit} >
+
+{({ resetForm,values}) => (
+            <Form class="row g-3" noValidate>
   <div className="col-md-6">
-  <label for="inputEmail4" class="form-label">Code Specialité</label>
-  <input type="text" className="form-control " placeholder="enter specialité code" 
-  name="codeSpecialite"
-  value={this.state.codeSpecialite}
-  onChange={this.onChangeCodeSpecialite}
-  />
-   <p class="text-danger">{this.state.Errcodespc}</p>
+  <label >Code Specialité</label>
+  <Field type="text" className="form-control " placeholder="enter specialité code" 
+  name="codeSpecialite" />
+   <ErrorMessage name="codeSpecialite" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6">
-    <label for="inputEmail4" class="form-label"> Specialité Fr</label>
-  <input type="text" className="form-control " placeholder="enter lib specialité "
-  name="libSpecialite"
-  value={this.state.libSpecialite}
-  onChange={this.onChangeLibSpecialite}
-  />
-   <p class="text-danger">{this.state.Errlibspcfr}</p>
+    <label > Specialité Fr</label>
+  <Field type="text" className="form-control " placeholder="enter lib specialité "
+  name="libSpecialite"/>
+  <ErrorMessage name="libSpecialite" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6">
-    <label for="inputEmail4" class="form-label"> Specialité Ar</label>
-  <input type="text" className="form-control " placeholder="enter lib specialité Ar "
+    <label > Specialité Ar</label>
+  <Field type="text" className="form-control " placeholder="enter lib specialité Ar "
   name="libSpecialiteAr"
-  value={this.state.libSpecialiteAr}
-  onChange={this.onChangeLibSpecialiteAr}
   />
-   <p class="text-danger">{this.state.ErrlibspcAr}</p>
+  <ErrorMessage name="libSpecialiteAr" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6"> 
-    <label for="inputEmail4" class="form-label"> Nature de Formation </label>
-   <select class="form-control"  name="niveauMatiere" value={this.state.typeSpecialite}
-   onChange={this.onChangeTypeSpecialite}>
+    <label > Nature de Formation </label>
+   <Field class="form-control"  name="typeSpecialite" as="select" >
        <option >Choix </option>
        
        <option >بالتداول</option>
        <option > عن بعد</option>
        <option >  دروس مسائية</option>
 
-   </select>
- 
+   </Field>
+   <ErrorMessage name="typeSpecialite" component="div"  className="text-danger" />
 </div>
     <div className="col-md-6">
-    <label for="inputEmail4" class="form-label"> Duree de Formation </label>
-  <input type="text" className="form-control " placeholder="duree "
+    <label > Duree de Formation </label>
+  <Field type="text" className="form-control " placeholder="duree "
   name="dureeSpecialite" 
-  value={this.state.dureeSpecialite}
-  onChange={this.onChangeDureeSpecialite}
   />
+    <ErrorMessage name="dureeSpecialite" component="div"  className="text-danger" />
     </div>
 
     <div className="col-md-6"> 
-    <label for="inputEmail4" class="form-label"> Diplome de Formation </label>
-   <select class="form-control"  name="niveauMatiere" value={this.state.diplomeSpecialite}
-   onChange={this.onChangeDiplomeSpecialite}>
+    <label > Diplome de Formation </label>
+   <Field class="form-control"  name="diplomeSpecialite" as="select" >
        <option >Choix</option>
 
        <option >مؤهل التقني السامي</option>
        <option > مؤهل التقني المهني  منظرة في المستوى</option>
-   </select>
- 
+   </Field>
+   <ErrorMessage name="diplomeSpecialite" component="div"  className="text-danger" />
 </div>
 
  
-  <button className="btn btn-primary"  type="submit" name="action">Enregistrer
-   
-  </button>
-
-</form>
+<div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  onClick={() => resetForm(initialValues)}
+                  className="btn btn-secondary "
+                >
+                  Reset
+                </button>
+              </div>
+</Form>
+          )}
+        </Formik>
 </div>
 </div>
     )

@@ -44,6 +44,16 @@ class Specialite extends React.Component{
    
 
     })
+
+
+    const token = localStorage.getItem("token");
+    if (token){
+    console.log('ok')
+    }
+    else{
+      this.props.history.push('/');
+    }
+
   }
 
   deleteSpc(id) {
@@ -53,15 +63,15 @@ class Specialite extends React.Component{
         }).catch((error) => {
             console.log(error)
         })
-        this.props.history.push('/specialite')
+      
 }
 
 
 pdfGenerate = () => {
 
-  var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-  document.body.appendChild(iframe);
+ // var iframe = document.createElement('iframe');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+ // document.body.appendChild(iframe);
   var img = new Image()
   var Values = this.state.users.map((element, index) => Object.values([index + 1, element.codeSpecialite, element.libSpecialite,element.typeSpecialite,element.dureeSpecialite]));
   var pdf = new jsPDF('p', 'pt', 'a4');
@@ -83,10 +93,12 @@ pdfGenerate = () => {
     bodyStyles: {font:'Amiri'},
 
   })
-  var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-  document.body.appendChild(iframe);
-  iframe.src = pdf.output('datauristring');
+ // var iframe = document.createElement('iframe');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+//  document.body.appendChild(iframe);
+  //iframe.src = pdf.output('datauristring');
+
+  window.open(pdf.output('bloburl'))
 }
 
 
@@ -142,8 +154,9 @@ Ajouter une spécialité</Link>
     <i className="fa fa-random" aria-hidden="true"/>
 </Link>
     
-    <Link className='btn btn-danger' onClick={(e)=>this.deleteSpc(specialite._id)}><i className="fa fa-times" aria-hidden="true"/>
+    <Link className='btn btn-danger' onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteSpc(specialite._id) }}><i className="fa fa-times" aria-hidden="true"/>
 </Link>
+
 
     </td>
   </tr>

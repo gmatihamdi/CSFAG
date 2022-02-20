@@ -80,6 +80,13 @@ class SelectStag extends React.Component {
     this.findsectionClick();
     this.listepromo();
     this.findgroupClick();
+    const token = localStorage.getItem("token");
+if (token){
+console.log('ok')
+}
+else{
+  this.props.history.push('/');
+}
 
   }
 

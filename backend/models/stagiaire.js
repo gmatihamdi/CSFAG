@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
     sexe: String,
     Lieunaissance: String,
     etatdossier: String,
-    datenaissanceStag:Date,
+    datenaissanceStag:String,
     adressStagiaire: String,
     telStagiaire: String,
     niveauScolaire: String,

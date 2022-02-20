@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
-class Addgroupe extends React.Component{
+class EditGroupe extends React.Component{
 
   
   constructor(props) {
@@ -30,15 +30,15 @@ onSubmit(e) {
     codeSection:this.state.codeSection,
 
   };
-        axios.post('http://localhost/groupe',studentObject)
-        .then((res) => {
-          console.log(res.data)
-          console.log(' successfully updated')
-          toast.success('Modifier avec success')
-        }).catch((error) => {
-          console.log(error)
-          toast.error("Erreur de Modification ")
-        }) 
+  axios.put('http://localhost/groupe/'+this.props.match.params.id, studentObject)
+  .then((res) => {
+    console.log(res.data)
+    console.log(' successfully updated')
+    toast.success('Modifier avec success')
+  }).catch((error) => {
+    console.log(error)
+    toast.error("Erreur de Modification ")
+  }) 
       }
  onChangeCodeSection(e){
       this.setState({ codeSection:e.target.value })
@@ -84,6 +84,25 @@ onChangeCodeGroupe(e){
                       }
 
            componentDidMount() {
+
+            axios.get(`http://localhost/groupe/edit/`+this.props.match.params.id)
+            .then(res => {
+              this.setState({
+                codeGroupe: res.data.codeGroupe,
+                codePromotion: res.data.codePromotion,
+                codeSection:res.data.codeSection,
+          
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+
+
+
+
+
+
                      this.fetchPromotion();
                      this.findsectionClick();
 
@@ -105,7 +124,7 @@ onChangeCodeGroupe(e){
     render(){
     return(
       <div className="content">
-   <ToastContainer />
+     <ToastContainer />
         <div className="w-75 mx-auto shadow p-5">
         <h2>Creer un groupe</h2>
 
@@ -160,7 +179,7 @@ onChangeCodeGroupe(e){
 
 
  
-  <button className="btn btn-primary"  type="submit" name="action">Creer
+  <button className="btn btn-primary"  type="submit" name="action">Modifier
    
   </button>
 
@@ -169,4 +188,4 @@ onChangeCodeGroupe(e){
 </div>
     )
 }}
-export default Addgroupe;
+export default EditGroupe;

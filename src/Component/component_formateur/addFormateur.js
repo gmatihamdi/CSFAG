@@ -24,19 +24,7 @@ class AddFormateur extends React.Component{
         ErrtelFormateur:'',
         ErrnomFormateurAr:''
     }
-    // Setting up functions
-   // this.onChangeCinFormateur = this.onChangeCinFormateur.bind(this);handleCinFormateur
- /*  this.handleCinFormateur = this.handleCinFormateur.bind(this);
-    this.onChangeNomFormateurFr = this.onChangeNomFormateurFr.bind(this);
-    this.onChangeNomFormateurAr = this.onChangeNomFormateurAr.bind(this);
-    this.onChangeSexe = this.onChangeSexe.bind(this);
-    this.onChangeTelFormateur = this.onChangeTelFormateur.bind(this);
-    this.onChangeEmailFormateur = this.onChangeEmailFormateur.bind(this);
-    this.onChangeAdressFormateur = this.onChangeAdressFormateur.bind(this);
-    this.onChangeEtatFormateur = this.onChangeEtatFormateur.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    // Setting up state  
-    */
+   
   }
 
 
@@ -87,26 +75,18 @@ onSubmit(values) {
         toast.success('insertion avec success')
       ).catch(err => {toast.error("Erreur d'insertion ")})      
 }
- /*onChangeCinFormateur(e){
-      this.setState({ cinFormateur:e.target.value })
-}*/
-/*
-onChangeNomFormateurFr(e){
-      this.setState({nomFormateurFr:e.target.value}) }
-      onChangeNomFormateurAr(e){
-        this.setState({nomFormateurAr:e.target.value}) }
-        onChangeSexe(e){
-            this.setState({sexe:e.target.value}) }
-            onChangeEtatFormateur(e){
-                this.setState({etatFormateur:e.target.value}) }
-                onChangeAdressFormateur(e){
-                    this.setState({adressFormateur:e.target.value}) }
-                    onChangeTelFormateur(e){
-                        this.setState({telFormateur:e.target.value}) }
-                        onChangeEmailFormateur(e){
-                            this.setState({emailFormateur:e.target.value}) }
-                            handleCinFormateur = event => {this.setState({ cinFormateur: event.target.value })}
-*/
+
+
+componentDidMount() {
+const token = localStorage.getItem("token");
+if (token){
+console.log('ok token')
+}
+else{
+  this.props.history.push('/');
+}
+
+}
     render(){
 
       const initialValues = {

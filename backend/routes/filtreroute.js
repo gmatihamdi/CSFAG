@@ -6,7 +6,7 @@ const Note = require('../models/note')
 const Modu = require('../models/module')
 const Sect = require('../models/section')
 const Competence = require('../models/competence')
-
+const Groupe = require('../models/groupe')
 
 
 
@@ -90,6 +90,16 @@ router.post('/filtrestagiare', (req, res) => {
             groupeStagiaire: req.body.y, etatdossier: etat
         })
             .populate([
+                {
+                    path: 'codePromotion',
+                    model: 'Promotion'
+                },
+                {
+                    path: 'codeSection',
+                    model: 'Section'
+                }
+
+
             ]).exec(function (err, data) {
                 if (err) {
                     console.log(err);
@@ -276,7 +286,34 @@ router.post('/filtrepromotion', (req, res) => {
 })
 
 
+router.post('/filtregroup', (req, res) => {
 
+    try {
+        Groupe.find({ codePromotion: req.body.x })
+            .populate([
+                {
+                    path: 'codeSection',
+                    model: 'Section'
+                }
+            ]).exec(function (err, data) {
+                if (err) {
+                    console.log(err);
+                    console.log('error returned');
+                    res.send(500, { error: 'Failed ' });
+                }
+                if (!data) {
+                    res.send(403, { error: 'chargement Failed' });
+                }
+                //res.send(200, data);
+                console.log(data);
+                res.json(data)
+                console.log('success generate List');
+            });
+    }
+    catch (e) {
+        console.log(e);
+    }
+})
 
 
 

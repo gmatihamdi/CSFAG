@@ -46,16 +46,23 @@ class ListeSection extends React.Component{
   componentDidMount(){
     this.handleClick();
     this.listepromo();
+    const token = localStorage.getItem("token");
+    if (token){
+    console.log('ok')
+    }
+    else{
+      this.props.history.push('/');
+    }
   }
 
-  deleteNote(id) {
+  deleteSection(id) {
     axios.delete(`http://localhost/sect/${id}`)
         .then((res) => {
             console.log(' successfully deleted!')
         }).catch((error) => {
             console.log(error)
         })
-        this.props.history.push('/stagiare')
+      
 }
 
 handleClick() {
@@ -96,9 +103,9 @@ onChangeIdpromotion(e) {
 
 pdfGenerate = () => {
 
-  var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-  document.body.appendChild(iframe);
+ // var iframe = document.createElement('iframe');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+  //document.body.appendChild(iframe);
   var img = new Image()
   var Values = this.state.listsections.map((element, index) => Object.values([index + 1, element.codeSection, element.libSection,element.codeDiplome]));
   var pdf = new jsPDF('p', 'pt', 'a4');
@@ -108,7 +115,10 @@ pdfGenerate = () => {
   pdf.addFont(fontarab, 'Amiri', 'normal');
  pdf.setFont('Amiri'); 
   pdf.setFontSize(22);
-  pdf.text(90, 80,this.state.idpromotion)
+ 
+  {this.state.listsections.map((section,index)=>(
+  pdf.text(170, 80,section.codePromotion.libPromotionFr)
+  ))}
   pdf.setFontSize(10);
   pdf.autoTable({ html: '#my-table', startY: 150, showHead: 'everyPage'})
   // Or use javascript directly:
@@ -120,10 +130,11 @@ pdfGenerate = () => {
     bodyStyles: {font:'Amiri'},
 
   })
-  var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-  document.body.appendChild(iframe);
-  iframe.src = pdf.output('datauristring');
+  //var iframe = document.createElement('iframe');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+ // document.body.appendChild(iframe);
+ // iframe.src = pdf.output('datauristring');
+ window.open(pdf.output('bloburl'))
 }
 
 
@@ -137,8 +148,7 @@ pdfGenerate = () => {
   return( 
     <div className="content">
         <Link className="btn btn-warning" to='/admin/addSection'><i class="fa fa-plus" aria-hidden="true"/> Ajoute Section</Link>
-        <Link className="btn btn-primary" to='/admin/listegroup'><i class="fa fa-users" aria-hidden="true"/> Groupe </Link>
-
+       
         <form className="row g-3">
         <div class="col-auto">
 
@@ -195,8 +205,8 @@ pdfGenerate = () => {
    
     <Link className='btn btn-outline-primary mr-2' to={"/admin/editSection/"+section._id}><i className="fa fa-random" aria-hidden="true"/></Link>
     
-    <Link className='btn btn-danger' onClick={(e)=>this.deleteNote(section._id)}><i className="fa fa-times" aria-hidden="true"/></Link>
-
+    <Link className='btn btn-danger' onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteSection(section._id) }}><i className="fa fa-times" aria-hidden="true"/></Link>
+  
     </td>
   </tr>
  

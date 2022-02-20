@@ -39,6 +39,8 @@ import formateurs from './Component/component_formateur/listeFormateur'
 import resultat from './Component/component_note/resultat'
 import login from './Component/component_login/auth'
 import statistique from './Component/component_statistique/statistique'
+import Groupe from './Component/component_groupe/listegroup'
+
 
 
 var routes = [
@@ -87,6 +89,14 @@ var routes = [
     component: Section,
     layout: "/admin",
   },
+  {
+    path: "/Groupe",
+    name: "Groupe",
+    icon: "fa fa-users",
+    component: Groupe,
+    layout: "/admin",
+  },
+
 
   {
     path: "/Modules",
@@ -125,7 +135,7 @@ var routes = [
   {
     path: "/resultat",
     name: "Resultat",
-    icon: "nc-icon nc-single-02",
+    icon: "nc-icon nc-calendar-60",
     component: resultat,
     layout: "/admin",
   },
@@ -135,7 +145,7 @@ var routes = [
   {
     path: "/listediplom",
     name: "Diplomés",
-    icon: "nc-icon nc-single-02",
+    icon: "nc-icon nc-badge",
     component: diplomes,
     layout: "/admin",
   },
@@ -150,7 +160,14 @@ var routes = [
     component: users,
     layout: "/admin",
   },
- 
+  {
+    path: "/icons",
+    name: "Icons",
+    icon: "nc-icon nc-diamond",
+    component: Icons,
+    layout: "/admin",
+  },
+ /*
   {
     path: "/login",
     name: "User login",
@@ -159,7 +176,7 @@ var routes = [
     layout: "/admin",
   },
  
- /*
+ 
 
    {
     path: "/dashboard",

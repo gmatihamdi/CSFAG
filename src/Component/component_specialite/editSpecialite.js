@@ -50,6 +50,14 @@ class Editspecialite extends React.Component{
       .catch((error) => {
         console.log(error);
       })
+
+      const token = localStorage.getItem("token");
+if (token){
+console.log('ok')
+}
+else{
+  this.props.history.push('/');
+}
   }
   
   

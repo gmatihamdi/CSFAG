@@ -7,8 +7,8 @@
        codePromotion:  String ,
        libPromotionFr:  String,
        libPromotionAr:  String,
-       debutPromotion:  Date, 
-       finPromotion:  Date,
+       debutPromotion:  String, 
+       finPromotion:  String,
        capacitePromotion:  String,  
    })
    module.exports = mongoose.model('Promotion', promotionSchema);

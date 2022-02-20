@@ -22,9 +22,12 @@ class ListeCompetence extends React.Component{
        codeMatiere:'' ,
        listcompetence:[],
         codeSection: '',
-        listeSection:[]
+        idpromotion: '',
+        listeSection:[],
+        Listepromo:[]
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
+    this.onChangeIdpromotion = this.onChangeIdpromotion.bind(this);
   }
   
   handleClick() {
@@ -45,12 +48,46 @@ class ListeCompetence extends React.Component{
   }
 
 
+  findsectionClick() {
+    const a = { x: this.state.idpromotion }
+    axios.post(`http://localhost/methode/getsection`, a)
+      .then((res) => {
+        this.setState({
+          listeSection: res.data,
+        })
+        console.log("resultat de recherche");
+        console.log(res.data)
+      })
+      // Catch any errors we hit and update the app
+      .catch(error => this.setState({ error, isLoading: false }));
+  }
+
+  listepromo() {
+    axios.get('http://localhost/prom')
+      .then((res) => {
+        this.setState({
+          Listepromo: res.data,
+
+        })
+
+      })
+  }
+
+
 
 
 
   componentDidMount(){
+    this.listepromo();
     this.handleClick();
-    this.fetchSection() ;
+    this.findsectionClick() ;
+    const token = localStorage.getItem("token");
+    if (token){
+    console.log('ok')
+    }
+    else{
+      this.props.history.push('/');
+    }
   }
 
   deleteNote(id) {
@@ -62,32 +99,20 @@ class ListeCompetence extends React.Component{
         })
       //  this.props.history.push('admin/')
 }
-fetchSection() {
-  fetch(`http://localhost/sect`)
-    // We get the API response and receive data in JSON format...
-    .then(response => response.json())
-    // ...then we update the users state
-    .then(data =>
-      this.setState({
-        listeSection: data,
-        isLoading: false,
-      })
-    )
-    // Catch any errors we hit and update the app
-    .catch(error => this.setState({ error, isLoading: false }));
-}
+
 
 onChangeCodeSection(e) {
   this.setState({ codeSection: e.target.value })
 }
 
-
+onChangeIdpromotion(e) {
+  this.setState({ idpromotion: e.target.value })}
 
 pdfGenerate = () => {
 
-  var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-  document.body.appendChild(iframe);
+  //var iframe = document.createElement('iframe');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+ // document.body.appendChild(iframe);
   var img = new Image()
   var Values = this.state.listcompetence.map((element, index) => Object.values([index + 1, element.codeMatiere.libMatiere, element.codeMatiere.codeMatiere,element.codeMatiere.seuilMatiere,element.codeMatiere.niveauMatiere]));
   var pdf = new jsPDF('p', 'pt', 'a4');
@@ -107,10 +132,11 @@ pdfGenerate = () => {
 
 
   })
-  var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-  document.body.appendChild(iframe);
-  iframe.src = pdf.output('datauristring');
+  //var iframe = document.createElement('iframe');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+ // document.body.appendChild(iframe);
+ // iframe.src = pdf.output('datauristring');
+ window.open(pdf.output('bloburl'))
 }
 
 
@@ -120,6 +146,25 @@ pdfGenerate = () => {
       <Link className="btn btn-warning" to='/admin/addCompetence'><i class="fa fa-plus" aria-hidden="true"/> Ajoute Competence</Link>
 
       <form className="row g-3">
+
+
+      <div class="col-auto">
+
+<select class="form-control" name="grouprselect" value={this.state.idpromotion}
+  onChange={this.onChangeIdpromotion}
+  onClick={() => this.findsectionClick()} >
+
+  <option >Selectionner une Promotion</option>
+
+  {
+    this.state.Listepromo.map(function (promotion) {
+      return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
+    })
+  }
+</select>
+</div>
+
+
           <div class="col-auto">
             <select
               class="form-control"

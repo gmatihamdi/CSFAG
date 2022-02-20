@@ -27,20 +27,27 @@ router.delete('/:id',async(req,res)=>{
 
 
 
-router.post('/',(req,res)=>{
+router.post('/',async(req,res)=>{
+
+  let  Matierexiste= await Matiere.findOne({codeMatiere:req.body.codeMatiere,
+    specialiteMatiere:req.body.specialiteMatiere });
+  // console.log(spcexiste)
+   if (Matierexiste){
+     return res.status(400).send('That user already exisits!');   
+   }
+   else{
     matiere=new Matiere({
         codeMatiere:req.body.codeMatiere,
         libMatiere:req.body.libMatiere,
-        coifMatiere:req.body.coifMatiere,
+        Nbreheures:req.body.Nbreheures,
         seuilMatiere:req.body.seuilMatiere,
         niveauMatiere:req.body.niveauMatiere,
       specialiteMatiere:req.body.specialiteMatiere
-
-
     })
     matiere.save(()=>{
         res.json(this.matiere)
     })
+  }
 })
 router.put('/:id',async(req,res)=>{
     await Matiere.findByIdAndUpdate(req.params.id,req.body)

@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
+import { Formik, Field, Form, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
 class Addcompetence extends React.Component{
 
   
@@ -16,61 +18,40 @@ class Addcompetence extends React.Component{
         listeModules:[],
         listeSection:[],
         listePromotions:[],
-        ErrcodeCompetence:  '' ,
-        ErrcodePromotion: '',
-        ErrcodeSection: '',
-        ErrcodeMatiere:'' ,
+
+    }}
+  validationSchema() {
+    return Yup.object().shape({
+      codeCompetence: Yup.string() .required('Champs obligatoire'),
+      codePromotion:  Yup.string()
+      .required('Champs obligatoire '),
+      codeSection: Yup.string()
+        .required('Champs obligatoire'),
+        codeMatiere: Yup.string()
+        .required('Champs obligatoire'),
+     
+      });
     }
-    // Setting up functions
-    this.onChangeCodeCompetence = this.onChangeCodeCompetence.bind(this);
-    this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
-    this.onChangeCodeMatiere = this.onChangeCodeMatiere.bind(this);
-    this.onChangecodeSpecialite = this.onChangecodeSpecialite.bind(this);
-    this.onChangeCodePromotion = this.onChangeCodePromotion.bind(this);
 
-    this.onSubmit = this.onSubmit.bind(this);
-    // Setting up state
-   
-  }
-onSubmit(e) {
-  e.preventDefault()
 
-  if(this.state.codeCompetence===''){
-    this.state.ErrcodeCompetence='Champs Obligatoire '
-   }
-   if(this.state.codePromotion===''){
-    this.state.ErrcodePromotion='Champs Obligatoire '
-   }
-   if(this.state.codeSection===''){
-    this.state.ErrcodeSection='Champs Obligatoire '
-   }
-   if(this.state.codeMatiere===''){
-    this.state.ErrcodeMatiere='Champs Obligatoire '
-   }
-   else{
+
+
+onSubmit(values) {
+ 
   const studentObject = {
-    codeSection:this.state.codeSection,
-    codePromotion:this.state.codePromotion,
-    codeCompetence:this.state.codeCompetence,
-    codeSpecialite:this.state.codeSpecialite,
-    codeMatiere:this.state.codeMatiere,
+    codeSection:values.codeSection,
+    codePromotion:values.codePromotion,
+    codeCompetence:values.codeCompetence,
+    codeSpecialite:values.codeSpecialite,
+    codeMatiere:values.codeMatiere,
    
   };
         axios.post('http://localhost/compet',studentObject).then(res => 
         toast.success('insertion avec success')
       ).catch(err => {toast.error("Erreur d'insertion ")})  
-      }}
- onChangeCodeSection(e){
-      this.setState({ codeSection:e.target.value })
-}
-onChangeCodeMatiere(e){
-      this.setState({codeMatiere:e.target.value}) }
-      onChangeCodePromotion(e){
-        this.setState({codePromotion:e.target.value}) }
-        onChangecodeSpecialite(e){
-            this.setState({codeSpecialite:e.target.value}) }
-            onChangeCodeCompetence(e){
-                this.setState({codeCompetence:e.target.value}) }
+      }
+
+ 
 
                     fetchSpecialite() {
                         fetch(`http://localhost/spc`)
@@ -116,59 +97,90 @@ onChangeCodeMatiere(e){
                           // Catch any errors we hit and update the app
                           .catch(error => this.setState({ error, isLoading: false }));
                       }
-                      fetchSection() {
-                        fetch(`http://localhost/sect`)
-                          // We get the API response and receive data in JSON format...
-                          .then(response => response.json())
-                          // ...then we update the users state
-                          .then(data =>
+                      findsectionClick() {
+                        const a = { x: document.getElementById("codePromotion").value}
+                        axios.post(`http://localhost/methode/getsection`, a)
+                          .then((res) => {
                             this.setState({
-                              listeSection: data,
-                              isLoading: false,
+                              listeSection: res.data,
                             })
-                          )
+                            console.log("resultat de recherche");
+                            console.log(res.data)
+                          })
                           // Catch any errors we hit and update the app
                           .catch(error => this.setState({ error, isLoading: false }));
                       }
+
+
+                      findmatieresClick() {
+                        const a = { x: document.getElementById("codePromotion").value}
+                        axios.post(`http://localhost/methode/getmatieres`, a)
+                          .then((res) => {
+                            this.setState({
+                              listeModules: res.data,
+                            })
+                            console.log("resultat de recherche");
+                            console.log(res.data)
+                          })
+                          // Catch any errors we hit and update the app
+                          .catch(error => this.setState({ error, isLoading: false }));
+                      }
+
+
+
 
 
            componentDidMount() {
                      this.fetchSpecialite();
                      this.fetchPromotion();
                      this.fetchModule();
-                     this.fetchSection();
+                     this.findsectionClick();
+
+                     const token = localStorage.getItem("token");
+    if (token){
+    console.log('ok')
+    }
+    else{
+      this.props.history.push('/');
+    }
 
                   }
 
 
 
     render(){
+      const initialValues = {
+        codeCompetence:  '' ,
+        codePromotion: '',
+        codeSection: '', 
+         codeSpecialite:  '', 
+         codeMatiere:'' ,
+        };
     return(
       <div className="content">
      
-        <div className="w-75 mx-auto shadow p-5">
+        <div >
         <h2>Affecter une  Competence</h2>
         <ToastContainer/>
-        <form onSubmit={this.onSubmit} class="row g-3">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={this.validationSchema} onSubmit={this.onSubmit} >
 
+{({ resetForm,values}) => (
+            <Form class="row g-3" noValidate>
 <div className="col-md-6">
 <label> Code Competence </label>
 
-  <input type="text" className="form-control " placeholder="enter code competence" 
-  name="codeMatiere"
-  value={this.state.codeCompetence}
-  onChange={this.onChangeCodeCompetence}
-
-  />
-    <p class="text-danger">{this.state.ErrcodeCompetence}</p>
+  <Field type="text" className="form-control " placeholder="enter code competence" 
+  name="codeCompetence"/>
+    <ErrorMessage name="codeCompetence" component="div"  className="text-danger" />
     </div>
   
     <div className="col-md-6">
 <label>  Specialité </label>
    
-   <select 
-   className="form-control"  value={this.state.codeSpecialite}
-   onChange={this.onChangecodeSpecialite}> 
+   <Field 
+   className="form-control"  name="codeSpecialite"  as="select"> 
 <option >select specialite</option>
  
 {
@@ -176,33 +188,14 @@ onChangeCodeMatiere(e){
                                     return <option value={specialite._id}  >{specialite.libSpecialite}</option>;
                                 })
                             }
-   </select>
+   </Field>
  
 </div>
-
-<div className="col-md-6">
-<label> Section </label>
-   
-   <select 
-   className="form-control"  value={this.state.codeSection}
-   onChange={this.onChangeCodeSection}> 
-<option >select section</option>
- 
-{
-                                this.state.listeSection.map(function(section) {
-                                    return <option value={section._id}  >{section.libSection}</option>;
-                                })
-                            }
-   </select>
-   <p class="text-danger">{this.state.ErrcodeSection}</p>
-</div>
-
-
 <div className="col-md-6">
 <label> Promotion </label>
-   <select 
-   className="form-control"  value={this.state.codePromotion}
-   onChange={this.onChangeCodePromotion}> 
+   <Field 
+   className="form-control" id='codePromotion' name='codePromotion' as="select" onClick={() => this.findsectionClick()}> 
+  
 <option >select Promotion</option>
  
 {
@@ -210,16 +203,31 @@ onChangeCodeMatiere(e){
                                     return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
                                 })
                             }
-   </select>
-   <p class="text-danger">{this.state.ErrcodePromotion}</p>
+   </Field>
+   <ErrorMessage name="codePromotion" component="div"  className="text-danger" />
+</div>
+
+<div className="col-md-6">
+<label> Section </label>
+   
+   <Field 
+   className="form-control"  name="codeSection" as="select"> 
+<option >select section</option>
+ 
+{
+                                this.state.listeSection.map(function(section) {
+                                    return <option value={section._id}  >{section.libSection}</option>;
+                                })
+                            }
+   </Field>
+   <ErrorMessage name="codeSection" component="div"  className="text-danger" />
 </div>
 
 <div className="col-md-6">
 <label> module </label>
    
-   <select 
-   className="form-control"  value={this.state.codeMatiere}
-   onChange={this.onChangeCodeMatiere}> 
+   <Field className="form-control"  name="codeMatiere" as="select"> 
+   
 <option >select module</option>
  
 {
@@ -227,16 +235,25 @@ onChangeCodeMatiere(e){
                                     return <option value={matiere._id}  >{matiere.libMatiere}</option>;
                                 })
                             }
-   </select>
-   <p class="text-danger">{this.state.ErrcodeMatiere}</p>
+   </Field>
+   <ErrorMessage name="codeMatiere" component="div"  className="text-danger" />
 </div>
 
- 
-  <button className="btn btn-primary"  type="submit" name="action"> Enregistrer
-   
-  </button>
-
-</form>
+<div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  onClick={() => resetForm(initialValues)}
+                  className="btn btn-secondary "
+                >
+                  Reset
+                </button>
+              </div>
+</Form>
+          )}
+        </Formik>
 </div>
 </div>
     )

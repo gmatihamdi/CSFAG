@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import TextField from 'textfield';
 import DatePicker from "react-date-picker";
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
-
+import {moment} from 'moment';
 
 class EditStagiaire extends Component {
 
@@ -93,6 +94,16 @@ class EditStagiaire extends Component {
                 }
             })
             this.fetchPromotion();
+
+            const token = localStorage.getItem("token");
+            if (token){
+            console.log('ok')
+            }
+            else{
+              this.props.history.push('/');
+            }
+
+
            
         }
 
@@ -273,8 +284,9 @@ class EditStagiaire extends Component {
  <div className="col-md-6">
  <label for="inputEmail4" class="form-label"> Date de naissance </label>
                         <div>
-                            <DatePicker className="form-control "
-                                value={this.state.datenaissanceStag}
+                        <TextField type="date" className="form-control "
+                        name="datenaissanceStag"
+                                value={ this.state.datenaissanceStag}
                                 onChange={this.onChangeDatenaissanceStag}
                             />
                         </div>

@@ -38,7 +38,20 @@ router.delete('/:id',async(req,res)=>{
     res.json({'message':'deleted'})
 })
 
-router.post('/',(req,res)=>{
+router.post('/',async(req,res)=>{
+
+
+  let  sectexiste= await Section.findOne({codeSection:req.body.codeSection });
+
+  // console.log(spcexiste)
+   
+   
+   
+   if (sectexiste){
+     return res.status(400).send('That user already exisits!');
+    
+   }
+   else{
     section=new Section({
         codeSection:req.body.codeSection,
         codePromotion:req.body.codePromotion,
@@ -55,6 +68,7 @@ router.post('/',(req,res)=>{
     section.save(()=>{
         res.json(this.section)
     })
+  }
 })
 router.put('/:id',async(req,res)=>{
     await Section.findByIdAndUpdate(req.params.id,req.body)

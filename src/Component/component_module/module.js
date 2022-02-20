@@ -33,16 +33,27 @@ class Module extends React.Component{
    
 
     })
+
+    const token = localStorage.getItem("token");
+    if (token){
+    console.log('ok')
+    }
+    else{
+      this.props.history.push('/');
+    }
+
+
+
   }
 
-  deleteSpc(id) {
+  deleteModul(id) {
     axios.delete(`http://localhost/mat/${id}`)
         .then((res) => {
             console.log(' successfully deleted!')
         }).catch((error) => {
             console.log(error)
         })
-        this.props.history.push('/module')
+        
 }
 
   render(){
@@ -77,9 +88,10 @@ class Module extends React.Component{
     <td>
   
     <Link className='btn btn-outline-primary mr-2' to={"/admin/editMatiere/"+matiere._id}><i className="fa fa-random" aria-hidden="true"/></Link>
-    
-    <Link className='btn btn-danger' onClick={(e)=>this.deleteSpc(matiere._id)}><i className="fa fa-times" aria-hidden="true"/></Link>
 
+ 
+ <Link className='btn btn-danger' onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteModul(matiere._id) }}><i className="fa fa-times" aria-hidden="true"/></Link>
+  
     </td>
   </tr>
  

@@ -65,38 +65,18 @@ const cookies = new Cookies();
                    localStorage.setItem("user", JSON.stringify(user));
                    localStorage.setItem('token', res.data.token);
                           this.props.history.push('/admin/dashboard');
-                          console.log('veriffff token')
-                          console.log(res.data.message)
-                          console.log(res.data.token)
-                     console.log(res.data)
+                          
                   } else {
-                      alert(res.data.message);
+                    
+                      toast.error(res.data.message)
                   }
               })
               .catch(error => {
                   // return;
-                  alert(error.data && error.data.message);
+                  
+                  toast.error('erreur')
               })
       }
-
-
-
-
-
-
-                    /*  .then(res => 
-   // console.log(res.data.message) , 
-                  //      console.log('res') ,
-                           
-                    window.location.href='/admin/dashboard'
-                 /       
-                      ).catch(err =>
-                         toast.error("Erreur de connecter "),
-                         ) 
-              // this.props.history.push('/admin') 
-                }
-*/
-
 
                 
                 onChangeName(e){ this.setState({ name:e.target.value }) }
@@ -108,8 +88,8 @@ const cookies = new Cookies();
 
                   render(){
                     return(
-            <>
-              <div className="content">
+            
+              <div className="container center_div">
               <ToastContainer/>
                 <Row>
                   <Col md="8">
@@ -132,13 +112,13 @@ const cookies = new Cookies();
         <Form onSubmit={this.onSubmit} >
         
                           <Row>
-                            <Col className="pr-1" md="5">
+                            <Col className="update ml-auto mr-auto" md="5">
                               <FormGroup>
                                 <label>login</label>
                                 <Input
                                   defaultValue="Creative Code Inc."
                                   
-                                  placeholder="Company"
+                                //  placeholder="Company"
                                   type="text"
                                   value={this.state.name}
           onChange={this.onChangeName}
@@ -147,12 +127,12 @@ const cookies = new Cookies();
                             </Col>
         </Row>
                             <Row>
-                            <Col className="pr-1" md="5">
+                            <Col className="update ml-auto mr-auto" md="5">
                               <FormGroup>
                                 <label>mot de passe</label>
                                 <Input
                                   defaultValue="michael23"
-                                  placeholder="Username"
+                                  //placeholder="Username"
                                   type="password"
                                   value={this.state.password}
           onChange={this.onChangePassword}
@@ -186,7 +166,7 @@ const cookies = new Cookies();
                   
                 </Row>
               </div>
-            </>
+            
            )
         }}
         

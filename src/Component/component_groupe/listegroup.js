@@ -2,6 +2,14 @@ import React from 'react'
 import axios from 'axios'
 import { Link} from "react-router-dom"
 import { FcPrint } from "react-icons/fc";
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  Row,
+  Col,
+} from "reactstrap";
 class ListeGroupe extends React.Component{
   constructor(props) {
     super()
@@ -9,21 +17,61 @@ class ListeGroupe extends React.Component{
       codeCompetence:  '' ,
       codePromotion: '',
       codeSection: '', 
-users:[]
-    }}
+users:[],
+idpromotion: '',
+Listepromo:[],
+
+    }
+    this.onChangeIdpromotion = this.onChangeIdpromotion.bind(this);}
   
+    handleClick() {
+      const a = {
+        x: this.state.idpromotion,
+      }
+      axios.post('http://localhost/filtre/filtregroup', a)
+      .then((res) => {
+        this.setState({
+          users: res.data,
+        })
+        console.log("resultat de recherche");
+        console.log(res.data)
+      })
+      // Catch any errors we hit and update the app
+      .catch(error => this.setState({ error, isLoading: false }));
+
+
+    }
+
+
   componentDidMount(){
-    axios.get('http://localhost/groupe')
+    
+
+    const token = localStorage.getItem("token");
+    if (token){
+    console.log('ok')
+    }
+    else{
+   
+    }
+this. handleClick();
+    this.listepromo();
+  }
+
+  listepromo(){
+    axios.get('http://localhost/prom')
     .then((res)=>{
       this.setState({
-      users:res.data
+      Listepromo:res.data,
+     
     })
-   console.log(res.data)
-
+   
+  
     })
   }
 
-  deleteNote(id) {
+
+
+  deleteGroup(id) {
     axios.delete(`http://localhost/groupe/${id}`)
         .then((res) => {
             console.log(' successfully deleted!')
@@ -33,20 +81,47 @@ users:[]
         this.props.history.push('/groupe')
 }
 
+onChangeIdpromotion(e) {
+  this.setState({ idpromotion: e.target.value })
+}
+
   render(){
   return( 
     <div className="content">
-      <h1> Gestion des groupes </h1> <Link className="btn btn-warning" to='/admin/Addgroupe'>creer un groupe</Link>
+      
+      <Link className="btn btn-warning" to='/admin/Addgroupe'>creer un groupe</Link>
+
+      <form className="row g-3">
+        <div class="col-auto">
+
+<select class="form-control" name="grouprselect" value={this.state.idpromotion}
+  onChange={this.onChangeIdpromotion}  >
+
+  <option >Selectionner une Promotion</option>
+
+  {
+    this.state.Listepromo.map(function (promotion) {
+      return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
+    })
+  }
+</select>
+</div>
+<Link className='btn btn-danger' onClick={() => this.handleClick()}> <i className="nc-icon nc-zoom-split" /> </Link>
+
+</form>
+
+
+
 <table className="table">
 <thead class="thead-dark">
   <tr>
     <th scope="col">N°</th>
     
-    <th scope="col">Nom&Prénom</th>
-    <th scope="col">matiere</th>
-    <th scope="col">Note</th>
+    <th scope="col">Groupe</th>
+    <th scope="col">code Section</th>
+    <th scope="col">Section</th>
 
-    <th scope="col">parametres</th>
+    <th scope="col"></th>
   </tr>
 </thead>
 <tbody>
@@ -55,15 +130,16 @@ users:[]
           <tr key={groupe._id}>
           <th scope="row">{index + 1}</th>
             <td>{groupe.codeGroupe}</td>
-            <td>{groupe.codeGroupe}</td>
-            <td>{groupe.codeGroupe}</td>
+            <td>{groupe.codeSection.codeSection}</td>
+            <td>{groupe.codeSection.libSection}</td>
 
         
     <td>
-    <Link className='btn btn-primary mr-2'>View</Link>
-    <Link className='btn btn-outline-primary mr-2' to={"/editGroupe/"+groupe._id}>Edit</Link>
-    
-    <Link className='btn btn-danger' onClick={(e)=>this.deleteNote(groupe._id)}>Delete</Link>
+
+    <Link className='btn btn-outline-primary mr-2' to={"/admin/editGroup/"+groupe._id}>Modifier</Link>
+    <Link className='btn btn-danger' onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteGroup(groupe._id) }}>supprimer</Link>
+  
+  
 
     </td>
   </tr>

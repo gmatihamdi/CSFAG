@@ -16,7 +16,7 @@ import {
   Col,
 } from "reactstrap";
 import fontarab from './Amiri-Regular.ttf' 
-import ProtectedRoute from "../component_login/ProtectedRoute"
+
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
@@ -104,6 +104,16 @@ class Stagiaire extends React.Component {
  
 
   componentDidMount() {
+
+const token = localStorage.getItem("token");
+if (token){
+console.log('ok')
+}
+else{
+  this.props.history.push('/');
+}
+
+/** */
     console.log('tokennnnnn')
    console.log( cookies.get('token'));
     this.handleClick();
@@ -210,9 +220,9 @@ class Stagiaire extends React.Component {
 
   pdfAttestInscri = () => {
 
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-    document.body.appendChild(iframe);
+   // var iframe = document.createElement('iframe');
+  //  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+   // document.body.appendChild(iframe);
     var img = new Image()
     var pdf = new jsPDF('p', 'pt', 'a4');
     pdf.setFontSize(9);
@@ -236,10 +246,11 @@ class Stagiaire extends React.Component {
     pdf.text(220, 450, 'سلمت هذه الشهادة للمعني للإستظهار بها لدى من يهمه الأمر ')
     pdf.text(80, 500, 'مدير المركز ')
     pdf.setFontSize(9)
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-    document.body.appendChild(iframe);
-    iframe.src = pdf.output('datauristring');
+   // var iframe = document.createElement('iframe');
+   // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+   // document.body.appendChild(iframe);
+   // iframe.src = pdf.output('datauristring');
+   window.open(pdf.output('bloburl'))
   }
 
 
@@ -255,9 +266,9 @@ class Stagiaire extends React.Component {
 
   pdfGenerate = () => {
 
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-    document.body.appendChild(iframe);
+  //  var iframe = document.createElement('iframe');
+   // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+   // document.body.appendChild(iframe);
     var img = new Image()
     var Values = this.state.liststag.map((element, index) => Object.values([index + 1, element.cinStagiaire, element.nomStagiaireFr]));
     var pdf = new jsPDF('p', 'pt', 'a4');
@@ -268,11 +279,13 @@ class Stagiaire extends React.Component {
     pdf.setFontSize(10);
 
     pdf.line(150, 110, 300, 110);
-    pdf.text(35, 130, 'specialite')
+    {this.state.liststag.map((stagiare, index) => (
+    pdf.text(35, 130, 'Promotion'),
+    pdf.text(100, 130,stagiare.codePromotion.libPromotionFr),
     pdf.text(120, 130, '')
-
+    ))}
     pdf.setFontSize(9)
-    pdf.text(35, 800, "(*) Il ne peut être délivré qu'une seule copie du présent relevé de notes")
+    pdf.text(35, 800, "(*) ")
     pdf.autoTable({ html: '#my-table', startY: 150, showHead: 'everyPage' })
     // Or use javascript directly:
     pdf.autoTable({
@@ -280,12 +293,12 @@ class Stagiaire extends React.Component {
       body: Values
 
     })
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-    document.body.appendChild(iframe);
-    iframe.src = pdf.output('datauristring');
+  //  var iframe = document.createElement('iframe');
+  //  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+  //  document.body.appendChild(iframe);
+   // iframe.src = pdf.output('datauristring');
 
-  
+   window.open(pdf.output('bloburl'))
 
 
    
@@ -294,7 +307,7 @@ class Stagiaire extends React.Component {
   render() {
     return (
 
-      <UserContext.Consumer>
+    
       <div className="content" >
        
         <form className="row g-4">
@@ -379,7 +392,7 @@ class Stagiaire extends React.Component {
                       <th scope="col">N°</th>
                       <th scope="col">CIN</th>
                       <th scope="col">Nom&Prénom</th>
-                      <th scope="col">specialite</th>
+                      <th scope="col"> الاسم و اللقب </th>
 
                       <th scope="col">Action</th>
                     </tr>
@@ -390,7 +403,7 @@ class Stagiaire extends React.Component {
                         <th scope="row">{index + 1}</th>
                         <td>{stagiare.cinStagiaire}</td>
                         <td>{stagiare.nomStagiaireFr}</td>
-                        <td>{stagiare.specialiteStagiaire}</td>
+                        <td>{stagiare.nomStagiaireAr}</td>
 
                         <td>
 
@@ -423,8 +436,8 @@ class Stagiaire extends React.Component {
 
 
       </div>
-      </UserContext.Consumer>
+     
     )
   }
 }
-export default withRouter(ProtectedRoute(Stagiaire));
+export default Stagiaire;

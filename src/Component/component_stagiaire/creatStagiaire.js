@@ -1,10 +1,10 @@
 import React from 'react'
 import axios from 'axios'
-import useForm from './useForm'
 import DatePicker from "react-date-picker";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import validate from './validateInfo';
+import { Formik, Field, Form, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
 
 class CreatStagiaire extends React.Component{
 
@@ -13,17 +13,13 @@ class CreatStagiaire extends React.Component{
     super()
     this.state = {
         cinStagiaire:'',
-        ErreurcinStagiaire:'',
         nomStagiaireFr: '',
-        ErrnomStagiaireFr: '',
         nomStagiaireAr: '',
         etatdossier: '',
         sexe: '',
         Lieunaissance: '',
-        ErrnomStagiaireAr: '',
-        datenaissanceStag: new Date(),
+        datenaissanceStag: '',
         adressStagiaire: '',
-        ErradressStagiaire: '',
         telStagiaire: '',
         niveauScolaire: '',
         emailstagiaire: '',
@@ -36,94 +32,90 @@ class CreatStagiaire extends React.Component{
         listePromotions:[]
     }
     // Setting up functions
-    this.onChangeCinStagiaire = this.onChangeCinStagiaire.bind(this);
-    this.onChangeNomStagiaireFr = this.onChangeNomStagiaireFr.bind(this);
-    this.onChangeNomStagiaireAr = this.onChangeNomStagiaireAr.bind(this);
-    this.onChangeEtatdossier = this.onChangeEtatdossier.bind(this);
-    this.onChangeDatenaissanceStag = this.onChangeDatenaissanceStag.bind(this);
-    this.onChangeAdressStagiaire = this.onChangeAdressStagiaire.bind(this);
-    this.onChangeTelStagiaire = this.onChangeTelStagiaire.bind(this);
-    this.onChangeNiveauScolaire = this.onChangeNiveauScolaire.bind(this);
-    this.onChangeEmailstagiaire = this.onChangeEmailstagiaire.bind(this);
-    this.onChangeSpecialiteStagiaire = this.onChangeSpecialiteStagiaire.bind(this);
-    this.onChangeGroupeStagiaire = this.onChangeGroupeStagiaire.bind(this);
-    this.onChangeCodePromotion = this.onChangeCodePromotion.bind(this);
-    this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
-    this.onChangeSexe = this.onChangeSexe.bind(this);
-    this.onChangeLieunaissance = this.onChangeLieunaissance.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+  
     // Setting up state
-
-
+    this.onChangeCodePromotion = this.onChangeCodePromotion.bind(this);
+ 
   };
   //const {values}=useForm(validate);
-onSubmit(e) {
-  e.preventDefault()
- if((this.state.cinStagiaire==='')&&(this.state.cinStagiaire.length!=8)){
-  this.state.ErreurcinStagiaire='Champs Obligatoire 8 chiffres'
- }
- if(this.state.nomStagiaireFr===''){
-  this.state.ErrnomStagiaireFr='Champs Obligatoire '
- }
- if(this.state.nomStagiaireAr===''){
-  this.state.ErrnomStagiaireAr='Champs Obligatoire '
- }
-else{
+
+
+  validationSchema() {
+    return Yup.object().shape({
+      cinStagiaire: Yup.string() .required('cin obligatoire')
+      .min(8, '8 characters')
+      .max(8, '8 characters'),
+      nomStagiaireAr:  Yup.string()
+      .required('Nom en arabe obligatoire'),
+       
+      nomStagiaireFr: Yup.string()
+        .required('Nom obligatoire'),
+      
+       
+
+        telStagiaire: Yup.string()
+        .required('Numéro Mobile obligatoire')
+        .min(8, 'tel à 8 characters min'),
+
+        adressStagiaire: Yup.string()
+        .required('@ obligatoire'),
+    
+        codePromotion: Yup.string()
+        .required('Promotion obligatoire'),
+        
+      
+        sexe: Yup.string()
+        .required('Champs obligatoire'),
+
+        codeSection: Yup.string()
+        .required('Champs obligatoire'),
+        datenaissanceStag: Yup.string()
+        .required('Champs obligatoire'),
+      
+       
+    });
+  }
+
+
+
+  onSubmit(values) {
+  
+
+ console.log('hello formik')
+
   const studentObject = {
-    cinStagiaire:this.state.cinStagiaire,
-    nomStagiaireFr:this.state.nomStagiaireFr,
-    nomStagiaireAr:this.state.nomStagiaireAr,
+    cinStagiaire:values.cinStagiaire,
+    nomStagiaireFr:values.nomStagiaireFr,
+    nomStagiaireAr:values.nomStagiaireAr,
     etatdossier:'En attente',
-    datenaissanceStag:this.state.datenaissanceStag,
-    adressStagiaire:this.state.adressStagiaire,
-    telStagiaire:this.state.telStagiaire,
-    niveauScolaire:this.state.niveauScolaire,
-    emailstagiaire:this.state.emailstagiaire,
-    specialiteStagiaire:this.state.specialiteStagiaire,
-    groupeStagiaire:this.state.groupeStagiaire,
-    codeSection:this.state.codeSection,
-    codePromotion:this.state.codePromotion,
-    sexe:this.state.sexe,
-    Lieunaissance:this.state.Lieunaissance,
+    datenaissanceStag:values.datenaissanceStag,
+    adressStagiaire:values.adressStagiaire,
+    telStagiaire:values.telStagiaire,
+    niveauScolaire:values.niveauScolaire,
+    emailstagiaire:values.emailstagiaire,
+    specialiteStagiaire:values.specialiteStagiaire,
+    codeSection:values.codeSection,
+    codePromotion:values.codePromotion,
+    sexe:values.sexe,
+    Lieunaissance:values.Lieunaissance,
 
   };
+
+  console.log(studentObject)
+
+
         axios.post('http://localhost/stag',studentObject).then(res => 
-          toast.success('insertion avec success')
+          toast.success('insertion avec success'),
+         
         ).catch(err => {toast.error("Erreur d'insertion ")})   
-      }}
+
+
+
+
+      }
+     
       
-      onChangeCodeSection(e){
-        this.setState({ codeSection:e.target.value })
-  }
-      onChangeCinStagiaire(e){
-      this.setState({ cinStagiaire:e.target.value })
-}
-onChangeCodePromotion(e){
-  this.setState({codePromotion:e.target.value}) }
-onChangeNomStagiaireFr(e){
-      this.setState({nomStagiaireFr:e.target.value}) }
-      onChangeNomStagiaireAr(e){
-        this.setState({nomStagiaireAr:e.target.value}) }
-        onChangeDatenaissanceStag(datenaissanceStag){
-            this.setState({datenaissanceStag:datenaissanceStag}) }
-            onChangeAdressStagiaire(e){
-                this.setState({adressStagiaire:e.target.value}) }
-                onChangeTelStagiaire(e){
-                    this.setState({telStagiaire:e.target.value}) }
-                    onChangeNiveauScolaire(e){
-                        this.setState({niveauScolaire:e.target.value}) }
-                        onChangeEmailstagiaire(e){
-                            this.setState({emailstagiaire:e.target.value}) }
-                            onChangeSpecialiteStagiaire(e){
-                                this.setState({specialiteStagiaire:e.target.value}) }
-                                onChangeGroupeStagiaire(e){
-                                  this.setState({groupeStagiaire:e.target.value}) }
-                                  onChangeEtatdossier(e){
-                                    this.setState({etatdossier:e.target.value}) }
-                                    onChangeSexe(e){
-                                      this.setState({sexe:e.target.value}) }
-                                      onChangeLieunaissance(e){
-                                        this.setState({Lieunaissance:e.target.value}) }
+     
                                   fetchSpecialite() {
                                     fetch(`http://localhost/spc`)
                                       // We get the API response and receive data in JSON format...
@@ -156,13 +148,25 @@ onChangeNomStagiaireFr(e){
                   }
 
                   componentDidMount() {
+
+                    const token = localStorage.getItem("token");
+                    if (token){
+                    console.log('ok token')
+                    }
+                    else{
+                      this.props.history.push('/');
+                    }
+
+
                     this.fetchSpecialite();
                     this.fetchPromotion();
                  
 
                  }
                  findsectionClick() {
-                  const a = { x: this.state.codePromotion }
+                  console.log('codePromotion')
+                  
+                  const a = { x:document.getElementById("codePromotion").value}
                   axios.post(`http://localhost/methode/getsection`, a)
                     .then((res) => {
                       this.setState({
@@ -174,11 +178,32 @@ onChangeNomStagiaireFr(e){
                     // Catch any errors we hit and update the app
                     .catch(error => this.setState({ error, isLoading: false }));
                 }
-
+                onChangeCodePromotion(e){ this.setState({ codePromotion:e.target.value }) }
            
 
 
     render(){
+
+      const initialValues = {
+        cinStagiaire:'',
+        nomStagiaireFr: '',
+        nomStagiaireAr: '',
+        datenaissanceStag: '',
+        sexe: '',
+        Lieunaissance: '',
+        adressStagiaire: '',
+        telStagiaire: '',
+        niveauScolaire: '',
+        emailstagiaire: '',
+        specialiteStagiaire: '',
+        groupeStagiaire: '',
+        codePromotion: '',
+        codeSection: '', 
+      };
+
+
+
+
     return(
       <div className="content">
       
@@ -205,72 +230,71 @@ onChangeNomStagiaireFr(e){
 
 
   <ToastContainer/>
-  <form onSubmit={this.onSubmit} class="row g-3">
+
+
+  <Formik
+          initialValues={initialValues}
+          validationSchema={this.validationSchema} onSubmit={this.onSubmit} >
+
+{({ resetForm,values}) => (
+            <Form class="row g-3" noValidate>
+
+
   <div className="col-md-6">
-  <label for="inputEmail4" class="form-label">CIN Stagiaire</label>
-  <input type="text" className="form-control " placeholder=" CIN" 
+  <label >CIN Stagiaire</label>
+  <Field type="text" className="form-control " placeholder=" CIN" 
   name="cinStagiaire"
-  value={this.state.cinStagiaire}
-  onChange={this.onChangeCinStagiaire}
+ 
   />
-  <p class="text-danger">{this.state.ErreurcinStagiaire}</p>
+  <ErrorMessage   name="cinStagiaire" component="div" className="text-danger" />
   </div>
     <div className="col-md-6">
-    <label for="inputEmail4" class="form-label">Nom Stagiaire</label>
-  <input type="text" className="form-control " placeholder=" NOM FR "
-  name="libMatiere"
-  value={this.state.nomStagiaireFr}
-  onChange={this.onChangeNomStagiaireFr}
+    <label >Nom Stagiaire</label>
+    <Field type="text" className="form-control " placeholder=" NOM FR "
+  name="nomStagiaireFr"
+ 
   />
-   <p class="text-danger">{this.state.ErrnomStagiaireFr}</p>
+   <ErrorMessage   name="nomStagiaireFr" component="div" className="text-danger" />
     </div>
     <div className="col-md-6">
-    <label for="inputEmail4" class="form-label">الاسم و اللقب </label>
-  <input type="text" className="form-control " placeholder=" Nom Arabe "
-  name="coifMatiere"
-  value={this.state.nomStagiaireAr}
-  onChange={this.onChangeNomStagiaireAr}
-  />
-   <p class="text-danger">{this.state.ErrnomStagiaireAr}</p>
+    <label >الاسم و اللقب </label>
+    <Field  type="text" className="form-control " placeholder=" Nom Arabe "
+  name="nomStagiaireAr"/>
+     <ErrorMessage   name="nomStagiaireAr" component="div" className="text-danger" />
  </div>
  <div className="col-md-6">
- <label for="inputEmail4" class="form-label"> Date de naissance </label>
+ <label > Date de naissance </label>
                         <div>
-                            <DatePicker className="form-control "
-                                value={this.state.datenaissanceStag}
-                                onChange={this.onChangeDatenaissanceStag}
+                        <Field  type="date"  className="form-control "
+                              
+                                name="datenaissanceStag"
                             />
+                            <ErrorMessage   name="datenaissanceStag" component="div" className="text-danger" />
                         </div>
                     </div>
                     <div className="col-md-6">
-    <label for="inputEmail4" class="form-label">Lieu de naissance </label>
-  <input type="text" className="form-control " placeholder=" Lieu de naissance "
-  name="coifMatiere"
-  value={this.state.Lieunaissance}
-  onChange={this.onChangeLieunaissance}
-  />
+    <label >Lieu de naissance </label>
+    <Field type="text" className="form-control " placeholder=" Lieu de naissance "
+  name="Lieunaissance"/>
 
  </div>                   
 
-                    <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Adresse </label>           
-  <input type="textera" className="form-control " placeholder=" adresse "
-  name="seuilMatiere"
-  value={this.state.adressStagiaire}
-  onChange={this.onChangeAdressStagiaire}
-  />
+     <div className="col-md-6"> 
+ <label > Adresse </label>           
+ <Field type="textera" className="form-control " 
+  name="adressStagiaire"/>
+   <ErrorMessage   name="adressStagiaire" component="div" className="text-danger" />
      </div>
 
      <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label">Sexe </label>
+ <label >Sexe </label>
    
-   <select class="form-control"  name="niveauMatiere" value={this.state.sexe}
-   onChange={this.onChangeSexe}>
+ <Field class="form-control" as="select"  name="sexe">
        <option >selectionner sexe</option>
        <option >Homme</option>
        <option >Femme</option>
-       </select>
- 
+       </Field>
+       <ErrorMessage   name="sexe" component="div" className="text-danger" />
  </div>
 
 
@@ -278,10 +302,9 @@ onChangeNomStagiaireFr(e){
 
 
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Niveau d'etude </label>
+ <label > Niveau d'etude </label>
    
-   <select class="form-control"  name="niveauMatiere" value={this.state.niveauScolaire}
-   onChange={this.onChangeNiveauScolaire}>
+   <Field class="form-control"  name="niveauScolaire" as="select" >
        <option >select niveau</option>
        <option >2 eme annee secondaire NV avec succes</option>
        <option >3 eme annee secondaire NV avec succes</option>
@@ -305,7 +328,7 @@ onChangeNomStagiaireFr(e){
        <option >Maîtrise</option>
        <option >Maitrise et plus</option>
        
-   </select>
+   </Field>
  
 </div>
 
@@ -313,46 +336,47 @@ onChangeNomStagiaireFr(e){
 
 
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Télephone portable </label>
+ <label > Télephone portable </label>
    
- <input type="text" className="form-control " placeholder=" Nom Arabe "
-  name="coifMatiere"
-  value={this.state.telStagiaire}
-  onChange={this.onChangeTelStagiaire}
-  />
- 
+ <Field  type="text" className="form-control " placeholder=" Nom Arabe "
+  name="telStagiaire" />
+   <ErrorMessage   name="telStagiaire" component="div" className="text-danger" />
 </div>
 
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> E-mail </label>
+ <label > E-mail </label>
    
- <input type="text" className="form-control " placeholder=" Nom Arabe "
-  name="coifMatiere"
-  value={this.state.emailstagiaire}
-  onChange={this.onChangeEmailstagiaire}
-  />
+ <Field type="text" className="form-control " placeholder=" Nom Arabe "
+  name="emailstagiaire" />
  
 </div>
 
+
+
+
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Promotion </label>
-<select 
-   className="form-control"  value={this.state.codePromotion}
-   onChange={this.onChangeCodePromotion}
-   onClick={() => this.findsectionClick()} >
+ <label > Promotion </label>
+<Field 
+   className="form-control"  
+   name="codePromotion" as="select" 
+  
+  id='codePromotion'
+
+   onClick={() => this.findsectionClick()} 
+   >
 <option >select Promotion</option> 
 {
                                 this.state.listePromotions.map(function(promotion) {
                                 return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
                                 })
                             }
-</select>
+</Field>
+ <ErrorMessage   name="codePromotion" component="div" className="text-danger" />
 </div>
 <div className="col-md-6"> 
- <label for="inputEmail4" class="form-label"> Section </label>
-   <select 
-   className="form-control"  value={this.state.codeSection}
-   onChange={this.onChangeCodeSection}> 
+ <label > Section </label>
+   <Field 
+   className="form-control"  name="codeSection" as="select" > 
 <option >select section</option>
  
 {
@@ -360,26 +384,26 @@ onChangeNomStagiaireFr(e){
                                     return <option value={section._id}  >{section.libSection}</option>;
                                 })
                             }
-</select>
+</Field>
+<ErrorMessage   name="codeSection" component="div" className="text-danger" />
 </div>
 
 
-
-
-
-  <div className="col-md-6"> 
-  </div>
-  <div className="col-md-6"> 
-  </div>
-
-
-
-
-  <div className="col-md-6"> 
-<button className="btn btn-primary"  type="submit" name="action">Enregistrer
-</button>
-</div>
-</form>
+<div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  onClick={() => resetForm(initialValues)}
+                  className="btn btn-secondary "
+                >
+                  Reset
+                </button>
+              </div>
+</Form>
+          )}
+        </Formik>
 </div>
 </div>
     )

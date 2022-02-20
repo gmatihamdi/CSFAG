@@ -166,7 +166,7 @@ function Header(props) {
                 <DropdownItem tag="a"><Link onClick={(e) => 
                 {
                   localStorage.removeItem('token');
-                  //this.props.history.push('/');
+              
                 
                 }}
                 to='/'

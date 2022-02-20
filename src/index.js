@@ -26,7 +26,7 @@ import "assets/demo/demo.css";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "Component/component_login/auth";
-import * as serviceWorker from './serviceWorker';
+
 import App from "../src/layouts/Admin";
   //  <Redirect to="/admin/dashboard" />  <Redirect from="/" to="/auth" /> <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> <Redirect from="/" to="/admin/index" />
 
@@ -36,11 +36,6 @@ import App from "../src/layouts/Admin";
   // unregister() to register() below. Note this comes with some pitfalls.
   // Learn more about service workers: https://bit.ly/CRA-PWA
   //serviceWorker.unregister();
-  import UserProvider from "./contexts/UserProvider";
-  import LoginPage from './pages/LoginPage';
-  import TodoPage from './pages/TodoPage';
-  import NotFoundPage from './pages/NotFoundPage';
-  import RegisterPage from './pages/RegisterPage';
 
 
 

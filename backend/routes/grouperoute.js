@@ -6,7 +6,7 @@ const router = express.Router()
 router.get('/',(req,res)=>{
     Groupe.find({})
     .populate([         
-/*{
+{
       path: 'codePromotion',
       model: 'Promotion'
   },
@@ -14,7 +14,7 @@ router.get('/',(req,res)=>{
     path: 'codeSection',
     model: 'Section'
   }
-*/
+
 ]) 
   .exec(function (err, data) {
       res.json(data)
@@ -37,7 +37,20 @@ router.delete('/:id',async(req,res)=>{
     res.json({'message':'deleted'})
 })
 
-router.post('/',(req,res)=>{
+router.post('/',async(req,res)=>{
+
+  let  gropexiste= await Groupe.findOne({codeGroupe:req.body.codeGroupe });
+
+  // console.log(spcexiste)
+   
+   
+   
+   if (gropexiste){
+     return res.status(400).send('That user already exisits!');
+    
+   }
+   else{
+
     groupe=new Groupe({
         codeGroupe:req.body.codeGroupe,
         codeSection:req.body.codeSection,
@@ -48,6 +61,7 @@ router.post('/',(req,res)=>{
     groupe.save(()=>{
         res.json(this.section)
     })
+  }
 })
 router.put('/:id',async(req,res)=>{
     await Groupe.findByIdAndUpdate(req.params.id,req.body)

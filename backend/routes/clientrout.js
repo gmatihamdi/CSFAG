@@ -28,10 +28,12 @@ router.delete('/:id',async(req,res)=>{
 })
 
 router.post('/',(req,res)=>{
+    console.log(req.body.role)
     user=new User({
         name:req.body.name,
         email:req.body.email,
-        password:req.body.password
+        password:req.body.password,
+        role:req.body.role
     })
     user.save(()=>{
         res.json(this.user)
@@ -44,20 +46,19 @@ router.put('/:id',async(req,res)=>{
 
 
 router.post('/login',(req,res)=>{
-console.log('formulaire login'),
-console.log(req.body.name),
-console.log(req.body.password),
-
+    
 User.find({ name: req.body.name ,
     password:req.body.password
 })
 .exec()
 .then(User => {
-    if(User.length != 0){
-        
-      const token = jwt.sign({
+    
+    console.log(User.User)
+
+    if(User.length != 0){       
+      const token = jwt.sign({         
             name: User.name ,
-            password:User.password,
+            password:User.password,         
             },
             'secret', {
                 expiresIn: "18h"
@@ -65,22 +66,13 @@ User.find({ name: req.body.name ,
         );
          res.status(200).json({
             message: "successful",
-            token: token   });
+            token: token ,
+            data:this.name,
+          });
             console.log('token backend')
-            console.log(token)  
-
-  /*          
-var token = jwt.sign({
-    name: User.name,
-}, config.JWT_SECRET, { expiresIn: '1h' });
-
-res.cookie('token', token).sendStatus(200);       
-
-*/
-
+            console.log(token)   
     }
     else {
-
         res.status(401).json({
             success: false,
             message: "Invalid Username/Password",
@@ -88,46 +80,9 @@ res.cookie('token', token).sendStatus(200);
         })
     }
 })
-
 })
 
 
 /* GET Current user token */
-router.get('/verify', auth.isAuthenticated, (req, res) => {
-	res.sendStatus(200);
-    console.log('verif tokennnnnn' )
-    console.log(req.headers['x-access-token'] )
-})
-
-
-router.get('/whoami', auth.isAuthenticated, (req, res) => {
-	const token =
-		req.body.token ||
-		req.query.token ||
-		req.headers['x-access-token'] ||
-		req.cookies.token;
-
-	if (token) {
-		let data = jwtdecode(token);
-		res.status(200).json({
-			success: true,
-			message: "Successfully get user name",
-			result: data.name
-		});
-	} else {
-		res.status(401).json({
-			success: false,
-			message: "You are not logged in",
-			result: null
-		})
-	}
-})
-
-
-
-
-
-
-
 
 module.exports=router

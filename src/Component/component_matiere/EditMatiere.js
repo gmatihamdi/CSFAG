@@ -9,7 +9,7 @@ class EditMatiere extends Component {
         this.state = {
             codeMatiere:  '' ,
             libMatiere:  '',
-            coifMatiere: '',
+            Nbreheures: '',
             seuilMatiere:'',
             niveauMatiere: '' ,
             specialiteMatiere: " " ,
@@ -20,7 +20,7 @@ class EditMatiere extends Component {
         }
         this.onChangeCodeMatiere = this.onChangeCodeMatiere.bind(this);
     this.onChangeLibMatiere = this.onChangeLibMatiere.bind(this);
-    this.onChangeCoifMatiere = this.onChangeCoifMatiere.bind(this);
+    this.onChangeHeursMatiere = this.onChangeHeursMatiere.bind(this);
     this.onChangeSeuilMatiere = this.onChangeSeuilMatiere.bind(this);
     this.onChangeNiveauMatiere = this.onChangeNiveauMatiere.bind(this);
     this.onChangeSpecialiteMatiere = this.onChangeSpecialiteMatiere.bind(this);
@@ -32,7 +32,7 @@ class EditMatiere extends Component {
                 this.setState({
                     codeMatiere: res.data.codeMatiere,
                     libMatiere: res.data.libMatiere,
-                    coifMatiere: res.data.coifMatiere,
+                    Nbreheures: res.data.Nbreheures,
                     seuilMatiere: res.data.seuilMatiere,
                     niveauMatiere: res.data.niveauMatiere,
                     specialiteMatiere: res.data.specialiteMatiere,
@@ -52,6 +52,17 @@ class EditMatiere extends Component {
                     });
                 }
             })
+
+
+            const token = localStorage.getItem("token");
+            if (token){
+            console.log('ok')
+            }
+            else{
+              this.props.history.push('/');
+            }
+
+
     }
 
     onChangeCodeMatiere(e){
@@ -59,8 +70,8 @@ class EditMatiere extends Component {
   }
   onChangeLibMatiere(e){
         this.setState({libMatiere:e.target.value}) }
-        onChangeCoifMatiere(e){
-          this.setState({coifMatiere:e.target.value}) }
+        onChangeHeursMatiere(e){
+          this.setState({Nbreheures:e.target.value}) }
           onChangeSeuilMatiere(e){
               this.setState({seuilMatiere:e.target.value}) }
               onChangeNiveauMatiere(e){
@@ -86,7 +97,7 @@ class EditMatiere extends Component {
         const matiere = {
             codeMatiere:this.state.codeMatiere,
             libMatiere:this.state.libMatiere,
-            coifMatiere:this.state.coifMatiere,
+            Nbreheures:this.state.Nbreheures,
             seuilMatiere:this.state.seuilMatiere,
             niveauMatiere:this.state.niveauMatiere,
             specialiteMatiere:this.state.specialiteMatiere,
@@ -138,11 +149,11 @@ class EditMatiere extends Component {
   <p class="text-danger">{this.state.ErrlibMatiere}</p>
     </div>
     <div className="col-md-6">
-    <label> coief du module </label>
+    <label> Nombre d'heurs du module </label>
   <input type="text" className="form-control" placeholder="enter coif matiere "
   name="coifMatiere"
-  value={this.state.coifMatiere}
-  onChange={this.onChangeCoifMatiere}
+  value={this.state.Nbreheures}
+  onChange={this.onChangeHeursMatiere}
   />
     </div>
     <div className="col-md-6">

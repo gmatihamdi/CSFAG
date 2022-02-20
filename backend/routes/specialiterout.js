@@ -25,7 +25,20 @@ router.delete('/:id',async(req,res)=>{
     res.json({'message':'deleted'})
 })
 
-router.post('/',(req,res)=>{
+router.post('/',async (req,res)=>{
+
+  let  spcexiste= await Specialite.findOne({codeSpecialite:req.body.codeSpecialite });
+
+ // console.log(spcexiste)
+  
+  
+  
+  if (spcexiste){
+    return res.status(400).send('That user already exisits!');
+   
+  }
+  else{
+
     specialite=new Specialite({
         codeSpecialite:req.body.codeSpecialite,
         libSpecialite:req.body.libSpecialite,
@@ -39,6 +52,7 @@ router.post('/',(req,res)=>{
     specialite.save(()=>{
         res.json(this.specialite)
     })
+  }
 })
 router.put('/:id',async(req,res)=>{
     await Specialite.findByIdAndUpdate(req.params.id,req.body)

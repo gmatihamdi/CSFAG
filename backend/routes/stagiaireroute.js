@@ -27,7 +27,19 @@ router.delete('/:id',async(req,res)=>{
 
 
 
-router.post('/',(req,res)=>{
+router.post('/',async (req,res)=>{
+
+  let  stagexiste= await Stagiaire.findOne({cinStagiaire:req.body.cinStagiaire ,codeSection: req.body.codeSection});
+
+console.log(stagexiste)
+
+
+
+if (stagexiste){
+  return res.status(400).send('That user already exisits!');
+ 
+}
+else{
     stagiaire=new Stagiaire({
       cinStagiaire:req.body.cinStagiaire,
       nomStagiaireFr: req.body.nomStagiaireFr,
@@ -48,10 +60,14 @@ router.post('/',(req,res)=>{
     })
     stagiaire.save().then(data => {
       return res.status(200).json(data);
+      
   }).catch(err => {
       console.log(err);
       return res.status(500).json(err);
   })
+  console.log('insertion ok');
+}
+
 })   
 router.put('/:id',async(req,res)=>{
     await Stagiaire.findByIdAndUpdate(req.params.id,req.body)

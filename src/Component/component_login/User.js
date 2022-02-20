@@ -8,22 +8,23 @@ class User extends React.Component {
     id:0,
     name:'',
     email:'',
-    password:''
+    password:'',
+    role:''
   }}
+
+
   componentDidMount(){
     axios.get('http://localhost/api/')
     .then((res)=>{
       this.setState({
       users:res.data,
-      id:0,
-      name:'',
-      email:'',
-      password:''
+    
     })
    
 
     })
   }
+  
   namechange= event =>{
     this.setState({
       name:event.target.value
@@ -42,15 +43,34 @@ class User extends React.Component {
     })
    
   }
+  rolechange= event =>{
+    this.setState({
+      role:event.target.value
+    })
+   
+  }
   submit(event,id){
     event.preventDefault()
+
+   
+    const utilisateur = {
+    
+      name:this.state.name,
+      email:this.state.email,
+      password:this.state.password,
+      role:this.state.role
+    };
+
+    console.log(utilisateur)
+
+
     if(id===0){
       
-      axios.post('http://localhost/api',{name:this.state.name,email:this.state.email,password:this.state.password})
+      axios.post('http://localhost/api',utilisateur)
       this.componentDidMount()
     }else{
      
-      axios.put(`http://localhost/api/${id}`,{name:this.state.name,email:this.state.email,password:this.state.password})
+      axios.put(`http://localhost/api/${id}`,utilisateur)
       this.componentDidMount()
     }
    
@@ -61,17 +81,23 @@ class User extends React.Component {
     })
   }
   edit(id){
-    axios.get(`http://localhost/api/${id}`)
+    axios.get(`http://localhost/api/edit/${id}`)
     .then((res)=>{
       console.log(res.data) 
+      console.log(id) 
+
     this.setState({
         name:res.data.name,
-        email:res.data.eamil,
-        password:res.data.password
+        email:res.data.email,
+        password:res.data.password,
+        role:res.data.role
 
 
       })
-    })
+    }) .catch(function (error){
+      console.log(error);
+      
+  })
   }
   render(){
   return (
@@ -81,23 +107,47 @@ class User extends React.Component {
     <div className="form-group">
     
 <form onSubmit={(e)=>this.submit(e,this.state.id)}>
-<div className="form-group">
+<div className="col-md-6"> 
+ <label for="inputEmail4" class="form-label"> login </label>
           
           <input value={this.state.name} 
           placeholder="name"
           onChange={(e)=>this.namechange(e)} type="text" id="autocomplete-input" className="form-control form-control-lg" /> 
         </div>
-        <div className="form-group">
+        <div className="col-md-6"> 
+ <label for="inputEmail4" class="form-label"> Nom et prénom </label>
  <input value={this.state.email} 
           placeholder="email"
-          onChange={(e)=>this.emailchange(e)} type="email" id="autocomplete-input" className="form-control form-control-lg" />
+          onChange={(e)=>this.emailchange(e)} type="text" id="autocomplete-input" className="form-control form-control-lg" />
 </div>
-        <div className="form-group">
+       <div className="col-md-6"> 
+ <label for="inputEmail4" class="form-label"> Password </label>
   <input value={this.state.password} 
           placeholder="pwd"
           onChange={(e)=>this.passwordchange(e)} type="password" id="autocomplete-input" className="form-control form-control-lg" />
           
         </div>
+
+
+        <div className="col-md-6"> 
+ <label for="inputEmail4" class="form-label"> Rôle </label>
+   
+   <select class="form-control"  name="role" value={this.state.role}
+   onChange={(e)=>this.rolechange(e)} >
+   <option >Rôle</option>
+       <option >Admin</option>
+       <option >gestionnaire</option>
+       
+   </select>
+ 
+</div>
+
+
+
+
+
+
+
         <button className="btn btn-primary" type="submit" name="action">Enregistrer
   
   </button>
@@ -110,9 +160,9 @@ class User extends React.Component {
      <table className="table">
 <thead class="thead-dark">
           <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Password</th>
+              
+              <th>Utilisateurs</th>
+              <th>Role</th>
               <th>Modifier</th>
               <th>supprimer</th>
 
@@ -122,9 +172,8 @@ class User extends React.Component {
         <tbody>
         {this.state.users.map(client=>
           <tr key={client._id}>
-            <td>{client.name}</td>
             <td>{client.email}</td>
-            <td>{client.password}</td>
+            <td>{client.role}</td>
             <td> <button onClick={(e)=>this.edit(client._id)}  className="btn btn-outline-primary mr-2 " type="submit" name="action">
     <i className="edit-link">Modifier</i>
   </button></td>

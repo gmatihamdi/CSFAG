@@ -1,8 +1,8 @@
 import React from 'react'
 import axios from 'axios'
-import DatePicker from "react-date-picker";
 import { ToastContainer, toast } from 'react-toastify';
-
+import { Formik, Field, Form, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
 class Addpromotion extends React.Component{
 
   
@@ -10,163 +10,145 @@ class Addpromotion extends React.Component{
     super(props)
 
     // Setting up functions
-    this.onChangeCodePromotion = this.onChangeCodePromotion.bind(this);
-    this.onChangeLibPromotionFr = this.onChangeLibPromotionFr.bind(this);
-    this.onChangeLibPromotionAr = this.onChangeLibPromotionAr.bind(this);
-    this.onChangeDebutPromotion = this.onChangeDebutPromotion.bind(this);
-    this.onChangeFinPromotion = this.onChangeFinPromotion.bind(this);
-    this.onChangeCapacitePromotion = this.onChangeCapacitePromotion.bind(this);
-
-    this.onSubmit = this.onSubmit.bind(this);
-
+ 
     // Setting up state
     this.state = {
     
         codePromotion:  '',
          libPromotionFr:  '',
          libPromotionAr:  '',
-         debutPromotion: new Date(),
-         finPromotion:  new Date(),
+         debutPromotion: '',
+         finPromotion:  '',
          capacitePromotion:  '',  
-         ErrcodePromotion:  '',
-         ErrlibPromotionFr:  '',
-         ErrlibPromotionAr:  '',
+ 
     }
   } 
-onSubmit(e) {
+  validationSchema() {
+    return Yup.object().shape({
+      codePromotion: Yup.string() .required('cin is required')
+      .min(3, 'Code specialité obligatoire'),
+      libPromotionFr:  Yup.string()
+      .required('Champs obligatoire en Francais'),
+      libPromotionAr: Yup.string()
+        .required('Champs obligatoire en Arabe'),
+        debutPromotion: Yup.string()
+        .required('Champs obligatoire'),
+        finPromotion: Yup.string()
+        .required('Champs obligatoire'),
+      });
+    }
 
 
-  e.preventDefault()
 
-  if(this.state.codePromotion===''){
-    this.state.ErrcodePromotion='Champs Obligatoire '
-   }
-   if(this.state.libPromotionFr===''){
-    this.state.ErrlibPromotionFr='Champs Obligatoire '
-   }
-   if(this.state.libPromotionAr===''){
-    this.state.ErrlibPromotionAr='Champs Obligatoire '
-   }
-   else{
-
-
+onSubmit(values) {
 
   const studentObject = {
-    codePromotion:this.state.codePromotion,
-    libPromotionFr:this.state.libPromotionFr,
-    libPromotionAr:this.state.libPromotionAr,
-    debutPromotion:this.state.debutPromotion,
-    finPromotion:this.state.finPromotion,
-    capacitePromotion:this.state.capacitePromotion,
+    codePromotion:values.codePromotion,
+    libPromotionFr:values.libPromotionFr,
+    libPromotionAr:values.libPromotionAr,
+    debutPromotion:values.debutPromotion,
+    finPromotion:values.finPromotion,
+    capacitePromotion:values.capacitePromotion,
 
   };
         axios.post('http://localhost/prom',studentObject).then(res => 
         toast.success('insertion avec success')
       ).catch(err => {toast.error("Erreur d'insertion ")}) 
-      
-        //this.componentDidMount();
-      //  console.log(" successfully insert")
-      
-}  
       }
-      onChangeCodePromotion(e){
-      this.setState({ codePromotion:e.target.value })
      
+
+    componentDidMount(){
+    const token = localStorage.getItem("token");
+    if (token){
+    console.log('ok')
     }
-    onChangeLibPromotionFr(e){
-      this.setState({libPromotionFr:e.target.value})
-     
+    else{
+      this.props.history.push('/');
     }
-    onChangeLibPromotionAr(e){
-      this.setState({libPromotionAr:e.target.value})
-     
-    } onChangeDebutPromotion(debutPromotion){
-      this.setState({debutPromotion:debutPromotion})
-     
-    } onChangeFinPromotion(finPromotion){
-      this.setState({finPromotion:finPromotion})
-     
-    }
-    onChangeCapacitePromotion(e){
-      this.setState({capacitePromotion:e.target.value})
-    
-    }
+  }
+
+
 
     render(){
+
+      const initialValues = {
+        codePromotion:  '',
+        libPromotionFr:  '',
+        libPromotionAr:  '',
+        debutPromotion: '',
+        finPromotion:  '',
+        capacitePromotion:  '', 
+        };
+    
     return(
 
        <div className="content">     
        <ToastContainer/>
         <div >
         <h2>Ajoute une Nouvelle Promotion</h2>
-      
-        <form onSubmit={this.onSubmit} class="row g-3">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={this.validationSchema} onSubmit={this.onSubmit} >
+
+{({ resetForm,values}) => (
+            <Form class="row g-3" noValidate>
   <div className="col-md-6">
   <label for="inputEmail4" class="form-label">Code Promotion</label>
-  <input type="text" className="form-control " placeholder="enter code promotion " 
-  name="codeSpecialite"
-  value={this.state.codePromotion}
-  onChange={this.onChangeCodePromotion}
-  />
-    <p class="text-danger">{this.state.ErrcodePromotion}</p>
+  <Field type="text" className="form-control " placeholder=" code promotion " name="codePromotion" />
+  <ErrorMessage name="codePromotion" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6">
     <label for="inputEmail4" class="form-label"> Promotion Fr</label>
-  <input type="text" className="form-control " placeholder="enter lib promotion "
-  name="libSpecialite"
-  value={this.state.libPromotionFr}
-  onChange={this.onChangeLibPromotionFr}
-  />
-    <p class="text-danger">{this.state.ErrlibPromotionFr}</p>
+  <Field type="text" className="form-control " placeholder="enter lib promotion " name="libPromotionFr"/>
+  <ErrorMessage name="libPromotionFr" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6">
     <label for="inputEmail4" class="form-label">Promotion Ar</label>
-  <input type="text" className="form-control" placeholder="enter lib promotion Ar "
-  name="libSpecialiteAr"
-  value={this.state.libPromotionAr}
-  onChange={this.onChangeLibPromotionAr}
-  />
-    <p class="text-danger">{this.state.ErrlibPromotionAr}</p>
+  <Field type="text" className="form-control" placeholder="enter lib promotion Ar "
+  name="libPromotionAr"/>
+    <ErrorMessage name="libPromotionAr" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6">
   
 
                         <label>Date debut de formation: </label>
                         <div>
-                            <DatePicker className="form-control "
-                                value={this.state.debutPromotion}
-                                onChange={this.onChangeDebutPromotion}
-                            />
+                        <Field  type="date"  className="form-control " name="debutPromotion"/>
+                        <ErrorMessage name="debutPromotion" component="div"  className="text-danger" />
                         </div>
                     </div>
                     <div className="col-md-6">
                    
                         <label>Date fin de formation </label>
                         <div>
-                            <DatePicker className="form-control "
-                                value={this.state.finPromotion}
-                                onChange={this.onChangeFinPromotion}
-                            />
+                        <Field  type="date"  className="form-control " name="finPromotion"/>
+                        <ErrorMessage name="finPromotion" component="div"  className="text-danger" />
                         </div>
                     </div>
 
                     <div className="col-md-6">
                     <label> Capacité de formation </label>
-  <input type="text" className="form-control" placeholder="capacité "
-  name="dureeSpecialite"
-  value={this.state.capacitePromotion}
-  onChange={this.onChangeCapacitePromotion}
-  />
+  <Field type="text" className="form-control" placeholder="capacité " name="capacitePromotion"/>
     </div>
 
    
 
  
-  <button className="btn btn-primary"  type="submit" name="action">Enregistrer
-   
-  </button>
-
-</form>
+    <div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  onClick={() => resetForm(initialValues)}
+                  className="btn btn-secondary "
+                >
+                  Reset
+                </button>
+              </div>
+</Form>
+          )}
+        </Formik>
 </div>
 </div>
     )

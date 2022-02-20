@@ -21,7 +21,20 @@ router.delete('/:id',async(req,res)=>{
     await Promotion.findByIdAndDelete(req.params.id)
     res.json({'message':'deleted'})
 })
-router.post('/',(req,res)=>{
+router.post('/',async(req,res)=>{
+
+  let  promexiste= await Promotion.findOne({codePromotion:req.body.codePromotion });
+
+  // console.log(spcexiste)
+   
+   
+   
+   if (promexiste){
+     return res.status(400).send('That user already exisits!');
+    
+   }
+   else{
+
     promotion=new Promotion({
         codePromotion:req.body.codePromotion,
         libPromotionFr:req.body.libPromotionFr,
@@ -33,6 +46,7 @@ router.post('/',(req,res)=>{
     promotion.save(()=>{
         res.json(this.promotion)
     })
+  }
 })
 router.put('/:id',async(req,res)=>{
     await Promotion.findByIdAndUpdate(req.params.id,req.body)

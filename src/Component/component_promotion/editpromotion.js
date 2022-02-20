@@ -3,7 +3,7 @@ import axios from 'axios'
 import DatePicker from "react-date-picker";
 import { ToastContainer, toast } from 'react-toastify';
 import { Link,useParams} from "react-router-dom"
-
+import TextField from 'textfield';
 class Editpromotion extends React.Component{
 
   
@@ -24,8 +24,8 @@ class Editpromotion extends React.Component{
         codePromotion:  '',
         libPromotionFr:  '',
         libPromotionAr:  '',
-        debutPromotion: new Date(),
-        finPromotion:  new Date(),
+        debutPromotion:'',
+        finPromotion:  '',
         capacitePromotion:  '',   
         Errcodespc:'',
         Errlibspcfr:'',
@@ -48,6 +48,16 @@ class Editpromotion extends React.Component{
       .catch((error) => {
         console.log(error);
       })
+
+      const token = localStorage.getItem("token");
+      if (token){
+      console.log('ok')
+      }
+      else{
+        this.props.history.push('/');
+      }
+
+
   }
   
   
@@ -115,14 +125,14 @@ onChangeCodePromotion(e){
     render(){
     return(
       <div className="content">
-        
+         <ToastContainer/>
           <div className>
           <h2>Edit Promotion</h2>
   
           <form onSubmit={this.onSubmit} class="row g-3">
   <div className="col-md-6">
   <label for="inputEmail4" class="form-label">Code Promotion</label>
-  <input type="text" className="form-control " placeholder="enter code promotion " 
+  <TextField type="text" className="form-control " placeholder="enter code promotion " 
   name="codeSpecialite"
   value={this.state.codePromotion}
   onChange={this.onChangeCodePromotion}
@@ -131,7 +141,7 @@ onChangeCodePromotion(e){
     </div>
     <div className="col-md-6">
     <label for="inputEmail4" class="form-label"> Promotion Fr</label>
-  <input type="text" className="form-control " placeholder="enter lib promotion "
+  <TextField type="text" className="form-control " placeholder="enter lib promotion "
   name="libSpecialite"
   value={this.state.libPromotionFr}
   onChange={this.onChangeLibPromotionFr}
@@ -140,7 +150,7 @@ onChangeCodePromotion(e){
     </div>
     <div className="col-md-6">
     <label for="inputEmail4" class="form-label">Promotion Ar</label>
-  <input type="text" className="form-control" placeholder="enter lib promotion Ar "
+  <TextField type="text" className="form-control" placeholder="enter lib promotion Ar "
   name="libSpecialiteAr"
   value={this.state.libPromotionAr}
   onChange={this.onChangeLibPromotionAr}
@@ -152,7 +162,7 @@ onChangeCodePromotion(e){
 
                         <label>Date debut de formation: </label>
                         <div>
-                            <DatePicker className="form-control "
+                        <TextField type="date" className="form-control "
                                 value={this.state.debutPromotion}
                                 onChange={this.onChangeDebutPromotion}
                             />
@@ -162,7 +172,7 @@ onChangeCodePromotion(e){
                    
                         <label>Date fin de formation </label>
                         <div>
-                            <DatePicker className="form-control "
+                        <TextField type="date" className="form-control "
                                 value={this.state.finPromotion}
                                 onChange={this.onChangeFinPromotion}
                             />
@@ -171,7 +181,7 @@ onChangeCodePromotion(e){
 
                     <div className="col-md-6">
                     <label> Capacité de formation </label>
-  <input type="text" className="form-control" placeholder="capacité "
+  <TextField type="text" className="form-control" placeholder="capacité "
   name="dureeSpecialite"
   value={this.state.capacitePromotion}
   onChange={this.onChangeCapacitePromotion}

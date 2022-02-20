@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
+import { Formik, Field, Form, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
 class Addsection extends React.Component{
 
   
@@ -15,64 +17,40 @@ class Addsection extends React.Component{
         groupeSection:  '',  
         listeSpecialites:[],
         listePromotions:[],
-        ErrcodeSection: '' ,
-        ErrlibSection:  '',
-        ErrcodeSpecialite: '', 
+    }}
+
+  validationSchema() {
+    return Yup.object().shape({
+      codeSection: Yup.string() .required('Code Section obligatoire')
+      .min(3, 'Code Section obligatoire'),
+      codePromotion:  Yup.string()
+      .required('Champs obligatoire '),
+      codeDiplome: Yup.string()
+        .required('Champs obligatoire en Arabe'),
+        codeSpecialite: Yup.string()
+        .required('Champs obligatoire'),
+        libSection: Yup.string()
+        .required('Champs obligatoire'),
+      });
     }
-    // Setting up functions
-    this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
-    this.onChangeLibSection = this.onChangeLibSection.bind(this);
-    this.onChangeGroupeSection = this.onChangeGroupeSection.bind(this);
-    this.onChangecodeSpecialite = this.onChangecodeSpecialite.bind(this);
-    this.onChangeCodePromotion = this.onChangeCodePromotion.bind(this);
-    this.onChangeCodeDiplome = this.onChangeCodeDiplome.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    // Setting up state
-   
-  }
-onSubmit(e) {
-
-  e.preventDefault()
-  if(this.state.codeSection===''){
-    this.state.ErrcodeSection='Champs Obligatoire '
-   }
-   if(this.state.libSection===''){
-    this.state.ErrlibSection='Champs Obligatoire '
-   }
-   if(this.state.codeSpecialite===''){
-    this.state.ErrcodeSpecialite='Champs Obligatoire '
-   }
-   else{
 
 
+onSubmit(values) {
 
-  
   const studentObject = {
-    codeSection:this.state.codeSection,
-    codePromotion:this.state.codePromotion,
-    libSection:this.state.libSection,
-    codeSpecialite:this.state.codeSpecialite,
-    codeDiplome:this.state.codeDiplome,
-    groupeSection:this.state.groupeSection,
+    codeSection:values.codeSection,
+    codePromotion:values.codePromotion,
+    libSection:values.libSection,
+    codeSpecialite:values.codeSpecialite,
+    codeDiplome:values.codeDiplome,
+    groupeSection:values.groupeSection,
   };
         axios.post('http://localhost/sect',studentObject).then(res => 
         toast.success('insertion avec success')
       ).catch(err => {toast.error("Erreur d'insertion ")}) 
       
-      }}
- onChangeCodeSection(e){
-      this.setState({ codeSection:e.target.value })
-}
-onChangeLibSection(e){
-      this.setState({libSection:e.target.value}) }
-      onChangeCodePromotion(e){
-        this.setState({codePromotion:e.target.value}) }
-        onChangecodeSpecialite(e){
-            this.setState({codeSpecialite:e.target.value}) }
-            onChangeCodeDiplome(e){
-                this.setState({codeDiplome:e.target.value}) }
-                onChangeGroupeSection(e){
-                    this.setState({groupeSection:e.target.value}) }
+      }
+
 
 
                     fetchSpecialite() {
@@ -109,74 +87,73 @@ onChangeLibSection(e){
            componentDidMount() {
                      this.fetchSpecialite();
                      this.fetchPromotion();
-
+                     const token = localStorage.getItem("token");
+                     if (token){
+                     console.log('ok')
+                     }
+                     else{
+                       this.props.history.push('/');
+                     }
                   }
 
 
 
     render(){
+
+      const initialValues = {
+        codeSection: '' ,
+        codePromotion:  '',
+        libSection:  '',
+        codeSpecialite: '', 
+        codeDiplome:  '',
+        groupeSection:  '', 
+
+   };
+
     return(
 <div className="content">
       
         <div className>
         <h2>Ajoute une Nouvelle Section</h2>
         <ToastContainer/>
-        <form onSubmit={this.onSubmit} class="row g-3">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={this.validationSchema} onSubmit={this.onSubmit} >
+
+{({ resetForm,values}) => (
+            <Form class="row g-3" noValidate>
 
   <div className="col-md-6">
   <label> Code Section </label>
-  <input type="text" className="form-control " placeholder="enter code Section" 
-  name="codeMatiere"
-  value={this.state.codeSection}
-  onChange={this.onChangeCodeSection}
-
-  />
-  <p class="text-danger">{this.state.ErrcodeSection}</p>
+  <Field type="text" className="form-control " placeholder="enter code Section" name="codeSection"/>
+  <ErrorMessage name="codeSection" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6">
     <label>  Section </label>
-  <input type="text" className="form-control " placeholder="enter lib Section "
-  name="libMatiere"
-  value={this.state.libSection}
-  onChange={this.onChangeLibSection}
-  />
-  <p class="text-danger">{this.state.ErrlibSection}</p>
+  <Field type="text" className="form-control " placeholder="enter lib Section " name="libSection"/>
+    <ErrorMessage name="libSection" component="div"  className="text-danger" />
     </div>
     <div className="col-md-6">
-    <label>  Section gr </label>
-  <input type="text" className="form-control " placeholder="enter groupe Section "
-  name="coifMatiere"
-  value={this.state.groupeSection}
-  onChange={this.onChangeGroupeSection}
-  />
+    <label>  Section Ar </label>
+  <Field type="text" className="form-control " placeholder="enter groupe Section "
+  name="groupeSection" />
     </div>
     
-   
-
     <div className="col-md-6">
     <label>  Diplome </label>
-   
-   <select class="form-control"  name="codeDiplome" value={this.state.codeDiplome}
-   onChange={this.onChangeCodeDiplome}>
+   <Field class="form-control"  name="codeDiplome" value={this.state.codeDiplome} as="select">
        <option >select Diplome</option>
-
        <option >CAP</option>
        <option >BTP</option>
        <option >BTS</option>
-     
-
-   </select>
- 
+   </Field>
+   <ErrorMessage name="codeDiplome" component="div"  className="text-danger" />
 </div>
-
-
-
 
 <div className="col-md-6">
 <label>  Specialité </label>
-   <select 
-   className="form-control"  value={this.state.codeSpecialite}
-   onChange={this.onChangecodeSpecialite}> 
+   <Field 
+   className="form-control" name="codeSpecialite" value={this.state.codeSpecialite}  as="select"> 
 <option >Choisir une spécialités</option>
  
 {
@@ -184,15 +161,13 @@ onChangeLibSection(e){
                                     return <option value={specialite._id}  >{specialite.libSpecialite}</option>;
                                 })
                             }
-   </select>
-   <p class="text-danger">{this.state.ErrcodeSpecialite}</p>
+   </Field>
+   <ErrorMessage name="codeSpecialite" component="div"  className="text-danger" />
 </div>
 
 <div className="col-md-6">
 <label>  Promotion </label>
-   <select 
-   className="form-control"  value={this.state.codePromotion}
-   onChange={this.onChangeCodePromotion}> 
+   <Field  className="form-control"  name="codePromotion"   as="select"> 
    
 <option >choisir une Promotion</option>
  
@@ -201,18 +176,25 @@ onChangeLibSection(e){
                                     return <option value={promotion._id}  >{promotion.libPromotionFr}</option>;
                                 })
                             }
-   </select>
- 
+   </Field>
+   <ErrorMessage name="codeSpecialite" component="div"  className="text-danger" />
 </div>
 
-
-
- 
-  <button className="btn btn-primary"  type="submit" name="action">Enregistrer
-   
-  </button>
-
-</form>
+  <div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Enregistrer
+                </button>
+                <button
+                  type="button"
+                  onClick={() => resetForm(initialValues)}
+                  className="btn btn-secondary "
+                >
+                  Reset
+                </button>
+              </div>
+</Form>
+          )}
+        </Formik>
 </div>
 </div>
     )

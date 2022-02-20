@@ -9,7 +9,7 @@ const Competence = require('../models/competence')
 const note = require('../models/note')
 const groupe=require('../models/groupe')
 const competence = require('../models/competence')
-
+const Mat = require('../models/matiere')
 
 
 const router = express.Router()
@@ -297,6 +297,28 @@ router.post('/getsection', (req, res) => {
     Sect.find({
         codePromotion: req.body.x
     })
+        .exec(function (err, data) {
+            if (err) {
+                console.log(err);
+                console.log('error returned');
+                res.send(500, { error: 'Failed ' });
+            }
+            if (!data) {
+                res.send(403, { error: 'chargement Failed' });
+            }
+            //res.send(200, data);
+            console.log(data);
+            res.json(data)
+            console.log(req.body.x);
+            console.log('success generate List des section');
+        });
+        
+})
+
+router.post('/getmatieres', (req, res) => {
+    console.log('recherce matiere');
+    console.log(req.body.x)
+    Mat.find({ specialiteMatiere: req.body.x })
         .exec(function (err, data) {
             if (err) {
                 console.log(err);

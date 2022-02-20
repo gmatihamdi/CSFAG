@@ -25,8 +25,6 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import AddStagiaire from '../Component/component_stagiaire/creatStagiaire';
-
-
 import AddSpecialite from '../Component/component_specialite/ajoutSpecialite'
 import AddMatiere from '../Component/component_matiere/ajoutmatiere'
 import EditSpecialite from '../Component/component_specialite/editSpecialite'
@@ -46,29 +44,13 @@ import AddGroupe from '../Component/component_groupe/addGroupe'
 import EditNote from '../Component/component_note/editNote'
 import Editcompetence from "Component/component_competence/editCompetence";
 import Addgroupe from '../Component/component_groupe/addGroupe';
+import Editgroupe from '../Component/component_groupe/editGroupe';
 import ListeGroupe from '../Component/component_groupe/listegroup';
 import Listediplomes from '../Component/component_stagiaire/diplomes';
 import Login from '../Component/component_login/auth';
 import AddFormateur from '../Component/component_formateur/addFormateur';
 import EditFormateur from '../Component/component_formateur/editFormateur';
 import Authent from '../layouts/Auth';
-
-
-
-
-import TodoPage from '../pages/TodoPage';
-import NotFoundPage from '../pages/NotFoundPage';
-import RegisterPage from '../pages/RegisterPage';
-
-
-
-
-
-
-
-
-
-
 import routes from "routes.js";
 
 var ps;
@@ -144,6 +126,7 @@ function Dashboard(props) {
   <Route  path="/admin/editStagiaire/:id" component={EditStagiaire}/>
   <Route  path="/admin/editSpecialite/:id" component={EditSpecialite}/>
   <Route  path="/admin/editMatiere/:id" component={EditMatiere}/>
+  <Route  path="/admin/editGroup/:id" component={Editgroupe}/>
   <Route  path="/admin/addmodule" component={AddModule}/>
   <Route  path="/admin/addpromotion" component={Addpromotion}/>
   <Route  path="/admin/editpromotion/:id" component={Editpromotion}/>
@@ -158,8 +141,7 @@ function Dashboard(props) {
   <Route  path="/admin/auth" component={Authent}/>
   <Route  path="/admin/addFormateur" component={AddFormateur}/>
   <Route  path="/admin/editFormateur/:id" component={EditFormateur}/>
-  <Route  path="/register" component={RegisterPage}/>
-
+ 
 
 
   <Route  path="/admin/editcompetence/:id" component={Editcompetence}/>
