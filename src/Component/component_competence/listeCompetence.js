@@ -3,14 +3,16 @@ import axios from 'axios'
 import { Link} from "react-router-dom"
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
+import { Modal, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
 import {
-  Button,
   Card,
   CardHeader,
   CardBody,
   Row,
   Col,
 } from "reactstrap";
+import ModalHeader from 'react-bootstrap/esm/ModalHeader'
 class ListeCompetence extends React.Component{
   constructor(props) {
     super()
@@ -24,7 +26,8 @@ class ListeCompetence extends React.Component{
         codeSection: '',
         idpromotion: '',
         listeSection:[],
-        Listepromo:[]
+        Listepromo:[],
+        show:false
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeIdpromotion = this.onChangeIdpromotion.bind(this);
@@ -139,6 +142,10 @@ pdfGenerate = () => {
  window.open(pdf.output('bloburl'))
 }
 
+handelModal(){
+  this.setState({show:!this.state.show})
+}
+
 
   render(){
   return( 
@@ -228,6 +235,34 @@ pdfGenerate = () => {
   ))}
 </tbody>
 </table>
+
+
+
+<Button onClick={()=>{this.handelModal()}}>open modal</Button>
+
+<Modal show={this.state.show}>
+
+        <Modal.Header closeButton>
+
+          <Modal.Title>Login Form</Modal.Title>
+
+        </Modal.Header>
+
+        <Modal.Body>
+
+          <></>
+
+        </Modal.Body>
+
+        <Modal.Footer>
+
+          <Button variant="secondary"  onClick={()=>{this.handelModal()}}>Close Modal</Button>
+
+        </Modal.Footer>
+
+      </Modal>
+
+
 
 
 </div>

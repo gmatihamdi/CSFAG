@@ -92,7 +92,7 @@ var routes = [
   {
     path: "/Groupe",
     name: "Groupe",
-    icon: "fa fa-users",
+    icon: "nc-icon nc-circle-10",
     component: Groupe,
     layout: "/admin",
   },

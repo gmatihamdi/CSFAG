@@ -38,7 +38,7 @@ const cookies = new Cookies();
           this.state = {
             name: '',
             password: '',
-           Err:'',         
+           Errlogin:'',         
          
           }
           this.onChangeName = this.onChangeName.bind(this);
@@ -65,16 +65,17 @@ const cookies = new Cookies();
                    localStorage.setItem("user", JSON.stringify(user));
                    localStorage.setItem('token', res.data.token);
                           this.props.history.push('/admin/dashboard');
-                          
+                            
                   } else {
                     
                       toast.error(res.data.message)
+
                   }
               })
               .catch(error => {
                   // return;
                   
-                  toast.error('erreur')
+                 toast.error('erreur')
               })
       }
 
@@ -97,8 +98,9 @@ const cookies = new Cookies();
                       <div className="image">
                         <img
                           alt="..."
-                          src={require("assets/img/damir-bosnjak.jpg").default}
+                          src={require("assets/img/centreentre.jpg").default}
                         />
+                        
                       </div>
                       <CardBody>
                         <div className="author">
@@ -155,6 +157,10 @@ const cookies = new Cookies();
                           </Row>
         
                         </Form>
+
+              
+
+
                    
                         </div>
                 

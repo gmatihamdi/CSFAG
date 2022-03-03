@@ -2,7 +2,10 @@ import React from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage} from 'formik';
+import {  } from 'react-bootstrap';
 import * as Yup from 'yup';
+
+
 class Addcompetence extends React.Component{
 
   
@@ -126,8 +129,9 @@ onSubmit(values) {
                           .catch(error => this.setState({ error, isLoading: false }));
                       }
 
-
-
+                      
+                     
+                      
 
 
            componentDidMount() {
@@ -144,7 +148,25 @@ onSubmit(values) {
       this.props.history.push('/');
     }
 
+
+
                   }
+
+                  showmodel(){
+
+
+                    var myModal = document.getElementById('myModal')
+                    var myInput = document.getElementById('myInput')
+                    
+                    myModal.addEventListener('shown.bs.modal', function () {
+                      myInput.focus()
+                    })
+
+
+                  }
+                  
+               
+                  
 
 
 
@@ -254,7 +276,13 @@ onSubmit(values) {
 </Form>
           )}
         </Formik>
+
+
+
+
+
 </div>
+
 </div>
     )
 }}

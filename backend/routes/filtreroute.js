@@ -46,24 +46,12 @@ router.post('/filtrenote', (req, res) => {
 
                         }
 
-                        /*    else {
-                                listnotefiltre.push(
-                                    {
-    
-                                        
-                                    }
-                                );
-                            }*/
-
                     }
                     console.log('--------');
                     for (i = 0; i < listnote.length; i++) {
                         console.log(listnote[i].stagiaireNote.codeSection)
 
                     }
-                    // console.log(listnotefiltre);
-
-
                     res.status(200).json({
                         message: 'ok',
                         data: listnotefiltre,
@@ -320,14 +308,14 @@ router.post('/filtregroup', (req, res) => {
 
 router.post('/filtrestatistique', (req, res) => {
     const codeSect = req.body.x;
-    const  liststag=[];
+    const liststag = [];
     var encours = 0;
     var diplomé = 0;
     var h = 0;
     var f = 0;
     var hp = 0;
     var fp = 0;
-    var leng=0;
+    var leng = 0;
     console.log(codeSect);
 
     try {
@@ -339,51 +327,55 @@ router.post('/filtrestatistique', (req, res) => {
                 })
                 console.log(liststag)
                 for (i = 0; i < liststag.length; i++) {
-                    if (liststag[i].etatdossier =='Accepter') {
-                        encours = i+1 ;
-                      
-                    }}
-                    for (i = 0; i < liststag.length; i++) {
-                    if (liststag[i].etatdossier=='Diplômé') {
-                        diplomé = i+1;
-                        
-                    }}
-                    for (i = 0; i < liststag.length; i++) {
-                        if (liststag[i].sexe=='Homme') {
-                            h = i+1;
-                            
-                        }}
-                        for (i = 0; i < liststag.length; i++) {
-                            if (liststag[i].sexe=='Femme') {
-                                f = i+1;
-                                
-                            }}
-                            leng=liststag.length;
-                    console.log(encours)
-                    console.log(diplomé)
-                    console.log(liststag.length)
-                    hp=(parseFloat(h)/parseFloat(leng))*100
-                    //fp=(parseFloat(f)/parseFloat(leng))*100
-                    fp=(f/leng)*100
-                    console.log(hp)
-                    console.log(fp)
+                    if (liststag[i].etatdossier == 'Accepter') {
+                        encours = i + 1;
 
-                    //res.send(200, data);
+                    }
+                }
+                for (i = 0; i < liststag.length; i++) {
+                    if (liststag[i].etatdossier == 'Diplômé') {
+                        diplomé = i + 1;
 
-                    res.status(200).json({
-                        message: 'ok',
-                        data: encours,
-                        data1: diplomé,
-                        data2: h,
-                        data3: f,
-                        data4: data,
+                    }
+                }
+                for (i = 0; i < liststag.length; i++) {
+                    if (liststag[i].sexe == 'Homme') {
+                        h = i + 1;
+
+                    }
+                }
+                for (i = 0; i < liststag.length; i++) {
+                    if (liststag[i].sexe == 'Femme') {
+                        f = i + 1;
+
+                    }
+                }
+                leng = liststag.length;
+                console.log(encours)
+                console.log(diplomé)
+                console.log(liststag.length)
+                hp = (parseFloat(h) / parseFloat(leng)) * 100
+                //fp=(parseFloat(f)/parseFloat(leng))*100
+                fp = (f / leng) * 100
+                console.log(hp)
+                console.log(fp)
+
+                //res.send(200, data);
+
+                res.status(200).json({
+                    message: 'ok',
+                    data: encours,
+                    data1: diplomé,
+                    data2: h,
+                    data3: f,
+                    data4: data,
 
 
 
-                    });
+                });
 
-                  //  console.log(data);
-                   // console.log(data1);
+                //  console.log(data);
+                // console.log(data1);
             })
     }
     catch (e) {

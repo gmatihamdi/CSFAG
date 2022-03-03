@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { BsPersonPlusFill } from "react-icons/bs";
 import { FcPrint } from "react-icons/fc";
 import { Dropdown } from 'react-bootstrap';
+import { Modal, Button } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import { ReactDialogBox } from 'react-js-dialog-box'
 import 'react-js-dialog-box/dist/index.css'
@@ -31,6 +32,7 @@ class SelectStag extends React.Component {
       listgroupsection: [],
       groupeStagiaire: '',
       idstagiaire:'',
+      show:false
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeEtatdossier = this.onChangeEtatdossier.bind(this);
@@ -72,6 +74,10 @@ class SelectStag extends React.Component {
     console.log(this.state.liststag)
 
 
+  }
+
+  handelModal(){
+    this.setState({show:!this.state.show})
   }
 
 
@@ -315,9 +321,37 @@ console.log(this.state.idstagiaire)
                         Refuser
                       </Link> </Dropdown.Item>
                       <Dropdown.Item >
-                      <Link  onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteSpc(stagiare._id) }}>
+                      <Link onClick={()=>{this.handelModal()}}
+                     //  onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteSpc(stagiare._id) }}
+                       
+                       >
                    Supprimer
                   </Link>
+
+                  <Modal show={this.state.show}>
+
+<Modal.Header >
+
+  <Modal.Title>Alert</Modal.Title>
+
+</Modal.Header>
+
+<Modal.Body>
+
+Etes vous sur de vouloir supprimer cet element?
+
+</Modal.Body>
+
+<Modal.Footer>
+<Button variant="danger"  onClick={()=>{this.deleteSpc(stagiare._id)}}>OUI</Button>
+  <Button variant="secondary"  onClick={()=>{this.handelModal()}}>fermer</Button>
+
+</Modal.Footer>
+
+</Modal>
+
+
+
                       </Dropdown.Item>
 
                    
@@ -328,24 +362,6 @@ console.log(this.state.idstagiaire)
                  
                 </td>
               </tr>
-           
-
-
-
-
-
-
-      
-       
-           
-       
-     
-
-
-
-
-
-
       ))}
           </tbody>
 
@@ -385,6 +401,10 @@ console.log(this.state.idstagiaire)
             </ReactDialogBox>
           </>
         )}
+
+
+    
+
 
 
 

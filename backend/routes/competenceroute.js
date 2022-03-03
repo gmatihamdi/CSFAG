@@ -47,7 +47,23 @@ router.delete('/:id',async(req,res)=>{
     res.json({'message':'deleted'})
 })
 
-router.post('/',(req,res)=>{
+router.post('/',async(req,res)=>{
+
+  let  compexiste= await Competence.findOne({
+    codeCompetence:req.body.codeCompetence,
+    codeSpecialite:req.body.codeSpecialite,
+
+  
+  });
+
+  // console.log(spcexiste)
+   
+   if (compexiste){
+     return res.status(400).send('That user already exisits!');
+    
+   }
+   else{
+
     competence=new Competence({
         codeCompetence:req.body.codeCompetence,
         codeSection:req.body.codeSection,
@@ -59,6 +75,7 @@ router.post('/',(req,res)=>{
     competence.save(()=>{
         res.json(this.section)
     })
+  }
 })
 router.put('/:id',async(req,res)=>{
     await Competence.findByIdAndUpdate(req.params.id,req.body)

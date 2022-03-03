@@ -19,7 +19,7 @@
 import ReactDOM from "react-dom";
 import React, { Component } from 'react';
 import { HashRouter as Router, Switch, Route ,BrowserRouter,Redirect} from "react-router-dom";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/paper-dashboard.scss?v=1.3.0";
 import "assets/demo/demo.css";

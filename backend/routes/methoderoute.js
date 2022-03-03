@@ -133,27 +133,59 @@ router.post('/getrelevnote', (req, res) => {
                                         datanote.map((note) => {
                                             listnote.push(note);
                                         })
+                                        console.log('listnote noteexam')
+                                        listnote.forEach((element, index)=>{
+                                        console.log(element.noteexam)
+                                        })
                                         let listFinalNotes = [];
-                                        for (j = 0; j < listnote.length; j++) {
-                                            for (i = 0; i < listecompetence.length; i++) {
-                                                if (listnote[j].moduleNote._id.equals(listecompetence[i]._id)) {
+                                        for (i = 0; i < listecompetence.length; i++) {
+                                     //   for (j = 0; j < listnote.length; j++) {  
+                                            
+                                        const existanceIdx = listnote.find(x =>x.moduleNote._id .equals(listecompetence[i]._id));
+                                        console.log('existanceIdx')
+                                        console.log(existanceIdx)
+                                         if (existanceIdx){
+                                            listnote.forEach((element, index)=>{
+                                                if(element.moduleNote._id .equals(listecompetence[i]._id)){
+                                            listFinalNotes.push(
+                                                {
+                                                    notefinale:element.noteexam, 
+                                                    ...listecompetence[i].toObject()
+                                                })
+                                                somme = parseFloat(somme) + parseFloat(element.noteexam);
+                                            }})
+                                        }
+
+                                        else  {
+                                            listFinalNotes.push(
+                                                {
+                                                    notefinale: 0,
+                                                    ...listecompetence[i].toObject()
+                                                }
+                                            );
+                                        }
+                                        
+
+                                             /*   if (listecompetence[i]._id.equals( listnote[j].moduleNote._id)) {
                                                     listFinalNotes.push(
                                                         {
                                                             notefinale: listnote[j].noteexam,
                                                             ...listecompetence[i].toObject()
                                                         })
                                                     somme = parseFloat(somme) + parseFloat(listnote[j].noteexam);
-                                                } else {
+                                                }   
+                                             /* else  {
                                                     listFinalNotes.push(
                                                         {
                                                             notefinale: 0,
                                                             ...listecompetence[i].toObject()
                                                         }
                                                     );
-                                                }
+                                                }*/
 
-                                            }
+                                         //   }
                                         }
+                                        
                                         /*   listecompetence.forEach((element, index)=>{
                                            const existanceIdx = listnote.findIndex(x =>x.moduleNote._id .equals(element._id));
                                            if (existanceIdx>-1){
@@ -192,7 +224,9 @@ router.post('/getrelevnote', (req, res) => {
                                        /****** */
                                         var lengthcmp = listecompetence.length;
                                         moyenne = parseFloat(somme) / parseFloat(lengthcmp);
-                                     /*   console.log("listFinalNotes")
+                                        console.log("listFinalNotes")
+                                        console.log(listFinalNotes)
+                                        /*   console.log("listFinalNotes")
                                         console.log(moyenne)
                                         console.log(somme)
                                         console.log(resultat)*/
