@@ -20,11 +20,13 @@ class EditNote extends React.Component{
         moduleNote: '',
         nomStagiaire:'',
         libmatiere:'',
+        seuilmatiere:'',
         cin:'',
         FormateurNote:'',
         Errnoteexam: '',
         listeFormateurs:[],
         listnote:[],
+        noteresult: '',
         
       }
     this.onChangeFormateurNote = this.onChangeFormateurNote.bind(this);
@@ -45,8 +47,11 @@ class EditNote extends React.Component{
               libmatiere:res.data.moduleNote.libMatiere,
               cin:res.data.stagiaireNote.cinStagiaire,
               FormateurNote:res.data.FormateurNote,
+              seuilmatiere:res.data.moduleNote.seuilMatiere,
       
-          });console.log(this.state.nomStagiaire);
+          });
+          console.log('seuilmatiere');
+          console.log(this.state.seuilmatiere);
           console.log(this.state.listnote.moduleNote.libMatiere);
             nomStagiaireFr=this.state.listnote.stagiaireNote.nomStagiaireFr;
         //  console.log(nomStagiaireFr);
@@ -88,10 +93,20 @@ class EditNote extends React.Component{
     
      else{
     e.preventDefault()
+
+
+    let res='';
+    if (parseFloat(this.state.noteexam) >= parseFloat(this.state.seuilmatiere)) {
+      res='acquise'
+              }else{
+                res='non acquise'
+      
+              }
     
     const studentObject = {
         noteexam:this.state.noteexam,
         FormateurNote:this.state.FormateurNote,
+        noteresult:res,
     };
     axios.put(`http://localhost/note/`+this.props.match.params.id, studentObject)
     .then((res) => {

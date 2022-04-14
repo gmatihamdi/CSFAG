@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
     ref:"Matiere"},
     FormateurNote: {type:String,
         ref:"Formateur"},
+        noteresult:String,
 
 })
 module.exports = mongoose.model('Note', noteSchema);

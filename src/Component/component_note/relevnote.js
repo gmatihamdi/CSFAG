@@ -90,9 +90,9 @@ class PdfRnote extends React.Component{
     pdfGenerate=()=>{
       console.log('Moyn')
       console.log(this.state.Moyn)
-      var iframe = document.createElement('iframe');
-      iframe.setAttribute('style','position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-     document.body.appendChild(iframe);
+    //  var iframe = document.createElement('iframe');
+   //   iframe.setAttribute('style','position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+   //  document.body.appendChild(iframe);
  var img = new Image()
      var Values =  this.state.listnote.map( (element) => Object.values([element.libMatiere,element.codeMatiere,element.seuilMatiere,element.notefinale]));
        var pdf = new jsPDF('p', 'pt', 'a4');
@@ -144,10 +144,12 @@ class PdfRnote extends React.Component{
         body:Values
    
      }) 
-       var iframe = document.createElement('iframe');
-       iframe.setAttribute('style','position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-       document.body.appendChild(iframe);  
-       iframe.src = pdf.output('datauristring');
+   //    var iframe = document.createElement('iframe');
+     //  iframe.setAttribute('style','position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+    //   document.body.appendChild(iframe);  
+     //  iframe.src = pdf.output('datauristring');
+
+       window.open(pdf.output('bloburl'))
      }
 //style={{fontSize:"6px"}} style={{width:600, height: 150, }}     
           //style={{fontSize:'9px', width: 700, height: 900}} 

@@ -123,10 +123,10 @@ onChangeCodeSection(e) {
 pdfGenerate = () => {
 this.fetchMatiere();
   var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
   document.body.appendChild(iframe);
   var img = new Image()
-  var Values = this.state.listnote.map((element, index) => Object.values([index + 1, element.stagiaireNote?.cinStagiaire, element.stagiaireNote?.nomStagiaireFr,element.noteexam]));
+  var Values = this.state.listnote.map((element, index) => Object.values([index + 1, element.stagiaireNote?.cinStagiaire, element.stagiaireNote?.nomStagiaireFr]));
   var pdf = new jsPDF('p', 'pt', 'a4');
   pdf.setFontSize(9);
   pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
@@ -148,11 +148,11 @@ this.fetchMatiere();
 
   })
   var iframe = document.createElement('iframe');
-  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+ // iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
   document.body.appendChild(iframe);
   iframe.src = pdf.output('datauristring');
 
-
+  window.open(pdf.output('bloburl'))
 
 
  

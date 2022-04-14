@@ -144,37 +144,18 @@ function Header(props) {
           </form>
           <Nav navbar>
             <NavItem>
-              <Link to="#pablo" className="nav-link btn-magnify">
-                <i className="nc-icon nc-layout-11" />
-                <p>
-                  <span className="d-lg-none d-md-block">Stats</span>
-                </p>
-              </Link>
-            </NavItem>
-            <Dropdown
-              nav
-              isOpen={dropdownOpen}
-              toggle={(e) => dropdownToggle(e)}
-            >
-              <DropdownToggle caret nav>
-                <i className="nc-icon nc-bell-55" />
-                <p>
-                  <span className="d-lg-none d-md-block">Some Actions</span>
-                </p>
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem tag="a"><Link onClick={(e) => 
+              <Link onClick={(e) => 
                 {
                   localStorage.removeItem('token');
               
                 
                 }}
-                to='/'
-                >
-                Deconnecter</Link></DropdownItem>
-                
-              </DropdownMenu>
-            </Dropdown>
+                to='/'  className="nav-link btn-magnify">
+                <i className="nc-icon nc-button-power" />
+                Se deconnecter
+              </Link>
+            </NavItem>
+          
             <NavItem>
               <Link to="#pablo" className="nav-link btn-rotate">
                 <i className="nc-icon nc-settings-gear-65" />

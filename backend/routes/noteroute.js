@@ -61,6 +61,7 @@ router.post('/', (req, res) => {
     notte = new Note({
       noteexam:x.note,
       stagiaireNote: x.cin,
+      noteresult:x.reslt,
       moduleNote: req.body.moduleNote,
       FormateurNote: req.body.FormateurNote,
     })

@@ -15,6 +15,7 @@ class CreatNote extends React.Component {
       codeSection: '',
       groupeStagiaire: '',
       codeMatiere: '',
+      seuilMat: '',
       users: [],
       matieres: [],
       stgsss: [],
@@ -42,14 +43,28 @@ class CreatNote extends React.Component {
 
   
     e.preventDefault()
+const seuil=this.state.seuilMat.seuilMatiere;
+let res='';
+
     let odj = {
       moduleNote: this.state.moduleNote,
       FormateurNote: this.state.FormateurNote,
-
       listenotestag: this.state.stgsss.map(x => {
+
+        //begin
+        if (parseFloat(x.note) >= parseFloat(seuil)) {
+res='acquise'
+        }else{
+          res='non acquise'
+
+        }
+//end
         return {
           cin: x._id,
-          note: x.note
+          note: x.note,
+         reslt:res
+
+
         }
       })
     }
@@ -94,6 +109,9 @@ class CreatNote extends React.Component {
   onChangeCodeMatiere(e) {
     this.setState({ codeMatiere: e.target.value })
   }
+
+
+
 
   fetchSpecialite() {
     fetch(`http://localhost/spc`)
@@ -171,8 +189,28 @@ class CreatNote extends React.Component {
       .catch(error => this.setState({ error, isLoading: false }));
 
   }
+
+  fetchSeuilMatiere() {
+    const a={ x:this.state.moduleNote}
+    console.log(a)
+    axios.post(`http://localhost/methode/getSeuilMatiere`,a)
+      // We get the API response and receive data in JSON format...
+      .then((res)=>{
+        this.setState({
+          seuilMat: res.data,
+        
+        })
+        console.log("resultat seuilMatiere");
+    console.log(this.state.seuilMat.seuilMatiere)
+      })
+      // Catch any errors we hit and update the app
+      .catch(error => this.setState({ error, isLoading: false }));
+  }
+
   findgroupClick(){
     const a={ x:this.state.codeSection}
+    console.log('this.state.codeSection')
+    console.log(a)
     axios.post(`http://localhost/methode/getgroup`,a) 
     .then((res)=>{
       this.setState({
@@ -251,8 +289,8 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
         <div >
           <h2>Notation des Compétences par groupe</h2>
 
-          <form onSubmit={this.onSubmit}>
-            <div className="form-group">
+          <form onSubmit={this.onSubmit} >
+            <div className="col-md-6">
             <select 
   class="form-control"
  value={this.state.codeSection}
@@ -270,7 +308,7 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
 </select>
 
             </div>
-
+            <div className="col-md-6">
             <select class="form-control"  name="grouprselect" value={this.state.groupeStagiaire}
    onChange={this.onChangeGroupeStagiaire}  >
   
@@ -284,10 +322,13 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
                                })
                            }
 </select> 
-            <div className="form-group">
+</div>
+            <div className="col-md-6">
               <select
                 className="form-control" value={this.state.moduleNote}
-                onChange={this.onChangeModuleNote}>
+                onChange={this.onChangeModuleNote}
+                onClick={() => this.fetchSeuilMatiere()}
+                >
                 <option >select matiere</option>
                 {
                   this.state.listcompetence.map(function (competence) {
@@ -297,7 +338,7 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
               </select>
             </div>
 
-            <div className="form-group">
+            <div className="col-md-6">
             <select 
   class="form-control"
  value={this.state.FormateurNote}

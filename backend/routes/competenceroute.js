@@ -50,8 +50,8 @@ router.delete('/:id',async(req,res)=>{
 router.post('/',async(req,res)=>{
 
   let  compexiste= await Competence.findOne({
-    codeCompetence:req.body.codeCompetence,
-    codeSpecialite:req.body.codeSpecialite,
+    codeMatiere:req.body.codeMatiere,
+    codeSection:req.body.codeSection,
 
   
   });

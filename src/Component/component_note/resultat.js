@@ -1,7 +1,10 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from "react-router-dom"
+import logo from './entete.jpeg'
 import { BsPersonPlusFill } from "react-icons/bs";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { FcPrint } from "react-icons/fc";
 import { Dropdown } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
@@ -78,8 +81,8 @@ class Resultat extends React.Component {
          //  Moyn:res.data.data2,
            Result:res.data.data3,
         })
-        console.log("resultat de recherche");
-        console.log(res.data)
+        console.log("resultat Result");
+        console.log(this.state.stgs)
       })
       // Catch any errors we hit and update the app
       .catch(error => this.setState({ error, isLoading: false }));
@@ -219,6 +222,44 @@ console.log(this.state.idstagiaire)
   }
 
 
+  pdfGenerate = () => {
+      var iframe = document.createElement('iframe');
+    //  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+      document.body.appendChild(iframe);
+      var img = new Image()
+      var Values = this.state.stgs.map((element, index) => Object.values([index + 1, element.cinStagiaire, element.nomStagiaireFr,element.res]));
+      var pdf = new jsPDF('p', 'pt', 'a4');
+      pdf.setFontSize(9);
+      pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
+      pdf.setFontSize(22);
+      pdf.text(250, 80, 'Résultat')
+      pdf.setFontSize(10);   
+    
+    
+      pdf.text(35, 130, '')
+
+      
+      pdf.setFontSize(9)
+     
+      pdf.autoTable({ html: '#my-table', startY: 150, showHead: 'everyPage' })
+      // Or use javascript directly:
+      pdf.autoTable({
+        head: [['N°', 'CIN', 'Nom&Prénom', 'Résultat']],
+        body: Values
+    
+      })
+      var iframe = document.createElement('iframe');
+    /*  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+      document.body.appendChild(iframe);
+      iframe.src = pdf.output('datauristring');*/
+      window.open(pdf.output('bloburl'))
+    }
+
+
+
+
+
+
 
 
 
@@ -228,7 +269,7 @@ console.log(this.state.idstagiaire)
 
       <div className="content">
         <ToastContainer />
-        resultat
+        
         <form className="row g-3">
           <div class="col-auto">
 
@@ -269,7 +310,8 @@ console.log(this.state.idstagiaire)
         
           <Link className='btn btn-danger' onClick={() => this.handleClick()}><i className="nc-icon nc-zoom-split" /></Link>
 
-         
+          <Link className='btn btn-success'  onClick={this.pdfGenerate} ><i className="fa fa-print" /></Link>
+
 
         </form>
 
@@ -277,7 +319,7 @@ console.log(this.state.idstagiaire)
         <table id="dtBasicExample" className="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">#</th>
+              <th scope="col">N°</th>
               <th scope="col">CIN</th>
               <th scope="col">Nom&Prénom</th>
               <th scope="col"> الاسم و اللقب </th>
@@ -293,10 +335,10 @@ console.log(this.state.idstagiaire)
                 <td>{stagiare.cinStagiaire}</td>
                 <td>{stagiare.nomStagiaireFr}</td>
                 <td>{stagiare.nomStagiaireAr}</td>
-                <td>{this.state.Result}</td>
+                <td>{stagiare.res}</td>
 
 
-                      <If condition={(this.state.Result)===(this.state.etatvalid)} then={
+                      <If condition={(stagiare.res)===(this.state.etatvalid)} then={
     
     <td>
    <Link className='btn btn-success' onClick={(e) => { if (window.confirm(
