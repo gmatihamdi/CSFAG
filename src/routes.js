@@ -160,6 +160,8 @@ var routes = [
     component: users,
     layout: "/admin",
   },
+
+/*
   {
     path: "/icons",
     name: "Icons",
@@ -167,7 +169,7 @@ var routes = [
     component: Icons,
     layout: "/admin",
   },
- /*
+ 
   {
     path: "/login",
     name: "User login",

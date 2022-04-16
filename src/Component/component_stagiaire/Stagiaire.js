@@ -192,19 +192,19 @@ else{
     pdf.addFileToVFS(fontarab, base64Str);
     pdf.addFont(fontarab, 'Amiri', 'normal');
    pdf.setFont('Amiri'); 
-    pdf.text(210, 100, 'شهادة حضور ')
+    pdf.text(300, 100, 'شهادة حضور ',{align: 'center' })
     pdf.setFontSize(16);
     //pdf.line(150, 110, 300, 110);
-    pdf.text(220, 200,'يشهد مدير المركز القطاعي للتكوين في فنون الطباعة بأريانة أنّ ؛')
-    pdf.text(480, 250, ' المتكون (ة) ')
-    pdf.text(400, 250,this.state.atpsence.nomStagiaireAr)
-    pdf.text(410, 300, 'صاحب بطاقة تعريف وطنية رقم ')
-    pdf.text(310, 300,this.state.atpsence.cinStagiaire)
-    pdf.text(470, 350, 'المولود بتاريخ ')
+    pdf.text(550, 200,'يشهد مدير المركز القطاعي للتكوين في فنون الطباعة بأريانة أنّ  ؛', {align: 'right' })
+    pdf.text(550, 250, ' المتكون ة ', {align: 'right' })
+    pdf.text(250, 250,this.state.atpsence.nomStagiaireAr)
+    pdf.text(550, 300, 'صاحب بطاقة تعريف وطنية رقم ', {align: 'right' })
+    pdf.text(250, 300,this.state.atpsence.cinStagiaire)
+    pdf.text(550, 350, 'المولود بتاريخ ', {align: 'right' })
     pdf.text(250, 350,this.state.atpsence.datenaissanceStag)
-    pdf.text(470, 400, 'مرسم بالمركز ')
+    pdf.text(550, 400, 'مرسم بالمركز ', {align: 'right' })
     pdf.text(250, 400,this.state.atpsence.codePromotion.libPromotionAr)
-    pdf.text(220, 450, 'سلمت هذه الشهادة للمعني للإستظهار بها لدى من يهمه الأمر ')
+    pdf.text(550, 450, 'سلمت هذه الشهادة للمعني للإستظهار بها لدى من يهمه الأمر ', {align: 'right' })
     pdf.text(80, 500, 'مدير المركز ')
     pdf.setFontSize(9)
    // var iframe = document.createElement('iframe');

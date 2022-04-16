@@ -150,39 +150,36 @@ router.post('/getrelevnote', (req, res) => {
                                                         listFinalNotes.push(
                                                             {
                                                                 notefinale: element.noteexam,
+                                                                resnote:element.noteresult,
                                                                 ...listecompetence[i].toObject()
                                                             })
                                                         somme = parseFloat(somme) + parseFloat(element.noteexam);
                                                     }
                                                 })
                                             }
-
                                             else {
                                                 listFinalNotes.push(
                                                     {
                                                         notefinale: 0,
+                                                        resnote:'non acquise',
                                                         ...listecompetence[i].toObject()
                                                     }
                                                 );
                                             }
-
                                         }
 
-                                        for (i = 0; i < listnote.length; i++) {
-
-                                            if (listnote[i].noteresult === 'non acquise') {
+                                        if (datanote.length === dataComp.length) {
+                                            //arry.some--- condition
+                                            if (datanote.some(e => e.noteresult === 'non acquise')) {
                                                 resultat = "Refusé";
-
-
                                             }
                                             else {
-
                                                 resultat = "Réussite";
-
                                             }
-
                                         }
-
+                                        else {
+                                            resultat = "Refusé";
+                                        }
 
                                         /****** */
                                         var lengthcmp = listecompetence.length;
@@ -392,17 +389,17 @@ router.post('/printstag/:id', (req, res) => {
 })
 
 
-router.post('/getresultat',async (req, res) => {
+router.post('/getresultat', async (req, res) => {
     var listnote = [];
     var lnote = [];
     let listresultstag = [];
     var moyenne = 0;
     let idstag = " ";
     let resultat = " ";
-    let echec='non acquise'
+    let echec = 'non acquise'
     try {
-        
-        const dataStag=await Stag.find({ codeSection: req.body.x }).populate([
+
+        const dataStag = await Stag.find({ codeSection: req.body.x }).populate([
             {
                 path: 'codePromotion',
                 model: 'Promotion'
@@ -414,71 +411,71 @@ router.post('/getresultat',async (req, res) => {
         ]);
 
 
-        const datacompt= await  Competence.find({ codeSection: req.body.x  })   
+        const datacompt = await Competence.find({ codeSection: req.body.x })
 
         console.log('datacompt.length')
-console.log(datacompt.length)
+        console.log(datacompt.length)
 
 
 
-if (dataStag ){
+        if (dataStag) {
             for (i = 0; i < dataStag.length; i++) {
                 idstag = dataStag[i]._id
-             console.log(idstag)
+                console.log(idstag)
 
 
-             datanote=await Note.find({ stagiaireNote: idstag })
-             .populate([
-                 {
-                     path: 'stagiaireNote',
-                     model: 'Stagiaire'
-                 },
-                 {
-                     path: 'moduleNote',
-                     model: 'Matiere'
-                 }])
-
-
-
-                 if (datanote.length === datacompt.length ){
-//arry.some--- condition
+                datanote = await Note.find({ stagiaireNote: idstag })
+                    .populate([
+                        {
+                            path: 'stagiaireNote',
+                            model: 'Stagiaire'
+                        },
+                        {
+                            path: 'moduleNote',
+                            model: 'Matiere'
+                        }])
 
 
 
-                                if (datanote.some(e => e.noteresult === 'non acquise')) {
-                                    resultat = "Refusé";
-                                }
-                                else {
-                                    resultat = "Réussite";
-                                }
-                            
-                        }
-                        else{
-                            resultat = "Refusé";
+                if (datanote.length === datacompt.length) {
+                    //arry.some--- condition
 
-                        }
-                            listresultstag.push(
-                                {
-                                    res: resultat,
-                                    ...dataStag[i].toObject()
-                                }
-                            );
-                            // console.log(resultat)
-                            console.log('resultat')
-                            console.log(resultat)
+
+
+                    if (datanote.some(e => e.noteresult === 'non acquise')) {
+                        resultat = "Refusé";
+                    }
+                    else {
+                        resultat = "Réussite";
+                    }
+
+                }
+                else {
+                    resultat = "Refusé";
+
+                }
+                listresultstag.push(
+                    {
+                        res: resultat,
+                        ...dataStag[i].toObject()
+                    }
+                );
+                // console.log(resultat)
+                console.log('resultat')
+                console.log(resultat)
             }
         }
-           // console.log('resultat')
-           // console.log(listresultstag);
-            res.json({
-                message: 'ok',
-                data1: listresultstag,
-                data2: moyenne,
-                data3: resultat
-            })
+        // console.log('resultat')
+        // console.log(listresultstag);
+        res.json({
+            message: 'ok',
+            data1: listresultstag,
+            data2: moyenne,
+            data3: resultat
+        })
 
 
-        
+
     }
     catch (e) {
         console.log(e);

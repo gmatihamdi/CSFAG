@@ -38,7 +38,8 @@ const cookies = new Cookies();
           this.state = {
             name: '',
             password: '',
-           Errlogin:'',         
+           Errlogin:'',   
+           listuser:[]      
          
           }
           this.onChangeName = this.onChangeName.bind(this);
@@ -61,10 +62,12 @@ const cookies = new Cookies();
                 axios.post(`http://localhost/api/login`,user,config)
 
                 .then(res => {
+                  
                   if (res.status === 200) {
                    localStorage.setItem("user", JSON.stringify(user));
                    localStorage.setItem('token', res.data.token);
-                          this.props.history.push('/admin/dashboard');
+                   localStorage.setItem('roleuser', res.data.data);
+                    this.props.history.push('/admin/dashboard');
                             
                   } else {
                     

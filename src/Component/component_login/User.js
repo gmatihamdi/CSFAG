@@ -14,6 +14,29 @@ class User extends React.Component {
 
 
   componentDidMount(){
+
+    const token = localStorage.getItem("token");
+    const roleuse = localStorage.getItem("roleuser");
+
+    
+    if (token){
+if(roleuse==='Admin'){
+  console.log('ok')
+
+}
+else{
+  this.props.history.push('/admin');
+}
+    
+    }
+    else{
+      this.props.history.push('/');
+    }
+
+
+
+
+
     axios.get('http://localhost/api/')
     .then((res)=>{
       this.setState({

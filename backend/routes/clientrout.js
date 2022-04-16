@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const auth = require('../middleware/auth');
+const { token } = require('morgan');
 config = require('../config');
 router.get('/',(req,res)=>{
     User.find({},(err,data)=>{
@@ -45,32 +46,38 @@ router.put('/:id',async(req,res)=>{
 })
 
 
-router.post('/login',(req,res)=>{
-    
-User.find({ name: req.body.name ,
-    password:req.body.password
-})
-.exec()
-.then(User => {
-    
-    console.log(User.User)
+router.post('/login',async(req,res)=>{
+    let roleuser='';
 
-    if(User.length != 0){       
+    const datauser = await User.find({ name: req.body.name ,password:req.body.password });   
+    
+    console.log(datauser.role)
+
+    if(datauser.length != 0){       
       const token = jwt.sign({         
-            name: User.name ,
-            password:User.password,         
+            name: datauser.name ,
+            password:datauser.password,         
             },
             'secret', {
                 expiresIn: "18h"
             }
         );
+
+for(i=0;i<datauser.length;i++){
+
+ roleuser=datauser[i].role
+}
+console.log('roleuser')
+console.log(roleuser)
+
+
          res.status(200).json({
             message: "successful",
             token: token ,
-            data:this.name,
+            data:roleuser,
           });
-            console.log('token backend')
-            console.log(token)   
+          console.log(token)
+
     }
     else {
         res.status(401).json({
@@ -79,7 +86,9 @@ User.find({ name: req.body.name ,
             result: {}
         })
     }
-})
+
+  
+
 })
 
 

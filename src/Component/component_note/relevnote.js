@@ -94,7 +94,7 @@ class PdfRnote extends React.Component{
    //   iframe.setAttribute('style','position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
    //  document.body.appendChild(iframe);
  var img = new Image()
-     var Values =  this.state.listnote.map( (element) => Object.values([element.libMatiere,element.codeMatiere,element.seuilMatiere,element.notefinale]));
+     var Values =  this.state.listnote.map( (element) => Object.values([element.libMatiere,element.codeMatiere,element.seuilMatiere,element.notefinale,element.resnote]));
        var pdf = new jsPDF('p', 'pt', 'a4');
      pdf.setFontSize(9);
      pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
@@ -107,25 +107,26 @@ class PdfRnote extends React.Component{
     pdf.setFont('Amiri'); 
        pdf.text(210, 50, 'بطاقة كشف الكفايات', {lang: 'ar'})
        pdf.setFontSize(10);
-       pdf.text(480, 100, 'الاسم و اللقب ')
+       
+       pdf.text(550, 100, ':الاسم و اللقب ', {align: 'right' })
        pdf.text(400, 100,this.state.stgs.nomStagiaireAr)
-       pdf.text(200, 100, 'عدد بطاقة التعريف الوطنية ')
+       pdf.text(280, 100, ':عدد بطاقة التعريف الوطنية ', {align: 'right' })
        pdf.text(110, 100,this.state.stgs.cinStagiaire)
       
        //pdf.line(35, 110, 300, 110);
-       pdf.text(480, 120,'الاختصاص')
+       pdf.text(550, 120,':الاختصاص', {align: 'right' })
        pdf.text(340, 120,this.state.retourdetails?.codeSpecialite.libSpecialiteAr)
-       pdf.text(200, 120,'الرمز')
+       pdf.text(280, 120,':الرمز', {align: 'right' })
        pdf.text(110, 120,this.state.retourdetails?.codeSpecialite.codeSpecialite)
 
-       pdf.text(480, 140,'مدة التكوين  من ')
+       pdf.text(550, 140,':مدة التكوين  من ', {align: 'right' })
        pdf.text(400, 140,'01/02/2019')
-       pdf.text(200, 140,'إلى')
+       pdf.text(280, 140,':إلى', {align: 'right' })
        pdf.text(110, 140,'30/06/2021')
 
-       pdf.text(480, 160,' نمط التكوين ')
+       pdf.text(550, 160,': نمط التكوين ', {align: 'right' })
        pdf.text(400, 160,this.state.retourdetails?.codeSpecialite.typeSpecialite)
-       pdf.text(200, 160,'شهادة')
+       pdf.text(280, 160,':شهادة', {align: 'right' })
        pdf.text(35, 160,this.state.retourdetails?.codeSpecialite.diplomeSpecialite)
 
 
@@ -264,6 +265,7 @@ return(
      <td>{element.codeMatiere}</td>
      <td>{element.seuilMatiere}</td>
      <td>{element.notefinale}</td>
+     
         
     <If condition={element.notefinale >= element.seuilMatiere} then={
     

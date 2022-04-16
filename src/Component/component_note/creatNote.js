@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { Link } from "react-router-dom"
 import { ToastContainer, toast } from 'react-toastify';
+import { object } from 'yup';
 class CreatNote extends React.Component {
 
 
@@ -59,6 +60,8 @@ res='acquise'
 
         }
 //end
+
+
         return {
           cin: x._id,
           note: x.note,
@@ -66,13 +69,19 @@ res='acquise'
 
 
         }
+
+      
       })
     }
-    console.log(odj);
+
    axios.post('http://localhost/note', odj).then(res => 
    toast.success('insertion avec success')
  ).catch(err => {toast.error("Erreur d'insertion ")}) 
 
+
+console.log(odj.listenotestag.note)
+    console.log('Errnoteexam');
+    console.log(this.state.Errnoteexam);
   }
 
 
@@ -375,6 +384,8 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
     <th scope="col">CIN</th>
     <th scope="col">Nom&Prénom</th>
     <th scope="col">Note</th>
+    <th scope="col">observ</th>
+
  
   </tr>
 </thead>
@@ -395,6 +406,7 @@ console.log(this.state.listcompetence.codeMatiere.libMatiere)
                       />
                       
                     </td>
+                    <td> <p class="text-danger">{this.state.Errnoteexam}</p></td>
                   </tr>
                   
               ))}

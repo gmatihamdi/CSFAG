@@ -52,12 +52,19 @@ router.delete('/:id', async (req, res) => {
   res.json({ 'message': 'deleted' })
 })
 
-router.post('/', (req, res) => {
+router.post('/',async (req, res) => {
   console.log('testooo');
-  console.log(req.body);
+ // console.log(req.body);
+  try {
 
+  req.body.listenotestag.forEach(async x => {
+    const noteexiste= await  Note.find({ stagiaireNote: x.cin ,moduleNote:req.body.moduleNote  });
+if(noteexiste){
 
-  req.body.listenotestag.forEach(x => {
+  console.log('note existe')
+
+}
+else{
     notte = new Note({
       noteexam:x.note,
       stagiaireNote: x.cin,
@@ -69,9 +76,15 @@ router.post('/', (req, res) => {
     notte.save(() => {
       console.log('inserted');
     })
+    res.json({'status':'ok'})
+  }
   })
-
-  res.json({'status':'ok'})
+}
+catch (e) {
+  console.log(e);
+  res.send(500, { error: 'Failed ' });
+}
+ 
   
 })
 router.put('/:id', async (req, res) => {
