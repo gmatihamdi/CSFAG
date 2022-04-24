@@ -1,11 +1,13 @@
 import React from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { Link} from "react-router-dom"
+import { ToastContainer, toast } from 'react-toastify';
 class User extends React.Component {
   constructor(props){
   super(props);
   this.state ={
     users:[],
-    id:0,
+    iduser:'',
     name:'',
     email:'',
     password:'',
@@ -72,7 +74,10 @@ else{
     })
    
   }
-  submit(event,id){
+
+
+
+  submit(event){
     event.preventDefault()
 
    
@@ -85,31 +90,39 @@ else{
     };
 
     console.log(utilisateur)
-
-
-    if(id===0){
+    console.log('id user')
+    console.log(this.props.match.params.id)
+    console.log(this.state.iduser) 
+    if(this.state.iduser===''){
       
-      axios.post('http://localhost/api',utilisateur)
-      this.componentDidMount()
+      axios.post('http://localhost/api',utilisateur).then(res => 
+      toast.success('insertion avec success')
+    ).catch(err => {toast.error("Erreur d'insertion ")}) 
+    
     }else{
      
-      axios.put(`http://localhost/api/${id}`,utilisateur)
-      this.componentDidMount()
+      axios.put(`http://localhost/api/${this.state.iduser}`,utilisateur).then(res => 
+      toast.success('Modification avec success')
+    ).catch(err => {toast.error("Erreur de modification ")}) 
+     
     }
    
   }
   delete(id){
-    axios.delete(`http://localhost/api/${id}`).then(()=>{
-      this.componentDidMount()
-    })
+    axios.delete(`http://localhost/api/${id}`).then(res => 
+    toast.success('suppression avec success')
+  ).catch(err => {toast.error("Erreur de suppression ")}) 
   }
   edit(id){
+
+
     axios.get(`http://localhost/api/edit/${id}`)
     .then((res)=>{
       console.log(res.data) 
       console.log(id) 
 
     this.setState({
+      iduser:res.data._id,
         name:res.data.name,
         email:res.data.email,
         password:res.data.password,
@@ -121,15 +134,21 @@ else{
       console.log(error);
       
   })
-  }
+
+  this.componentDidMount();
+}
+  
+
+
+ 
   render(){
   return (
     <div className="content">
-    
+    <ToastContainer/>
     <div className="w-45 mx-auto shadow p-2">
     <div className="form-group">
     
-<form onSubmit={(e)=>this.submit(e,this.state.id)}>
+<form onSubmit={(e)=>this.submit(e)}>
 <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> login </label>
           
@@ -176,8 +195,11 @@ else{
   </button>
 
 </form>
+
      
      </div></div>
+
+
      <div className="col s6">
 
      <table className="table">
@@ -200,9 +222,13 @@ else{
             <td> <button onClick={(e)=>this.edit(client._id)}  className="btn btn-outline-primary mr-2 " type="submit" name="action">
     <i className="edit-link">Modifier</i>
   </button></td>
-  <td> <button onClick={(e)=>this.delete(client._id)} className="btn btn-danger" type="submit" name="action">
-    <i className="edit-link">supprimer</i>
-  </button></td>
+  <td> 
+
+  <Link className='btn btn-danger' onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.delete(client._id) }}><i className="fa fa-times" aria-hidden="true"/>
+</Link>
+</td>
+
+
           </tr>
          
           )}

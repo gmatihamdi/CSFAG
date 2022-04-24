@@ -33,6 +33,8 @@ import PDFRelevnote from '../Component/component_note/relevnote'
 import EditMatiere from '../Component/component_matiere/EditMatiere'
 import EditStagiaire from '../Component/component_stagiaire/editStagiaire'  
 import Listeselection from '../Component/component_stagiaire/selectstag'
+import ReglageListe from '../Component/component_stagiaire/reglageadmin'
+
 import AddModule from '../Component/component_module/addModule'
 import Addnote from '../Component/component_note/creatNote'
 import Addpromotion from '../Component/component_promotion/addpromotion'
@@ -140,6 +142,8 @@ function Dashboard(props) {
   <Route  path="/admin/login" component={Login}/>
   <Route  path="/admin/auth" component={Authent}/>
   <Route  path="/admin/addFormateur" component={AddFormateur}/>
+  <Route  path="/admin/reglageListe" component={ReglageListe}/>
+
   <Route  path="/admin/editFormateur/:id" component={EditFormateur}/>
  
 

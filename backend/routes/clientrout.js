@@ -10,6 +10,7 @@ config = require('../config');
 router.get('/',(req,res)=>{
     User.find({},(err,data)=>{
         res.json(data)
+      
     })
 })
 
@@ -20,6 +21,7 @@ router.route('/edit/:id').get((req, res) => {
       } else {
         res.json(data)
       }
+
     })
   })
 

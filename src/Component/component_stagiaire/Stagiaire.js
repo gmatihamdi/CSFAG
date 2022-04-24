@@ -187,7 +187,7 @@ else{
     var img = new Image()
     var pdf = new jsPDF('p', 'pt', 'a4');
     pdf.setFontSize(9);
-    pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
+    pdf.addImage(logo, 'JPEG', 35, 10, 520, 50);
     pdf.setFontSize(22);
     pdf.addFileToVFS(fontarab, base64Str);
     pdf.addFont(fontarab, 'Amiri', 'normal');

@@ -1,24 +1,14 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from "react-router-dom"
-import logo from './entete.jpeg'
 import { BsPersonPlusFill } from "react-icons/bs";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 import { FcPrint } from "react-icons/fc";
-import fontarab from './Amiri-Regular.ttf'
 import { Dropdown } from 'react-bootstrap';
+import { Modal, Button } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import { ReactDialogBox } from 'react-js-dialog-box'
 import 'react-js-dialog-box/dist/index.css'
-const If = (props) => {
-  const condition = props.condition || false;
-  const positive = props.then || null;
-  const negative = props.else || null;
-  
-  return condition ? positive : negative;
-};
-class Resultat extends React.Component {
+class Reglageadmin extends React.Component {
   constructor(props) {
     super()
     this.state = {
@@ -30,7 +20,6 @@ class Resultat extends React.Component {
       adressStagiaire: '',
       codeSection: '',
       etatdossier: '',
-      etatvalid:'Réussite',
       niveauScolaire: '',
       emailstagiaire: '',
       specialiteStagiaire: '',
@@ -43,8 +32,7 @@ class Resultat extends React.Component {
       listgroupsection: [],
       groupeStagiaire: '',
       idstagiaire:'',
-      stgs:[],
-      Result:''
+      show:false
     }
     this.onChangeCodeSection = this.onChangeCodeSection.bind(this);
     this.onChangeEtatdossier = this.onChangeEtatdossier.bind(this);
@@ -70,20 +58,16 @@ class Resultat extends React.Component {
   handleClick() {
     const a = {
       x: this.state.codeSection,
-    //  y: this.state.etatdossier,
+      y: this.state.etatdossier,
 
     }
-    axios.post(`http://localhost/methode/getresultat`, a)
+    axios.post(`http://localhost/filtre/filtrestagiaretat`, a)
       .then((res) => {
         this.setState({
-            listnote:res.data.data ,
-           // ... res.data.data1,
-           stgs:res.data.data1,
-         //  Moyn:res.data.data2,
-           Result:res.data.data3,
+          liststag: res.data,
         })
-        console.log("resultat Result");
-        console.log(this.state.stgs)
+        console.log("resultat de recherche");
+        console.log(res.data)
       })
       // Catch any errors we hit and update the app
       .catch(error => this.setState({ error, isLoading: false }));
@@ -92,12 +76,31 @@ class Resultat extends React.Component {
 
   }
 
+  handelModal(){
+    this.setState({show:!this.state.show})
+  }
+
 
   componentDidMount() {
     this.handleClick();
     this.findsectionClick();
     this.listepromo();
     this.findgroupClick();
+    const token = localStorage.getItem("token");
+    const roleuse = localStorage.getItem("roleuser");
+    if (token){
+        if(roleuse==='Admin'){
+          console.log('ok')
+        
+        }
+        else{
+          this.props.history.push('/admin');
+        }
+            
+            }
+            else{
+              this.props.history.push('/');
+            }
 
   }
 
@@ -115,7 +118,7 @@ class Resultat extends React.Component {
     const stagiaire = {
 
 
-      etatdossier: 'Diplômé',
+      etatdossier: 'Refuser',
 
     }
 
@@ -135,8 +138,8 @@ class Resultat extends React.Component {
     const stagiaire = {
 
 
-      etatdossier: 'Diplômé',
-      
+      etatdossier: 'Accepter',
+      groupeStagiaire: this.state.groupeStagiaire,
 
     }
 
@@ -223,81 +226,6 @@ console.log(this.state.idstagiaire)
   }
 
 
-  pdfGenerate = () => {
-      var iframe = document.createElement('iframe');
-    //  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-      document.body.appendChild(iframe);
-      var img = new Image()
-      var Values = this.state.stgs.map((element, index) => Object.values([index + 1, element.cinStagiaire, element.nomStagiaireFr,element.res]));
-      var pdf = new jsPDF('p', 'pt', 'a4');
-      pdf.setFontSize(9);
-      pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
-      pdf.setFontSize(22);
-      pdf.text(250, 80, 'Résultat')
-      pdf.setFontSize(10);   
-    
-    
-      pdf.text(35, 130, '')
-
-      
-      pdf.setFontSize(9)
-     
-      pdf.autoTable({ html: '#my-table', startY: 150, showHead: 'everyPage' })
-      // Or use javascript directly:
-      pdf.autoTable({
-        head: [['N°', 'CIN', 'Nom&Prénom', 'Résultat']],
-        body: Values
-    
-      })
-      var iframe = document.createElement('iframe');
-    /*  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-      document.body.appendChild(iframe);
-      iframe.src = pdf.output('datauristring');*/
-      window.open(pdf.output('bloburl'))
-    }
-
-
-
-    pvGenerate = () => {
-      var iframe = document.createElement('iframe');
-    //  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-      document.body.appendChild(iframe);
-      var img = new Image()
-    
-      var Values = this.state.stgs.map((element, index) => Object.values([ element.res,element.cinStagiaire, element.nomStagiaireAr,index + 1]));
-      var pdf = new jsPDF('l', 'pt', 'a3');
-      pdf.addFont(fontarab, 'Amiri', 'normal');
-      pdf.setFont('Amiri'); 
-      pdf.setFontSize(9);
-      pdf.addImage(logo, 'JPEG', 35, 10, 1100, 60);
-      pdf.setFontSize(22);
-      pdf.text(700, 80, 'محضر جلسة التصريح بنتائج ختم التكوين',{align: 'right' })
-      pdf.setFontSize(10);   
-    
-    
-      pdf.text(35, 130, '')
-
-      
-      pdf.setFontSize(9)
-     
-      pdf.autoTable({ html: '#my-table', startY: 150, showHead: 'everyPage' })
-      // Or use javascript directly:
-      pdf.autoTable({
-        head: [['قرار اللجنة', 'رقم بطاقة التعريف ', 'الاسم واللقب', 'العدد الرتبي']],
-        body: Values,
-        headStyles: {font:'Amiri'},
-        bodyStyles: {font:'Amiri'},
-      })
-      var iframe = document.createElement('iframe');
-    /*  iframe.setAttribute('style', 'position:absolute;right:120px; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-      document.body.appendChild(iframe);
-      iframe.src = pdf.output('datauristring');*/
-      window.open(pdf.output('bloburl'))
-    }
-
-
-
-
 
 
 
@@ -307,8 +235,8 @@ console.log(this.state.idstagiaire)
 
       <div className="content">
         <ToastContainer />
-        
-        <form className="row g-3">
+     
+ <form className="row g-3">
           <div class="col-auto">
 
             <select class="form-control" name="grouprselect" value={this.state.idpromotion}
@@ -343,13 +271,24 @@ console.log(this.state.idstagiaire)
               }
             </select>
           </div>
+          <div class="col-auto">
+            <select class="form-control" name="niveauMatiere" value={this.state.etatdossier}
+              onChange={this.onChangeEtatdossier}>
+              <option >Etat</option>
+
+              <option >Accepter</option>
+              <option >Refuser</option>
+              <option >En attente</option>
+              <option >Diplômé</option>
+              
 
 
-        
+            </select>
+
+          </div>
           <Link className='btn btn-danger' onClick={() => this.handleClick()}><i className="nc-icon nc-zoom-split" /></Link>
 
-          <Link className='btn btn-success'  onClick={this.pdfGenerate} ><i className="fa fa-print" /></Link>
-          <Link className='btn btn-success'  onClick={this.pvGenerate} >PV<i className="fa fa-print" /></Link>
+
 
         </form>
 
@@ -357,59 +296,130 @@ console.log(this.state.idstagiaire)
         <table id="dtBasicExample" className="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">N°</th>
+              <th scope="col">#</th>
               <th scope="col">CIN</th>
               <th scope="col">Nom&Prénom</th>
               <th scope="col"> الاسم و اللقب </th>
-              <th scope="col">Resultat</th>
 
               <th scope="col">      </th>
             </tr>
           </thead>
           <tbody>
-            {this.state.stgs.map((stagiare, index) => (
+            {this.state.liststag.map((stagiare, index) => (
               <tr key={stagiare._id}>
                 <th scope="row">{index + 1}</th>
                 <td>{stagiare.cinStagiaire}</td>
                 <td>{stagiare.nomStagiaireFr}</td>
                 <td>{stagiare.nomStagiaireAr}</td>
-                <td>{stagiare.res}</td>
+
+                <td>
+
+                  <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Etat
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item >  <Link to={"/admin/editStagiaire/" + stagiare._id}>Editer</Link></Dropdown.Item>
+                      <Dropdown.Item > <Link  onClick={this.showbox(stagiare._id) ,this.openBox}> Accepter
+                      </Link></Dropdown.Item>
+
+                      <Dropdown.Item > <Link onClick={(e) => { if (window.confirm(
+                      "Etes vous sur de refuser cet candidature?" )) this.EditetatStag(stagiare._id) }}>
+                        Refuser
+                      </Link> </Dropdown.Item>
+                      <Dropdown.Item >
+                      <Link onClick={()=>{this.handelModal()}}
+                     //  onClick={(e) => { if (window.confirm('Etes vous sur de vouloir supprimer cet element?')) this.deleteSpc(stagiare._id) }}
+                       
+                       >
+                   Supprimer
+                  </Link>
+
+                  <Modal show={this.state.show}>
+
+<Modal.Header >
+
+  <Modal.Title>Alert</Modal.Title>
+
+</Modal.Header>
+
+<Modal.Body>
+
+Etes vous sur de vouloir supprimer cet element?
+
+</Modal.Body>
+
+<Modal.Footer>
+<Button variant="danger"  onClick={()=>{this.deleteSpc(stagiare._id)}}>OUI</Button>
+  <Button variant="secondary"  onClick={()=>{this.handelModal()}}>fermer</Button>
+
+</Modal.Footer>
+
+</Modal>
 
 
-                      <If condition={(stagiare.res)===(this.state.etatvalid)} then={
-    
-    <td>
-   <Link className='btn btn-success' onClick={(e) => { if (window.confirm(
-                      "Veuillez confirmer que le stagiaire à compléter leur (1) dossier (2)paiement des frais d'inscription (3)formation?" )) this.AcceptStag(stagiare._id) }}>
-                        Clôture 
-                      </Link>
-    
-    </td>
-  }
-            else={
-              <td><font  color="red">Echec</font>
-              
-              </td>
-      }
-            />
+
+                      </Dropdown.Item>
+
+                   
 
 
-
-
-
-
-
-               
+                    </Dropdown.Menu>
+                  </Dropdown>
+                 
+                </td>
               </tr>
-           
-
       ))}
           </tbody>
 
         </table>
 
+        {this.state.isOpen && (
+          <>
+            <ReactDialogBox
+              closeBox={this.closeBox}
+              modalWidth='60%'
+              headerBackgroundColor='red'
+              headerTextColor='white'
+              headerHeight='65'
+              closeButtonColor='white'
+              bodyBackgroundColor='white'
+              bodyTextColor='black'
+              bodyHeight='200px'
+              headerText="Etes vous sur d'accepter cet candidature?"
+            >
+            <form>
+              <div>
+              <select class="form-control" name="grouprselect" value={this.state.groupeStagiaire}
+              onChange={this.onChangeGroupeStagiaire}  >
+              <option >Selectionner un groupe</option>
+
+              {
+                this.state.listgroupsection.map(function (groupe) {
+                  return <option value={groupe._id}  >{groupe.codeGroupe}</option>;
+                })
+              }
+            </select>
+              </div>
+              <div>
+              <Link className='btn btn-success'onClick={this.updateAccept()} >Accepter</Link>
+              </div>
+              </form>
+            </ReactDialogBox>
+          </>
+        )}
+
+
+    
+
+
+
+
+
+
+
       </div>
     )
   }
 }
-export default Resultat;
+export default Reglageadmin;

@@ -97,7 +97,7 @@ class PdfRnote extends React.Component{
      var Values =  this.state.listnote.map( (element) => Object.values([element.libMatiere,element.codeMatiere,element.seuilMatiere,element.notefinale,element.resnote]));
        var pdf = new jsPDF('p', 'pt', 'a4');
      pdf.setFontSize(9);
-     pdf.addImage(logo, 'JPEG', 35, 10, 480, 60);
+     pdf.addImage(logo, 'JPEG', 35, 10, 520, 50);
      pdf.setFontSize(22);
 
     // const AmiriRegular = fontarab;
