@@ -27,7 +27,7 @@ if(roleuse==='Admin'){
 
 }
 else{
-  this.props.history.push('/admin');
+  this.props.history.push('/admin/erreur');
 }
     
     }
@@ -159,7 +159,7 @@ else{
         <div className="col-md-6"> 
  <label for="inputEmail4" class="form-label"> Nom et prénom </label>
  <input value={this.state.email} 
-          placeholder="email"
+          placeholder="Nom et prénom"
           onChange={(e)=>this.emailchange(e)} type="text" id="autocomplete-input" className="form-control form-control-lg" />
 </div>
        <div className="col-md-6"> 

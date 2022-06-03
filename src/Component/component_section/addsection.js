@@ -141,7 +141,7 @@ onSubmit(values) {
     
     <div className="col-md-6">
     <label>  Diplome </label>
-   <Field class="form-control"  name="codeDiplome" value={this.state.codeDiplome} as="select">
+   <Field className="form-control"  name="codeDiplome"  as="select">
        <option >select Diplome</option>
        <option >CAP</option>
        <option >BTP</option>
@@ -153,7 +153,7 @@ onSubmit(values) {
 <div className="col-md-6">
 <label>  Specialité </label>
    <Field 
-   className="form-control" name="codeSpecialite" value={this.state.codeSpecialite}  as="select"> 
+   className="form-control" name="codeSpecialite"  as="select"> 
 <option >Choisir une spécialités</option>
  
 {

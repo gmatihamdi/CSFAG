@@ -94,7 +94,7 @@ class Reglageadmin extends React.Component {
         
         }
         else{
-          this.props.history.push('/admin');
+          this.props.history.push('/admin/erreur');
         }
             
             }

@@ -45,21 +45,7 @@ import Groupe from './Component/component_groupe/listegroup'
 
 var routes = [
 
-  {
-    path: "/dashboard",
-    name: "Statistique",
-    icon: "nc-icon nc-bank",
-    component: statistique,
-    layout: "/admin",
-  },
 
-  {
-    path: "/stagiaires",
-    name: "Stagiaires",
-    icon: "nc-icon nc-single-02",
-    component: Stagiaires,
-    layout: "/admin",
-  },
   {
     path: "/SelectStagiaire",
     name: "Candidature",
@@ -68,12 +54,14 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/Specialite",
-    name: "Spécialité",
-    icon: "nc-icon nc-book-bookmark",
-    component: Specialite,
+    path: "/stagiaires",
+    name: "Stagiaires",
+    icon: "nc-icon nc-single-02",
+    component: Stagiaires,
     layout: "/admin",
   },
+ 
+ 
 
   {
     path: "/Promotion",
@@ -87,6 +75,13 @@ var routes = [
     name: "Sections",
     icon: "nc-icon nc-bookmark-2",
     component: Section,
+    layout: "/admin",
+  },
+  {
+    path: "/Specialite",
+    name: "Spécialité",
+    icon: "nc-icon nc-book-bookmark",
+    component: Specialite,
     layout: "/admin",
   },
   {
@@ -150,12 +145,18 @@ var routes = [
     layout: "/admin",
   },
 
-
+  {
+    path: "/dashboard",
+    name: "Statistique",
+    icon: "nc-icon nc-bank",
+    component: statistique,
+    layout: "/admin",
+  },
 
 
   {
     path: "/users",
-    name: "User Profile",
+    name: "Administrateur",
     icon: "nc-icon nc-key-25",
     component: users,
     layout: "/admin",

@@ -231,6 +231,8 @@ console.log(this.state.idstagiaire)
           Ajouter Candidat  </i></Link>
 
           <Link className="btn btn-success" to='/admin/reglageListe'>  <i className="nc-icon nc-settings-gear-65" > Paramètres avancés</i></Link>
+          <Link className="btn btn-success" to=''>   Importer</Link>
+        print list prom/etat
         <form className="row g-3">
           <div class="col-auto">
 
@@ -271,7 +273,7 @@ console.log(this.state.idstagiaire)
               onChange={this.onChangeEtatdossier}>
               <option >Etat</option>
 
-            
+              <option >Accepter</option>
               <option >Refuser</option>
               <option >En attente</option>
            

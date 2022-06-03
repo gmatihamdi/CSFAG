@@ -52,6 +52,8 @@ import Listediplomes from '../Component/component_stagiaire/diplomes';
 import Login from '../Component/component_login/auth';
 import AddFormateur from '../Component/component_formateur/addFormateur';
 import EditFormateur from '../Component/component_formateur/editFormateur';
+import Err404 from '../Component/component_login/e404';
+
 import Authent from '../layouts/Auth';
 import routes from "routes.js";
 
@@ -143,6 +145,7 @@ function Dashboard(props) {
   <Route  path="/admin/auth" component={Authent}/>
   <Route  path="/admin/addFormateur" component={AddFormateur}/>
   <Route  path="/admin/reglageListe" component={ReglageListe}/>
+  <Route  path="/admin/erreur" component={Err404}/>
 
   <Route  path="/admin/editFormateur/:id" component={EditFormateur}/>
  

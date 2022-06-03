@@ -219,7 +219,7 @@ handelModal(){
   {this.state.listcompetence.map((competence,index)=>(
           <tr key={competence._id}>
           <th scope="row">{index + 1}</th>
-            <td>{competence.codeMatiere.codeMatiere}</td>
+            <td>{competence.codeCompetence}</td>
             <td>{competence.codeMatiere.libMatiere}</td>
             <td>{competence.codeMatiere.seuilMatiere}</td>
 
